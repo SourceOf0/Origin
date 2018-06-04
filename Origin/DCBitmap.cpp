@@ -2,7 +2,7 @@
 #include "PixelBitmap.h"
 #include "SceneManager.h"
 
-namespace Common {
+namespace Image {
 
 DCBitmap::DCBitmap( HDC& hdc, PixelBitmap* target ) : 
 	mX( 0 ),
@@ -49,5 +49,5 @@ int DCBitmap::drawBlockOr( HDC& targetHdc, int x, int y, int width, int index )
 	return 0;
 }
 
-} // namespace Common
+} // namespace Image
 

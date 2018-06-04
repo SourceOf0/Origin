@@ -12,7 +12,7 @@ public:
 	enum SeqID {
 		SEQ_TITLE,
 	
-		SEQ_NONE,
+		SEQ_NONE
 	};
 	MainParent( HDC& hdc );
 	~MainParent( void );

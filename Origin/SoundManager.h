@@ -3,11 +3,27 @@
 
 #include <windows.h>
 
+namespace Sound {
+	class Track;
+	class WaveBase;
+	class EffectBase;
+}
+
+
 namespace Main {
 
 class SoundManager
 {
 public:
+	enum EffectID {
+		EFFECT_DISTORTION1,
+		EFFECT_DISTORTION2,
+		EFFECT_DISTORTION3,
+		EFFECT_COMPRESSOR,
+		EFFECT_TREMOLO,
+		EFFECT_NONE
+	};
+
 	static SoundManager* inst( void );
 	static void create( HWND& hwnd );
 	static void destroy( void );
@@ -24,23 +40,16 @@ private:
 	~SoundManager( void );
 
 	double clipping( double s );
-	double sound01( double A, double f0, double fs, double t );
-	double effect01( double s );
-	double effect02( double s );
-	double effect03( double s );
 
-	static const double M_PI;
-	int BUFFER_SIZE;
 	static SoundManager* mInst;
 
-	int mPlayingIndex;
+	Sound::Track* mTrack1;
+	Sound::Track* mTrack2;
+
+	int test;
 	int mSetBufferIndex;
 	int mSetBufferNum;
 	BOOL mIsPlay;
-	double mA;
-	double mAddA;
-	double mSetWaveLeng;
-	double mF;
 
 	HWAVEOUT mHWaveOut;
 	WAVEHDR mWaveHeader[2];

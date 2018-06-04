@@ -5,12 +5,13 @@
 
 #define POINT_TRACK_NUM 50
 
-namespace Common {
+namespace Image {
 	class PixelBitmap;
 	class DCBitmap;
 }
 
 namespace Sequence {
+
 class MainParent;
 
 class Title : public MainChild {
@@ -28,13 +29,13 @@ private:
 
 	int setPointMask( void );
 
-	Common::DCBitmap* mBackBmp1;
-	Common::DCBitmap* mBackBmp2;
-	Common::DCBitmap* mBackBmp3;
-	Common::DCBitmap* mFrontBmp;
-	Common::DCBitmap* mMaskBmp;
-	Common::DCBitmap* mMaskBlockBmp;
-	Common::DCBitmap* mPointBmp;
+	Image::DCBitmap* mBackBmp1;
+	Image::DCBitmap* mBackBmp2;
+	Image::DCBitmap* mBackBmp3;
+	Image::DCBitmap* mFrontBmp;
+	Image::DCBitmap* mMaskBmp;
+	Image::DCBitmap* mMaskBlockBmp;
+	Image::DCBitmap* mPointBmp;
 
 	int mCount;
 	int mChangeCount;
@@ -45,4 +46,4 @@ private:
 
 } //namespace Sequence
 
-#endif
+#endif // INCLUDED_SEQUENCE_TITLE_H

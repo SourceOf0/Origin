@@ -32,42 +32,42 @@ Title::Title( HDC& hdc )
 		mPointTrack[i].count = 0;
 	}
 
-	Common::PixelBitmap* tempBmp;
+	Image::PixelBitmap* tempBmp;
 
 	tempBmp = imageFactory->load( "pic03.dad" );
-	mBackBmp1 = new Common::DCBitmap( hdc, tempBmp );
+	mBackBmp1 = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 	mBackBmp1->mX = ( float )( windowWidth - mBackBmp1->mWidth ) / 2;
 	mBackBmp1->mY = ( float )( windowHeight - mBackBmp1->mHeight ) / 2;
 
 	tempBmp = imageFactory->load( "pic02.dad" );
-	mBackBmp2 = new Common::DCBitmap( hdc, tempBmp );
+	mBackBmp2 = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 	mBackBmp2->mX = ( float )( windowWidth - mBackBmp2->mWidth ) / 2;
 	mBackBmp2->mY = ( float )( windowHeight - mBackBmp2->mHeight ) / 2;
 
 	tempBmp = imageFactory->load( "pic01.dad" );
-	mBackBmp3 = new Common::DCBitmap( hdc, tempBmp );
+	mBackBmp3 = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 	mBackBmp3->mX = ( float )( windowWidth - mBackBmp3->mWidth ) / 2;
 	mBackBmp3->mY = ( float )( windowHeight - mBackBmp3->mHeight ) / 2;
 
 	tempBmp = imageFactory->load( "frame.dad" );
-	mFrontBmp = new Common::DCBitmap( hdc, tempBmp );
+	mFrontBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 	mFrontBmp->mX = ( float )( windowWidth - mFrontBmp->mWidth ) / 2;
 	mFrontBmp->mY = ( float )( windowHeight - mFrontBmp->mHeight ) / 2;
 
-	tempBmp = new Common::PixelBitmap( windowWidth, windowHeight, windowWidth * windowHeight / 8 );
-	mMaskBmp = new Common::DCBitmap( hdc, tempBmp );
+	tempBmp = new Image::PixelBitmap( windowWidth, windowHeight, windowWidth * windowHeight / 8 );
+	mMaskBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 
 	tempBmp = imageFactory->load( "smallFilter.dad" );
-	mMaskBlockBmp = new Common::DCBitmap( hdc, tempBmp );
+	mMaskBlockBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 
 	tempBmp = imageFactory->load( "pointMask.dad" );
-	mPointBmp = new Common::DCBitmap( hdc, tempBmp );
+	mPointBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 
 	mCount = FILTER_FRAME_COUNT;

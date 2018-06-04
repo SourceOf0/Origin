@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "PixelBitmap.h"
 
-namespace Common {
+namespace Image {
 
 PixelBitmap::PixelBitmap( int width, int height, int dataLeng ) : 
 	mWidth( width ),
@@ -175,5 +175,5 @@ int PixelBitmap::drawWindow( void )
 }
 
 
-} // namespace Common
+} // namespace Image
 

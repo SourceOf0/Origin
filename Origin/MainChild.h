@@ -8,9 +8,9 @@ namespace Sequence {
 class MainParent;
 
 class MainChild {
-public:
-	virtual ~MainChild( void ) {} // 何もしない
-	virtual void update( HDC& hdc, MainParent* parent ) = 0; // 中身なし（派生クラスで定義されてないとエラー）
+	public:
+		virtual ~MainChild( void ) {} // 何もしない
+		virtual void update( HDC& hdc, MainParent* parent ) = 0; // 中身なし（派生クラスで定義されてないとエラー）
 };
 
 } // namespace Sequence

@@ -3,7 +3,7 @@
 
 #include <windows.h>
 
-namespace Common {
+namespace Image {
 
 class PixelBitmap
 {
@@ -30,6 +30,6 @@ private:
 	int mDataLeng;
 };
 
-} // namespace Common
+} // namespace Image
 
 #endif // INCLUDED_COMMON_PIXEL_BITMAP_H

@@ -3,7 +3,7 @@
 
 #include <windows.h>
 
-namespace Common {
+namespace Image {
 	class PixelBitmap;
 }
 
@@ -16,7 +16,7 @@ public:
 	static void create( void );
 	static void destroy( void );
 
-	Common::PixelBitmap* load( const char* outfile );
+	Image::PixelBitmap* load( const char* outfile );
 
 private:
 	ImageFactory( void );

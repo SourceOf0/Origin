@@ -34,7 +34,7 @@ ImageFactory::~ImageFactory()
 {
 }
 
-Common::PixelBitmap* ImageFactory::load( const char* outfile )
+Image::PixelBitmap* ImageFactory::load( const char* outfile )
 {
 	unsigned char setData;
 	int i = 0;
@@ -49,7 +49,7 @@ Common::PixelBitmap* ImageFactory::load( const char* outfile )
 	fin.read( ( char* )&pixelDataLeng, sizeof( int ) );
 	fin.seekg( 4, ios_base::cur ); // reserved
 	
-	Common::PixelBitmap* ret = new Common::PixelBitmap( bmpWidth, bmpHeight, pixelDataLeng * 4 );
+	Image::PixelBitmap* ret = new Image::PixelBitmap( bmpWidth, bmpHeight, pixelDataLeng * 4 );
 
 	for( i = 0; i < pixelDataLeng; ++i ) {
 		fin.read( ( char * )&setData, sizeof( char ) );

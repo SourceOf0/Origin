@@ -1,0 +1,22 @@
+#ifndef INCLUDED_SOUND_BASE_H
+#define INCLUDED_SOUND_BASE_H
+
+#define CHANNEL				2			// ステレオ
+#define BITS_PER_SAMPLE		16			// 量子化ビット数
+#define SAMPLES_PER_SEC		44100		// 標本化周波数
+#define BUFFER_PER_SEC		15			// 秒間バッファ分割数
+
+#define BLOCK_ALIGN			4			// CHANNEL * BITS_PER_SAMPLE / 8
+#define BYTES_PER_SEC		176400		// SAMPLES_PER_SEC * BLOCK_ALIGN
+#define BUFFER_SIZE			11760		// BYTES_PER_SEC / BUFFER_PER_SEC
+
+#define WAVE_DATA_LENGTH			2940		// BUFFER_SIZE / 4
+
+typedef enum {
+	WAVE_SAWTOOTH,
+	WAVE_SQUARE,
+	WAVE_TRIANGLE,
+	WAVE_NONE
+} WaveID;
+
+#endif // INCLUDED_SOUND_BASE_H
