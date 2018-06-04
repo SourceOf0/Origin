@@ -42,6 +42,7 @@ private:
 	int mSetBufferIndex;
 	int mSetBufferNum;
 	BOOL mIsPlay;
+	BOOL mWasReset;
 
 	HWAVEOUT mHWaveOut;
 	WAVEHDR mWaveHeader[2];

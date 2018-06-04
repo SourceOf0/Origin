@@ -2,8 +2,17 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="BandEliminateFilter.cpp">
+      <Filter>Sound\Effect3</Filter>
+    </ClCompile>
+    <ClCompile Include="BandPassFilter.cpp">
+      <Filter>Sound\Effect3</Filter>
+    </ClCompile>
     <ClCompile Include="BitmapBase.cpp">
       <Filter>Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Chorus.cpp">
+      <Filter>Sound\Effect2</Filter>
     </ClCompile>
     <ClCompile Include="CmpBitmap.cpp">
       <Filter>Image</Filter>
@@ -17,6 +26,9 @@
     <ClCompile Include="Debug1.cpp">
       <Filter>Sequence\Debug1</Filter>
     </ClCompile>
+    <ClCompile Include="Delay.cpp">
+      <Filter>Sound\Effect2</Filter>
+    </ClCompile>
     <ClCompile Include="Distortion1.cpp">
       <Filter>Sound\Effect1</Filter>
     </ClCompile>
@@ -26,11 +38,23 @@
     <ClCompile Include="Distortion3.cpp">
       <Filter>Sound\Effect1</Filter>
     </ClCompile>
+    <ClCompile Include="EffectBase.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="HighPassFilter.cpp">
+      <Filter>Sound\Effect3</Filter>
+    </ClCompile>
     <ClCompile Include="ImageFactory.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="ImageManager.cpp">
-      <Filter>Main</Filter>
+    <ClCompile Include="LowPassFilter.cpp">
+      <Filter>Sound\Effect3</Filter>
+    </ClCompile>
+    <ClCompile Include="MainParent.cpp">
+      <Filter>Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="NoiseGate.cpp">
+      <Filter>Sound\Effect1</Filter>
     </ClCompile>
     <ClCompile Include="PixelBitmap.cpp">
       <Filter>Image</Filter>
@@ -47,46 +71,43 @@
     <ClCompile Include="Track.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="MainParent.cpp">
-      <Filter>Sequence</Filter>
-    </ClCompile>
     <ClCompile Include="Tremolo.cpp">
       <Filter>Sound\Effect1</Filter>
-    </ClCompile>
-    <ClCompile Include="Wave.cpp">
-      <Filter>Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="EffectBase.cpp">
-      <Filter>Sound</Filter>
     </ClCompile>
     <ClCompile Include="Vibrato.cpp">
       <Filter>Sound\Effect2</Filter>
     </ClCompile>
-    <ClCompile Include="Chorus.cpp">
-      <Filter>Sound\Effect2</Filter>
+    <ClCompile Include="Wave.cpp">
+      <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Delay.cpp">
-      <Filter>Sound\Effect2</Filter>
+    <ClCompile Include="Book2.cpp">
+      <Filter>Sequence\Book2</Filter>
     </ClCompile>
-    <ClCompile Include="LowPassFilter.cpp">
-      <Filter>Sound\Effect3</Filter>
+    <ClCompile Include="Debug2.cpp">
+      <Filter>Sequence\Debug2</Filter>
     </ClCompile>
-    <ClCompile Include="HighPassFilter.cpp">
-      <Filter>Sound\Effect3</Filter>
+    <ClCompile Include="DebugLoading.cpp">
+      <Filter>Sequence\DebugLoading</Filter>
     </ClCompile>
-    <ClCompile Include="BandPassFilter.cpp">
-      <Filter>Sound\Effect3</Filter>
+    <ClCompile Include="ToneFactory.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="BandEliminateFilter.cpp">
-      <Filter>Sound\Effect3</Filter>
-    </ClCompile>
-    <ClCompile Include="NoiseGate.cpp">
-      <Filter>Sound\Effect1</Filter>
+    <ClCompile Include="Equalizer.cpp">
+      <Filter>Sound\Effect4</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BandPassFilter.h">
+      <Filter>Sound\Effect3</Filter>
+    </ClInclude>
+    <ClInclude Include="BandEliminateFilter.h">
+      <Filter>Sound\Effect3</Filter>
+    </ClInclude>
     <ClInclude Include="BitmapBase.h">
       <Filter>Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Chorus.h">
+      <Filter>Sound\Effect2</Filter>
     </ClInclude>
     <ClInclude Include="CmpBitmap.h">
       <Filter>Image</Filter>
@@ -100,6 +121,9 @@
     <ClInclude Include="Debug1.h">
       <Filter>Sequence\Debug1</Filter>
     </ClInclude>
+    <ClInclude Include="Delay.h">
+      <Filter>Sound\Effect2</Filter>
+    </ClInclude>
     <ClInclude Include="Distortion3.h">
       <Filter>Sound\Effect1</Filter>
     </ClInclude>
@@ -112,11 +136,23 @@
     <ClInclude Include="EffectBase.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="ImageManager.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="HighPassFilter.h">
+      <Filter>Sound\Effect3</Filter>
     </ClInclude>
     <ClInclude Include="ImageFactory.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="LowPassFilter.h">
+      <Filter>Sound\Effect3</Filter>
+    </ClInclude>
+    <ClInclude Include="MainChild.h">
+      <Filter>Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="MainParent.h">
+      <Filter>Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="NoiseGate.h">
+      <Filter>Sound\Effect1</Filter>
     </ClInclude>
     <ClInclude Include="PixelBitmap.h">
       <Filter>Image</Filter>
@@ -136,70 +172,70 @@
     <ClInclude Include="Track.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="MainParent.h">
-      <Filter>Sequence</Filter>
-    </ClInclude>
-    <ClInclude Include="MainChild.h">
-      <Filter>Sequence</Filter>
-    </ClInclude>
     <ClInclude Include="Tremolo.h">
       <Filter>Sound\Effect1</Filter>
-    </ClInclude>
-    <ClInclude Include="Wave.h">
-      <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="Vibrato.h">
       <Filter>Sound\Effect2</Filter>
     </ClInclude>
-    <ClInclude Include="Chorus.h">
-      <Filter>Sound\Effect2</Filter>
+    <ClInclude Include="Wave.h">
+      <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="Delay.h">
-      <Filter>Sound\Effect2</Filter>
+    <ClInclude Include="Book2.h">
+      <Filter>Sequence\Book2</Filter>
     </ClInclude>
-    <ClInclude Include="LowPassFilter.h">
-      <Filter>Sound\Effect3</Filter>
+    <ClInclude Include="Debug2.h">
+      <Filter>Sequence\Debug2</Filter>
     </ClInclude>
-    <ClInclude Include="HighPassFilter.h">
-      <Filter>Sound\Effect3</Filter>
+    <ClInclude Include="DebugLoading.h">
+      <Filter>Sequence\DebugLoading</Filter>
     </ClInclude>
-    <ClInclude Include="BandPassFilter.h">
-      <Filter>Sound\Effect3</Filter>
+    <ClInclude Include="ToneFactory.h">
+      <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="BandEliminateFilter.h">
-      <Filter>Sound\Effect3</Filter>
-    </ClInclude>
-    <ClInclude Include="NoiseGate.h">
-      <Filter>Sound\Effect1</Filter>
+    <ClInclude Include="Equalizer.h">
+      <Filter>Sound\Effect4</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
-      <UniqueIdentifier>{4551cfb8-c694-4655-99c2-f9a908e4e2da}</UniqueIdentifier>
+      <UniqueIdentifier>{dde7c002-4f44-4184-b036-41b5069ac6bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence">
-      <UniqueIdentifier>{71906348-1aa0-48e2-9702-6ee7b0f97d40}</UniqueIdentifier>
+      <UniqueIdentifier>{7fa9d52e-1f40-4f7d-94c7-0d5d8755b90a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Image">
-      <UniqueIdentifier>{85ab21da-13e2-431e-8097-fe8b3a536b65}</UniqueIdentifier>
+      <UniqueIdentifier>{2c569156-7a28-4e18-a41b-1fb623826eb4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound">
-      <UniqueIdentifier>{7facc964-2054-43b3-ab39-1359e1213727}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Title">
-      <UniqueIdentifier>{d3107368-087d-4545-a054-e00e08f22287}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Debug1">
-      <UniqueIdentifier>{ad9227c0-2b48-4606-8b28-3915d7533196}</UniqueIdentifier>
+      <UniqueIdentifier>{a9e906cd-f082-43ba-bb9e-b500349c8376}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect1">
-      <UniqueIdentifier>{b8ecc942-862a-4557-897a-01b9ae7482e8}</UniqueIdentifier>
+      <UniqueIdentifier>{0488c03d-01d7-443e-a83b-98dee8710683}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect2">
-      <UniqueIdentifier>{df9b2c89-802b-4581-9412-8421662521f9}</UniqueIdentifier>
+      <UniqueIdentifier>{57c0bc59-d512-4af1-a872-88aeaf93ee24}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect3">
-      <UniqueIdentifier>{49a02a3d-e074-467f-b507-a2b31cee8fa6}</UniqueIdentifier>
+      <UniqueIdentifier>{b6a02bf4-91c0-4229-9f79-77f0cca71cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Title">
+      <UniqueIdentifier>{b1c2d4ab-2f80-4120-9e6a-2b23b9935608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Debug1">
+      <UniqueIdentifier>{35ecc2cd-ed4d-401e-b427-6b3663e866ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Book2">
+      <UniqueIdentifier>{21c6455c-aa94-45ac-bf68-a020ab49bbb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Debug2">
+      <UniqueIdentifier>{8d29318c-135a-4e3a-828b-0eda69dc88fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\DebugLoading">
+      <UniqueIdentifier>{34f45a5d-d7fc-4483-8f09-2d1864e85041}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound\Effect4">
+      <UniqueIdentifier>{073dc096-3bd4-4f96-9194-dc128f3e6461}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

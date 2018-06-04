@@ -30,26 +30,41 @@ void SoundManager::destroy( void )
 	}
 }
 
-SoundManager::SoundManager( HWND& hwnd )
+SoundManager::SoundManager( HWND& hwnd ) :
+mWasReset( TRUE ),
+mIsPlay( FALSE ),
+mSetBufferIndex( 0 ),
+mSetBufferNum( 0 ),
+test( 0 )
 {
 	WAVEFORMATEX wfe;
-
-	mIsPlay = FALSE;
-	mSetBufferIndex = 0;
-	mSetBufferNum = 0;
-
-	test = 0;
 
 	mTrack1 = new Sound::Track();
 	mTrack2 = new Sound::Track();
 
 	mTrack1->setWave( WAVE_SAWTOOTH );
-	mTrack1->addEffect( EFFECT_DELAY );
+	
+	mTrack1->addEffect( EFFECT_CHORUS );
 	mTrack1->addEffect( EFFECT_VIBRATO );
 	mTrack1->addEffect( EFFECT_LOW_PASS_FILTER );
+	mTrack1->addEffect( EFFECT_EQUALIZER );
+
+/*	mTrack1->getEffect( 3 )->mSetNum1 = 500;
+	mTrack1->getEffect( 3 )->mSetNum2 = -1;
+	mTrack1->getEffect( 3 )->mSetNum3 = 1;
+
+	mTrack1->addEffect( EFFECT_EQUALIZER );
+	mTrack1->getEffect( 4 )->mSetNum1 = 1000;
+	mTrack1->getEffect( 4 )->mSetNum2 = 1;
+	mTrack1->getEffect( 4 )->mSetNum3 = 2;
+
+	mTrack1->addEffect( EFFECT_EQUALIZER );
+	mTrack1->getEffect( 5 )->mSetNum1 = 2000;
+	mTrack1->getEffect( 5 )->mSetNum2 = -1;
+	mTrack1->getEffect( 5 )->mSetNum3 = 3;*/
 	
 	mTrack2->setWave( WAVE_SAWTOOTH );
-	mTrack2->addEffect( EFFECT_DELAY );
+	mTrack2->addEffect( EFFECT_CHORUS );
 	mTrack2->addEffect( EFFECT_VIBRATO );
 	mTrack2->addEffect( EFFECT_LOW_PASS_FILTER );
 
@@ -106,8 +121,9 @@ SoundManager::~SoundManager( void )
 int SoundManager::play( void )
 {
 	mIsPlay = TRUE;
+	mWasReset = FALSE;
 	mTrack1->setF( 400 );
-	mTrack2->setF( 350 );
+	mTrack2->setF( 300 );
 	
 	++test;
 	switch( test ) {
@@ -167,6 +183,8 @@ Sound::Track* SoundManager::getTrack( int index )
 int SoundManager::makeWave( void )
 {
 	if( !mIsPlay ) {
+		if( mWasReset ) return 0;
+		mWasReset = TRUE;
 		waveOutReset( mHWaveOut );
 		mSetBufferNum = 0;
 		mSetBufferIndex = 0;
@@ -178,7 +196,7 @@ int SoundManager::makeWave( void )
 	++mSetBufferNum;
 
 	mTrack1->update();
-	mTrack2->update();
+//	mTrack2->update();
 
 	double* wave1 = mTrack1->getPlayData();
 	double* wave2 = mTrack2->getPlayData();
@@ -187,8 +205,8 @@ int SoundManager::makeWave( void )
 //	mTrack2->getEffect(0)->mSetNum1 += 0.0001;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = clipping( ( wave1[ i ] + wave2[ i ] ) / 2 );
-//		double s = clipping( wave1[ i ] );
+//		double s = clipping( ( wave1[ i ] + wave2[ i ] ) / 2 );
+		double s = clipping( wave1[ i ] );
 		short data = static_cast<short>( s + 0.5 ) - 32768; /* 四捨五入とオフセットの調節 */
 		// 右
 		mLpWave[ mSetBufferIndex ][ i*4 ] = static_cast<char>(data & 0 << 8);

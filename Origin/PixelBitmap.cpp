@@ -3,7 +3,7 @@
 
 namespace Image {
 
-PixelBitmap::PixelBitmap( int width, int height ) : 
+PixelBitmap::PixelBitmap( int width, int height, unsigned char setColor ) : 
 mWidth( width ),
 mHeight( height ),
 mWidthIndex( width / 32 ),
@@ -17,7 +17,7 @@ mY( 0 )
 
 	mPixelData = new unsigned char[ mDataLeng ];
 	for( unsigned int i = 0; i < mDataLeng; ++i ) {
-		mPixelData[i] = 0;
+		mPixelData[i] = setColor;
 	}
 }
 

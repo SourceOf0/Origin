@@ -9,7 +9,7 @@ namespace Sound {
 Vibrato::Vibrato( double** setWaveLog ) : 
 mD( 0.002 ),
 mDepth( 0.002 ),
-mRate( 5.0 )
+mRate( 1.0 )
 {
 	init( setWaveLog, 0, 0, 0 );
 }
@@ -27,24 +27,26 @@ void Vibrato::reset( void )
 // ビブラート
 void Vibrato::apply( Track* track )
 {
-	int time = track->getPlayTime();
 	double* waveData = track->getWaveData();
 	double d = SAMPLES_PER_SEC * mD;
 	double depth = SAMPLES_PER_SEC * mDepth;
 	double t, delta, tau;
+	int fixIndex = mLogIndex * WAVE_DATA_LENGTH;
 	int m;
 
-	for(int i = 0; i < WAVE_DATA_LENGTH; ++i) {
+	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[ i ];
 		mWaveLog[ mLogIndex ][ i ] = s;
 
-		tau = d + depth * sin( 2.0 * M_PI * mRate * ( time + i ) / SAMPLES_PER_SEC );
-		t = (double)i - tau;
-		m = (int)t;
-		delta = t - (double)m;
+		t = i + fixIndex;
+		tau = d + depth * sin( 2.0 * M_PI * mRate * t / SAMPLES_PER_SEC );
+		t -= tau;
+		m = static_cast< int >( t );
+		delta = t - static_cast< double >( m );
+		m -= fixIndex;
 		s = delta * getPrevData( m + 1 ) + ( 1.0 - delta ) * getPrevData( m );
 
-		waveData[i] = s;
+		waveData[ i ] = s;
 	}
 
 	mLogIndex = ( mLogIndex + 1 ) % LOG_MAX_DATA_NUM;

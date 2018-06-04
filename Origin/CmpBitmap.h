@@ -15,10 +15,14 @@ public:
 	CmpBitmap( unsigned int width, unsigned int height, char colorNum, unsigned int dataNum );
 	~CmpBitmap( void );
 
+	static void initTone( DCBitmap** setTone );
+
 	static ColorID getColor( unsigned char color );
 	static unsigned int setBlack( PixelBitmap* target, unsigned int count, unsigned int index );
 	static unsigned int setWhite( PixelBitmap* target, unsigned int count, unsigned int index );
 	static unsigned int setTone( PixelBitmap* target, unsigned int count, unsigned int index );
+
+	static DCBitmap** mTone;
 
 	DCBitmap* getDCBitmap( HDC& hdc );
 	void setData( unsigned char color, unsigned int count );
@@ -36,10 +40,9 @@ private :
 	} ColorData;
 
 	DCBitmap** mLayer;
-
+	ColorData** mColorData;
 	unsigned int mMaxDataNum;
 	unsigned int mSetDataNum;
-	ColorData** mColorData;
 };
 
 } // namespace Image

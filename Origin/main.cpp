@@ -9,17 +9,18 @@
 #include "SceneManager.h"
 #include "SoundManager.h"
 
-BOOL gIsSoundThreadEnd = FALSE;
+int gStateSoundThread = 0;
 HANDLE gHSoundThread;
 
 
-DWORD WINAPI SoundThread(LPVOID hWnd)
+DWORD WINAPI SoundThread( LPVOID hWnd )
 {
 	while( TRUE ) {
-		if( gIsSoundThreadEnd ) break;
+		if( gStateSoundThread > 0 ) break;
 		Main::SoundManager::inst()->makeWave();
 		Sleep( 10 );
 	}
+	gStateSoundThread = 2;
 	ExitThread( TRUE );
 }
 
@@ -31,11 +32,14 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 	switch( msg ) {
 	case WM_DESTROY:
-		Sleep( 100 );
-		Main::SoundManager::destroy();
+		KillTimer( hwnd, 1 );
+
 		Main::SceneManager::destroy();
 
-		KillTimer( hwnd, 1 );
+		while( gStateSoundThread < 2 ) {
+			Sleep( 100 );
+		}
+		Main::SoundManager::destroy();
 
 		PostQuitMessage( 0 );
 
@@ -48,44 +52,44 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		_CrtCheckMemory();
 
 		gHSoundThread = CreateThread( NULL, 0, SoundThread, hwnd , 0, &dwParam );
-
+		
 //		SetTimer( hwnd, 1, 10, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
 		SetTimer( hwnd, 1, 20, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
 		return 0;
 
 	case WM_TIMER:	//Ä•`‰æ‚³‚¹‚é
-		if( gIsSoundThreadEnd ) return 0;
+		if( gStateSoundThread > 0 ) return 0;
 		Main::SceneManager::inst()->update();
 		InvalidateRect( hwnd, NULL, FALSE );	//”wŒi‚ðÁ‹Ž‚µ‚È‚¢
 		return 0;
 
 	case WM_KEYDOWN:
 		if( wp == VK_ESCAPE ) {
-			gIsSoundThreadEnd = TRUE;
+			gStateSoundThread = 1;
 			PostMessage( hwnd, WM_CLOSE, 0, 0 );
 		}
 		return 0;
 
 	case WM_LBUTTONDOWN:
-		if( gIsSoundThreadEnd ) return 0;
+		if( gStateSoundThread > 0 ) return 0;
 		Main::SoundManager::inst()->play();
-		Main::SceneManager::inst()->mIsMouseDown = TRUE;
+		Main::SceneManager::inst()->mouseDown();
 		return 0;
 
 	case WM_LBUTTONUP:
-		if( gIsSoundThreadEnd ) return 0;
+		if( gStateSoundThread > 0 ) return 0;
 		Main::SoundManager::inst()->stop();
-		Main::SceneManager::inst()->mIsMouseDown = FALSE;
+		Main::SceneManager::inst()->mouseUp();
 		return 0;
 
 	case MM_WOM_DONE:
-		if( gIsSoundThreadEnd ) return 0;
+		if( gStateSoundThread > 0 ) return 0;
 		Main::SoundManager::inst()->setBuffer();
-		Main::SceneManager::inst()->mIsAddWave = TRUE;
+		Main::SceneManager::inst()->endSetWave();
 		return 0;
 
 	case WM_PAINT:
-		if( gIsSoundThreadEnd ) return 0;
+		if( gStateSoundThread > 0 ) return 0;
 		hdc = BeginPaint( hwnd, &ps );
 		Main::SceneManager::inst()->draw( hdc );
 		EndPaint(hwnd, &ps);

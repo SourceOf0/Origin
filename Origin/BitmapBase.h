@@ -16,6 +16,26 @@ typedef enum _COLOR_ID {
 	CLR_OTHER = 0,
 } ColorID;
 
+enum ToneID {
+	TONE_001,
+	TONE_002,
+	TONE_003,
+	TONE_004,
+	TONE_005,
+	TONE_006,
+	TONE_007,
+	TONE_008,
+	TONE_009,
+	TONE_010,
+	TONE_011,
+	TONE_012,
+	TONE_013,
+	TONE_014,
+	TONE_015,
+
+	TONE_NONE
+};
+
 
 namespace Image {
 

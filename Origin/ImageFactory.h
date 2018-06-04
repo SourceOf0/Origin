@@ -15,8 +15,8 @@ namespace Main {
 class ImageFactory
 {
 public:
-	static ImageFactory* inst();
-	static void create( void );
+	static ImageFactory* inst( void );
+	static void create( HDC& hdc );
 	static void destroy( void );
 
 	Image::DCBitmap* loadDC( HDC& hdc, const char* fileName );
@@ -24,7 +24,7 @@ public:
 	Image::BitmapBase* load( HDC& hdc, const char* fileName );
 
 private:
-	ImageFactory( void );
+	ImageFactory( HDC& hdc );
 	ImageFactory( ImageFactory& );
 	~ImageFactory( void );
 

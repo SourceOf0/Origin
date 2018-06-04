@@ -2,11 +2,9 @@
 #include "MainChild.h"
 #include "Debug1.h"
 
-#include "ImageFactory.h"
 #include "SceneManager.h"
 #include "SoundManager.h"
 
-#include "PixelBitmap.h"
 #include "DCBitmap.h"
 #include "Track.h"
 
@@ -14,11 +12,10 @@
 
 namespace Sequence {
 
-Debug1::Debug1( HDC& hdc )
+Debug1::Debug1( HDC& hdc, MainParent* parent )
 {
-	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 	Main::SceneManager* sceneManager = Main::SceneManager::inst();
-	mBackBmp = new Image::DCBitmap( hdc, sceneManager->mWindowWidth, sceneManager->mWindowHeight );
+	mBackBmp = new Image::DCBitmap( hdc, parent->mWindowWidth, parent->mWindowHeight );
 }
 
 Debug1::~Debug1()
@@ -29,7 +26,7 @@ Debug1::~Debug1()
 
 void Debug1::update( MainParent* parent )
 {
-	if( !Main::SceneManager::inst()->mIsAddWave ) return;
+	if( !parent->mIsAddWave ) return;
 
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
 	double* waveLog1 = soundManager->getTrack(1)->getPlayData();

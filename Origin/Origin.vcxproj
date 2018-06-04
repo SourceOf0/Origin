@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5FA34D9F-C6AF-4E96-BC5A-CECDE4C7F5E3}</ProjectGuid>
+    <ProjectGuid>{6DD54078-8946-4078-9597-C6E6F5763431}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -77,19 +77,22 @@
     <ClCompile Include="BandEliminateFilter.cpp" />
     <ClCompile Include="BandPassFilter.cpp" />
     <ClCompile Include="BitmapBase.cpp" />
+    <ClCompile Include="Book2.cpp" />
     <ClCompile Include="Chorus.cpp" />
     <ClCompile Include="CmpBitmap.cpp" />
     <ClCompile Include="Compressor.cpp" />
     <ClCompile Include="DCBitmap.cpp" />
     <ClCompile Include="Debug1.cpp" />
+    <ClCompile Include="Debug2.cpp" />
+    <ClCompile Include="DebugLoading.cpp" />
     <ClCompile Include="Delay.cpp" />
     <ClCompile Include="Distortion1.cpp" />
     <ClCompile Include="Distortion2.cpp" />
     <ClCompile Include="Distortion3.cpp" />
     <ClCompile Include="EffectBase.cpp" />
+    <ClCompile Include="Equalizer.cpp" />
     <ClCompile Include="HighPassFilter.cpp" />
     <ClCompile Include="ImageFactory.cpp" />
-    <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="LowPassFilter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainParent.cpp" />
@@ -98,6 +101,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="ToneFactory.cpp" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="Tremolo.cpp" />
     <ClCompile Include="Vibrato.cpp" />
@@ -107,19 +111,22 @@
     <ClInclude Include="BandEliminateFilter.h" />
     <ClInclude Include="BandPassFilter.h" />
     <ClInclude Include="BitmapBase.h" />
+    <ClInclude Include="Book2.h" />
     <ClInclude Include="Chorus.h" />
     <ClInclude Include="CmpBitmap.h" />
     <ClInclude Include="Compressor.h" />
     <ClInclude Include="DCBitmap.h" />
     <ClInclude Include="Debug1.h" />
+    <ClInclude Include="Debug2.h" />
+    <ClInclude Include="DebugLoading.h" />
     <ClInclude Include="Delay.h" />
     <ClInclude Include="Distortion1.h" />
     <ClInclude Include="Distortion2.h" />
     <ClInclude Include="Distortion3.h" />
     <ClInclude Include="EffectBase.h" />
+    <ClInclude Include="Equalizer.h" />
     <ClInclude Include="HighPassFilter.h" />
     <ClInclude Include="ImageFactory.h" />
-    <ClInclude Include="ImageManager.h" />
     <ClInclude Include="LowPassFilter.h" />
     <ClInclude Include="MainChild.h" />
     <ClInclude Include="MainParent.h" />
@@ -129,6 +136,7 @@
     <ClInclude Include="SoundBase.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="ToneFactory.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="Tremolo.h" />
     <ClInclude Include="Vibrato.h" />

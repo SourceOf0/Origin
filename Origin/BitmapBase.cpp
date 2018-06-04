@@ -11,4 +11,5 @@ void BitmapBase::init( unsigned int width, unsigned int height )
 	mUseColor = 0;
 }
 
+
 } // Image

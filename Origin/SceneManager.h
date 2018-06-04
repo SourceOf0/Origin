@@ -19,14 +19,14 @@ public:
 	int update( void );
 	int draw( HDC& hdc );
 
+	void mouseDown( void );
+	void mouseUp( void );
+	void endSetWave( void );
+
 	static int mWindowWidth;
 	static int mWindowHeight;
 
-	static BOOL mIsMouseDown;
-	static BOOL mIsAddWave;
-
 	LPDWORD mWindowPixel;
-
 	HDC mHdcBmp;
 
 private:

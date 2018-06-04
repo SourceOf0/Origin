@@ -1,4 +1,5 @@
 #include "ImageFactory.h"
+#include "ToneFactory.h"
 
 #include "DCBitmap.h"
 #include "PixelBitmap.h"
@@ -16,21 +17,23 @@ ImageFactory* ImageFactory::inst( void )
 {
 	return mInst;
 }
-void ImageFactory::create( void )
+void ImageFactory::create( HDC& hdc )
 {
 	if( mInst == 0 ) {
-		mInst = new ImageFactory();
+		mInst = new ImageFactory( hdc );
+		ToneFactory::create( hdc );
 	}
 }
 void ImageFactory::destroy( void )
 {
 	if( mInst != 0 ) {
+		ToneFactory::destroy();
 		delete mInst;
 		mInst = 0;
 	}
 }
 
-ImageFactory::ImageFactory()
+ImageFactory::ImageFactory( HDC& hdc )
 {
 }
 ImageFactory::~ImageFactory()

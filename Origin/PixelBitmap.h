@@ -8,7 +8,7 @@ namespace Image {
 class PixelBitmap
 {
 public:
-	PixelBitmap( int width, int height );
+	PixelBitmap( int width, int height, unsigned char setColor = 0 );
 	~PixelBitmap( void );
 
 	int drawWindow( void );

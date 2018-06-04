@@ -14,11 +14,11 @@ DCBitmap::DCBitmap( HDC& hdc, PixelBitmap* target )
 	mHBmpPrev = (HBITMAP)SelectObject( mHdcBmp, hbmp );
 }
 
-DCBitmap::DCBitmap( HDC& hdc, int width, int height )
+DCBitmap::DCBitmap( HDC& hdc, int width, int height, unsigned char setColor )
 {
 	init( width, height );
 
-	Image::PixelBitmap* setBmp = new Image::PixelBitmap( width, height );
+	Image::PixelBitmap* setBmp = new Image::PixelBitmap( width, height, setColor );
 
 	mHdcBmp = CreateCompatibleDC( hdc );
 	HBITMAP hbmp = CreateBitmap( mWidth, mHeight, 1, 1, setBmp->mPixelData );

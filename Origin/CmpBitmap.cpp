@@ -4,6 +4,8 @@
 
 namespace Image {
 
+DCBitmap** CmpBitmap::mTone = 0;
+
 CmpBitmap::CmpBitmap( unsigned int width, unsigned int height, char colorNum, unsigned int dataNum ) :
 mColorNum( colorNum ),
 mMaxDataNum( dataNum ),
@@ -132,7 +134,7 @@ DCBitmap* CmpBitmap::getDCBitmap( HDC& hdc )
 
 	for( unsigned int j = 0; j < mSetDataNum; ++j ) {
 		targetData = mColorData[ j ];
-		if( targetData->color == CLR_BLACK) {
+		if( targetData->color == CLR_BLACK ) {
 			index += setBlack( target, targetData->count, index );
 		} else {
 			index += setWhite( target, targetData->count, index );
@@ -175,6 +177,28 @@ void CmpBitmap::drawData( HDC& hdc )
 			}
 		}
 		mLayer[ setLayerIndex++ ] = new DCBitmap( hdc, target );
+
+		switch( targetColor ) {
+			case CLR_RED:
+				mTone[ TONE_001 ]->drawBlockOr( mLayer[ i ]->mHdcBmp, 0, 0, mWidth, 0 );
+				break;
+			case CLR_RED_GREEN:
+				mTone[ TONE_001 ]->drawBlockOr( mLayer[ i ]->mHdcBmp, 0, 0, mWidth, 0 );
+				break;
+			case CLR_GREEN:
+				mTone[ TONE_003 ]->drawBlockOr( mLayer[ i ]->mHdcBmp, 0, 0, mWidth, 0 );
+				break;
+			case CLR_GREEN_BLUE:
+				mTone[ TONE_008 ]->drawBlockOr( mLayer[ i ]->mHdcBmp, 0, 0, mWidth, 0 );
+				break;
+			case CLR_BLUE:
+				mTone[ TONE_013 ]->drawBlockOr( mLayer[ i ]->mHdcBmp, 0, 0, mWidth, 0 );
+				break;
+			case CLR_BLUE_RED:
+				mTone[ TONE_015 ]->drawBlockOr( mLayer[ i ]->mHdcBmp, 0, 0, mWidth, 0 );
+				break;
+		}
+
 		targetColor = ( ColorID )( targetColor << 1 );
 	}
 
@@ -189,20 +213,20 @@ void CmpBitmap::drawData( HDC& hdc )
 
 void CmpBitmap::drawWindow( void )
 {
-	mLayer[ 1 ]->drawWindowOr( (int)( mX + 0.5 ), (int)( mY + 0.5 ) );
-	mLayer[ 0 ]->drawWindowAnd( (int)( mX + 0.5 ), (int)( mY + 0.5 ) );
-/*	for( int i = 2; i < mColorNum; ++ i ) {
-		mLayer[ i ]->drawWindowAnd( mX + 0.5, mY + 0.5 );
-	}*/
+	mLayer[ 1 ]->drawWindowOr( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ) );
+	for( int i = 2; i < mColorNum; ++ i ) {
+		mLayer[ i ]->drawWindowAnd( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ) );
+	}
+	mLayer[ 0 ]->drawWindowAnd( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ) );
 }
 
 void CmpBitmap::drawWindow( int x, int y )
 {
 	mLayer[ 1 ]->drawWindowOr( x, y );
-	mLayer[ 0 ]->drawWindowAnd( x, y );
 /*	for( int i = 2; i < mColorNum; ++ i ) {
 		mLayer[ i ]->drawWindowAnd( x, y );
 	}*/
+	mLayer[ 0 ]->drawWindowAnd( x, y );
 }
 
 } // namespace Image

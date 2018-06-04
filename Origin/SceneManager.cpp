@@ -14,8 +14,6 @@ namespace Main {
 SceneManager* SceneManager::mInst = 0;
 int SceneManager::mWindowWidth = 0;
 int SceneManager::mWindowHeight = 0;
-int SceneManager::mIsMouseDown = FALSE;
-int SceneManager::mIsAddWave = FALSE;
 
 SceneManager* SceneManager::inst( void )
 {
@@ -38,13 +36,11 @@ void SceneManager::destroy( void )
 SceneManager::SceneManager( HWND& hwnd )
 {
 	HDC hdc;
-//	long black = RGB(0,0,0);
-	long black = RGB(100, 100, 100);
-	long white = RGB(255, 255, 255);
+//	long black = RGB( 0, 0, 0 );
+	long black = RGB( 100, 100, 100 );
+	long white = RGB( 255, 255, 255 );
 
-	ImageFactory::create();
-
-	hdc = GetDC(hwnd);
+	hdc = GetDC( hwnd );
 	mWindowWidth = GetDeviceCaps( hdc, HORZRES );
 	mWindowHeight = GetDeviceCaps( hdc, VERTRES );
 
@@ -67,13 +63,15 @@ SceneManager::SceneManager( HWND& hwnd )
 	mHdcBmp = CreateCompatibleDC( hdc );
 	mHBmpOld = ( HBITMAP )SelectObject( mHdcBmp, mHBmp );
 
-	mParent = new Sequence::MainParent( hdc );
-
-	ReleaseDC( hwnd, hdc );
+	mParent = new Sequence::MainParent( hwnd, hdc, mWindowWidth, mWindowHeight );
 
 	for ( int i = 0; i < mWindowWidth * mWindowHeight / 32; ++i ) {
 		mWindowPixel[i] = 0;
 	}
+
+	ImageFactory::create( hdc );
+
+	ReleaseDC( hwnd, hdc );
 }
 
 
@@ -91,10 +89,24 @@ SceneManager::~SceneManager( void )
 	ImageFactory::destroy();
 }
 
-int SceneManager::update( void )
+void SceneManager::mouseDown( void )
+{
+	mParent->mIsMouseDown = TRUE;
+}
+
+void SceneManager::mouseUp( void )
+{
+	mParent->mIsMouseDown = FALSE;
+}
+
+void SceneManager::endSetWave( void )
+{
+	mParent->mIsAddWave = TRUE;
+}
+
+int SceneManager::update()
 {
 	mParent->update();
-	mIsAddWave = FALSE;
 	return 0;
 }
 

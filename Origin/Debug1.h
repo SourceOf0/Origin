@@ -4,7 +4,6 @@
 #include "MainChild.h"
 
 namespace Image {
-	class PixelBitmap;
 	class DCBitmap;
 }
 
@@ -14,7 +13,7 @@ class MainParent;
 
 class Debug1 : public MainChild {
 public:
-	Debug1( HDC& hdc );
+	Debug1( HDC& hdc, MainParent* parent );
 	~Debug1( void );
 	void update( MainParent* parent );
 	void draw( HDC& hdc, MainParent* parent );

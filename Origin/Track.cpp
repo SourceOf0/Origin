@@ -21,6 +21,8 @@
 #include "BandPassFilter.h"
 #include "BandEliminateFilter.h"
 
+#include "Equalizer.h"
+
 namespace Sound {
 
 Track::Track( void ) :
@@ -103,8 +105,7 @@ int Track::update( void )
 
 	memcpy( mPlayData, mWaveData, WAVE_DATA_LENGTH * sizeof( double ) );
 	
-	mPlayTime += WAVE_DATA_LENGTH;
-	if( mPlayTime >= SAMPLES_PER_SEC ) mPlayTime -= SAMPLES_PER_SEC;
+	mPlayTime = ( mPlayTime + WAVE_DATA_LENGTH ) % ( SAMPLES_PER_SEC * 10 );
 
 	return 0;
 }
@@ -143,7 +144,9 @@ int Track::addEffect( EffectID id )
 
 	while( ( ( mUseLog >> count ) & 1 ) == 1 ) {
 		++count;
-		if( count == LOG_MAX_INDEX_NUM ) return 1; 
+		if( count == LOG_MAX_INDEX_NUM ) {
+			count = -1;
+		}
 	}
 
 	switch( id ) {
@@ -166,32 +169,42 @@ int Track::addEffect( EffectID id )
 			newEffect = new Sound::Tremolo();
 			break;
 		case EFFECT_DELAY:
-			mUseLog &= 1 << count;
+			if( count == -1 ) return 1;
+			mUseLog |= 1 << count;
 			newEffect = new Sound::Delay( mWaveLog[ count ] );
 			break;
 		case EFFECT_CHORUS:
-			mUseLog &= 1 << count;
+			if( count == -1 ) return 1;
+			mUseLog |= 1 << count;
 			newEffect = new Sound::Chorus( mWaveLog[ count ] );
 			break;
 		case EFFECT_VIBRATO:
-			mUseLog &= 1 << count;
+			if( count == -1 ) return 1;
+			mUseLog |= 1 << count;
 			newEffect = new Sound::Vibrato( mWaveLog[ count ] );
 			break;
 		case EFFECT_LOW_PASS_FILTER:
-			mUseLog &= 1 << count;
+			if( count == -1 ) return 1;
+			mUseLog |= 1 << count;
 			newEffect = new Sound::LowPassFilter( mWaveLog[ count ] );
 			break;
 		case EFFECT_HIGH_PASS_FILTER:
-			mUseLog &= 1 << count;
+			if( count == -1 ) return 1;
+			mUseLog |= 1 << count;
 			newEffect = new Sound::HighPassFilter( mWaveLog[ count ] );
 			break;
 		case EFFECT_BAND_PASS_FILTER:
-			mUseLog &= 1 << count;
+			if( count == -1 ) return 1;
+			mUseLog |= 1 << count;
 			newEffect = new Sound::BandPassFilter( mWaveLog[ count ] );
 			break;
 		case EFFECT_BAND_ELIMINATE_FILTER:
-			mUseLog &= 1 << count;
+			if( count == -1 ) return 1;
+			mUseLog |= 1 << count;
 			newEffect = new Sound::BandEliminateFilter( mWaveLog[ count ] );
+			break;
+		case EFFECT_EQUALIZER:
+			newEffect = new Sound::Equalizer();
 			break;
 		default:
 			return 1;

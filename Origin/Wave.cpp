@@ -69,7 +69,6 @@ void Wave::setSawtooth( Track* track )
 		waveData[i] = s;
 
 		time += 1.0;
-		if( time > SAMPLES_PER_SEC ) time -= SAMPLES_PER_SEC;
 	}
 }
 
@@ -88,7 +87,6 @@ void Wave::setSquare( Track* track )
 		waveData[i] = s;
 
 		time += 1.0;
-		if( time > SAMPLES_PER_SEC ) time -= SAMPLES_PER_SEC;
 	}
 }
 
@@ -111,7 +109,6 @@ void Wave::setTriangle( Track* track )
 		waveData[i] = s;
 
 		time += 1.0;
-		if( time > SAMPLES_PER_SEC ) time -= SAMPLES_PER_SEC;
 	}
 }
 

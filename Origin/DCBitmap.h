@@ -12,7 +12,7 @@ class DCBitmap : public BitmapBase
 {
 public:
 	DCBitmap( HDC& hdc, PixelBitmap* target );
-	DCBitmap( HDC& hdc, int width, int height );
+	DCBitmap( HDC& hdc, int width, int height, unsigned char setColor = 0 );
 	~DCBitmap( void );
 
 	int setData( int index, unsigned char data );

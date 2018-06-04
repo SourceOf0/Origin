@@ -4,15 +4,14 @@
 #define CHANNEL				2			// ステレオ
 #define BITS_PER_SAMPLE		16			// 量子化ビット数
 #define SAMPLES_PER_SEC		44100		// 標本化周波数
-#define BUFFER_PER_SEC		15			// 秒間バッファ分割数
 
 #define BLOCK_ALIGN			4			// CHANNEL * BITS_PER_SAMPLE / 8
 #define BYTES_PER_SEC		176400		// SAMPLES_PER_SEC * BLOCK_ALIGN
-#define BUFFER_SIZE			11760		// BYTES_PER_SEC / BUFFER_PER_SEC
+#define BUFFER_SIZE			11760		// BYTES_PER_SEC / BUFFER_PER_SEC( 15 )
 
 #define WAVE_DATA_LENGTH	2940		// BUFFER_SIZE / 4  ( double -> char )
 
-#define EFFECT_MAX_NUM		3	// 追加できるエフェクトの最大数
+#define EFFECT_MAX_NUM		6	// 追加できるエフェクトの最大数
 #define LOG_MAX_DATA_NUM	30	// バッファのログを取るデータの最大数
 #define LOG_MAX_INDEX_NUM	3	// バッファのログを取るインデックスの最大数
 
@@ -39,6 +38,8 @@ typedef enum {
 	EFFECT_HIGH_PASS_FILTER,
 	EFFECT_BAND_PASS_FILTER,
 	EFFECT_BAND_ELIMINATE_FILTER,
+
+	EFFECT_EQUALIZER,
 
 	EFFECT_NONE
 } EffectID;
