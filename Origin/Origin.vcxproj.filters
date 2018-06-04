@@ -1,73 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Common">
-      <UniqueIdentifier>{95081d18-e50c-4f1b-9f30-a760b71d3ef8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{0e4f4f7f-5644-474f-8dc2-77aff3fd0764}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence">
-      <UniqueIdentifier>{2a6c29a2-06c7-408d-97a2-337dd2c24cb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Title">
-      <UniqueIdentifier>{b9a261f4-475d-4e8e-9545-71aa31862b35}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="DCBitmap.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
     <ClCompile Include="ImageFactory.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="ImageManager.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="MainParent.cpp">
       <Filter>Sequence</Filter>
-    </ClCompile>
-    <ClCompile Include="Title.cpp">
-      <Filter>Sequence\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="PixelBitmap.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="DCBitmap.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>Sequence\Title</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DCBitmap.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="ImageManager.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="ImageFactory.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="MainChild.h">
+      <Filter>Sequence</Filter>
     </ClInclude>
     <ClInclude Include="MainParent.h">
       <Filter>Sequence</Filter>
     </ClInclude>
-    <ClInclude Include="MainChild.h">
-      <Filter>Sequence</Filter>
-    </ClInclude>
-    <ClInclude Include="Title.h">
-      <Filter>Sequence\Title</Filter>
+    <ClInclude Include="PixelBitmap.h">
+      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="PixelBitmap.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="DCBitmap.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Title.h">
+      <Filter>Sequence\Title</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{1554d3e7-4367-4aa5-be24-f61f4f8c4fb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{7116da9e-78c2-47a8-9c17-13bf8c391d39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence">
+      <UniqueIdentifier>{e6c05a96-a354-424b-8a97-d59a95801447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Title">
+      <UniqueIdentifier>{717ad88f-dfc2-45e7-913c-db2805d01248}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

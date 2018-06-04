@@ -3,6 +3,8 @@
 
 #include "MainChild.h"
 
+#define POINT_TRACK_NUM 50
+
 namespace Common {
 	class PixelBitmap;
 	class DCBitmap;
@@ -17,10 +19,28 @@ class Title : public MainChild {
 		~Title( void );
 		void update( HDC& hdc, MainParent* parent );
 private:
-	Common::PixelBitmap* testBmp;
-	Common::DCBitmap* testBmp2;
-	int testX;
-	int testY;
+
+	typedef struct _POINT_TRACK {
+		int x;
+		int y;
+		int count;
+	} PointTrack;
+
+	int setPointMask( void );
+
+	Common::DCBitmap* mBackBmp1;
+	Common::DCBitmap* mBackBmp2;
+	Common::DCBitmap* mBackBmp3;
+	Common::DCBitmap* mFrontBmp;
+	Common::DCBitmap* mMaskBmp;
+	Common::DCBitmap* mMaskBlockBmp;
+	Common::DCBitmap* mPointBmp;
+
+	int mCount;
+	int mChangeCount;
+	int mBackIndex;
+	POINT mOldMousePos;
+	PointTrack mPointTrack[POINT_TRACK_NUM];
 };
 
 } //namespace Sequence

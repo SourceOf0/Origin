@@ -15,14 +15,18 @@ public:
 
 	int setData( int index, unsigned char data );
 	int drawWindow( void );
+	int drawWindowAnd( void );
+	int drawBlock( HDC& targetHdc, int x, int y, int width, int index );
+	int drawBlockAnd( HDC& targetHdc, int x, int y, int width, int index );
+	int drawBlockOr( HDC& targetHdc, int x, int y, int width, int index );
 
 	float mX;
 	float mY;
 	int mWidth;
 	int mHeight;
+	HDC mHdcBmp;
 
 private:
-	HDC mHdcBmp;
 	HBITMAP mHBmpPrev;
 };
 

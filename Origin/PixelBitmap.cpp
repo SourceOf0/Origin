@@ -14,7 +14,7 @@ PixelBitmap::PixelBitmap( int width, int height, int dataLeng ) :
 {
 	mPixelData = new unsigned char[ dataLeng ];
 	for( int i = 0; i < dataLeng; ++i ) {
-		mPixelData[i] = 0xFF;
+		mPixelData[i] = 0;
 	}
 }
 
@@ -98,6 +98,7 @@ int PixelBitmap::drawWindow( void )
 				++k;
 				continue;
 			}
+			if( k < 0 ) continue;
 			setData = mPixelData[ i*4 ];
 			setData |= mPixelData[ i*4 + 1 ] << 8;
 			setData |= mPixelData[ i*4 + 2 ] << 16;

@@ -18,8 +18,9 @@ public:
 
 	int draw( HDC& hdc );
 
-	int mWindowWidth;
-	int mWindowHeight;
+	static int mWindowWidth;
+	static int mWindowHeight;
+	static BOOL mIsMouseDown;
 	LPDWORD mWindowPixel;
 
 	HDC mHdcBmp;

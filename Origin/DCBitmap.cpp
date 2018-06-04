@@ -28,7 +28,26 @@ int DCBitmap::drawWindow( void )
 	BitBlt( Main::SceneManager::inst()->mHdcBmp, (int)( mX + 0.5 ), (int)( mY + 0.5 ), mWidth, mHeight, mHdcBmp, 0, 0, SRCCOPY );
 	return 0;
 }
-
+int DCBitmap::drawWindowAnd( void )
+{
+	BitBlt( Main::SceneManager::inst()->mHdcBmp, (int)( mX + 0.5 ), (int)( mY + 0.5 ), mWidth, mHeight, mHdcBmp, 0, 0, SRCAND );
+	return 0;
+}
+int DCBitmap::drawBlock( HDC& targetHdc, int x, int y, int width, int index )
+{
+	BitBlt( targetHdc, x, y, width, mHeight, mHdcBmp, width * index, 0, SRCCOPY );
+	return 0;
+}
+int DCBitmap::drawBlockAnd( HDC& targetHdc, int x, int y, int width, int index )
+{
+	BitBlt( targetHdc, x, y, width, mHeight, mHdcBmp, width * index, 0, SRCAND );
+	return 0;
+}
+int DCBitmap::drawBlockOr( HDC& targetHdc, int x, int y, int width, int index )
+{
+	BitBlt( targetHdc, x, y, width, mHeight, mHdcBmp, width * index, 0, SRCPAINT );
+	return 0;
+}
 
 } // namespace Common
 

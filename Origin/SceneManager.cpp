@@ -8,6 +8,9 @@
 namespace Main {
 
 SceneManager* SceneManager::mInst = 0;
+int SceneManager::mWindowWidth = 0;
+int SceneManager::mWindowHeight = 0;
+int SceneManager::mIsMouseDown = FALSE;
 
 SceneManager* SceneManager::inst( void )
 {
@@ -31,7 +34,8 @@ SceneManager::SceneManager( HWND& hwnd )
 {
 	HDC hdc;
 //	PAINTSTRUCT ps;
-	long black = RGB(0,0,0);
+//	long black = RGB(0,0,0);
+	long black = RGB(100, 100, 100);
 	int i = 0;
 
 	ImageFactory::create();
@@ -57,7 +61,7 @@ SceneManager::SceneManager( HWND& hwnd )
 	ReleaseDC(hwnd, hdc);
 
 	for (i = 0;i < mWindowWidth * mWindowHeight / 32;i++) {
-		mWindowPixel[i] = 0xFFFFFFFF;
+		mWindowPixel[i] = 0;
 	}
 }
 
@@ -79,7 +83,7 @@ int SceneManager::draw( HDC& hdc )
 {
 	BitBlt(hdc, 0, 0, mWindowWidth, mWindowHeight, mHdcBmp, 0, 0, SRCCOPY);
 	for ( int i = 0;i < mWindowWidth * mWindowHeight / 32;i++ ) {
-		mWindowPixel[i] = 0xFFFFFFFF;
+		mWindowPixel[i] = 0;
 	}
 	mParent->update( hdc );
 

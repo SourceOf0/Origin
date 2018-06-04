@@ -9,13 +9,28 @@
 #include "SceneManager.h"
 #include "SoundManager.h"
 
+BOOL gIsSoundThreadEnd = FALSE;
+HANDLE gHThread;
+
+DWORD WINAPI ThreadFunc(LPVOID hWnd)
+{
+	while (TRUE) {
+		if( gIsSoundThreadEnd ) break;
+		Main::SoundManager::inst()->makeWave();
+		Sleep( 10 );
+	}
+	ExitThread( TRUE );
+}
+
 LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 {
 	HDC hdc;
 	PAINTSTRUCT ps;
+	DWORD dwParam;
 
 	switch (msg) {
 	case WM_DESTROY:
+		gIsSoundThreadEnd = TRUE;
 
 		Main::SoundManager::destroy();
 		Main::SceneManager::destroy();
@@ -30,7 +45,10 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		Main::SoundManager::create( hwnd );
 		Main::SceneManager::create( hwnd );
 
-		SetTimer(hwnd,1,10,NULL);	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
+		gHThread = CreateThread( NULL, 0, ThreadFunc, hwnd , 0, &dwParam );
+
+//		SetTimer(hwnd, 1, 10, NULL);	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
+		SetTimer(hwnd, 1, 20, NULL);	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
 
 		return 0;
 
@@ -43,30 +61,22 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		return 0;
 
 	case WM_LBUTTONDOWN:
-		if(Main::SoundManager::inst() != 0) {
-			Main::SoundManager::inst()->play();
-		}
+		Main::SoundManager::inst()->play();
+		Main::SceneManager::inst()->mIsMouseDown = TRUE;
 		return 0;
 
-	case WM_RBUTTONDOWN:
-		if(Main::SoundManager::inst() != 0) {
-			Main::SoundManager::inst()->stop();
-		}
+	case WM_LBUTTONUP:
+		Main::SoundManager::inst()->stop();
+		Main::SceneManager::inst()->mIsMouseDown = FALSE;
 		return 0;
 
 	case MM_WOM_DONE:
-		if(Main::SoundManager::inst() != 0) {
-			Main::SoundManager::inst()->setBuffer();
-		}
+		Main::SoundManager::inst()->setBuffer();
 		return 0;
 
 	case WM_PAINT:
 		hdc = BeginPaint( hwnd, &ps );
-//		BitBlt(hdc, 0, 0, windowWidth, windowHeight, hdcBMP, 0, 0, SRCCOPY);
-//		BitBlt(hdc, 0, 0, windowWidth, windowHeight, gSceneManager->getHDC(), 0, 0, SRCCOPY);
-		if(Main::SceneManager::inst() != 0) {
-			Main::SceneManager::inst()->draw( hdc );
-		}
+		Main::SceneManager::inst()->draw( hdc );
 		EndPaint(hwnd, &ps);
 		return 0;
 	}
