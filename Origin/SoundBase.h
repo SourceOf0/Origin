@@ -8,15 +8,15 @@
 #define BLOCK_ALIGN			4			// CHANNEL * BITS_PER_SAMPLE / 8
 #define BYTES_PER_SEC		176400		// SAMPLES_PER_SEC * BLOCK_ALIGN
 //#define BUFFER_SIZE			11760		// BYTES_PER_SEC / BUFFER_PER_SEC( 15 )
-//#define BUFFER_SIZE			17640		// BYTES_PER_SEC / BUFFER_PER_SEC( 10 )
-#define BUFFER_SIZE			14700		// BYTES_PER_SEC / BUFFER_PER_SEC( 12 )
+#define BUFFER_SIZE			17640		// BYTES_PER_SEC / BUFFER_PER_SEC( 10 )
+//#define BUFFER_SIZE			14700		// BYTES_PER_SEC / BUFFER_PER_SEC( 12 )
 
-//#define WAVE_DATA_LENGTH	2940		// BUFFER_SIZE / 4  ( double -> char )
-#define WAVE_DATA_LENGTH	3675		// BUFFER_SIZE / 4  ( double -> char )
+//#define WAVE_DATA_LENGTH	2940		// BUFFER_SIZE / 4  ( double -> char ) 15
+//#define WAVE_DATA_LENGTH	3675		// BUFFER_SIZE / 4  ( double -> char ) 12
+#define WAVE_DATA_LENGTH	4410		// BUFFER_SIZE / 4  ( double -> char ) 10
 
 #define EFFECT_MAX_NUM		6	// 追加できるエフェクトの最大数
 #define LOG_MAX_DATA_NUM	30	// バッファのログを取るデータの最大数
-//#define LOG_MAX_INDEX_NUM	3	// バッファのログを取るインデックスの最大数
 
 typedef enum {
 	WAVE_CURVE,

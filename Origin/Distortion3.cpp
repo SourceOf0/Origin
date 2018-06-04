@@ -22,13 +22,13 @@ void Distortion3::apply( Track* track )
 {
 	double* waveData = track->getWaveData();
 
-	double gain = mSetNum1 * 15.0;	/* 増幅率 */
-	double level = mSetNum2;
+	double gain = mSetNum1 * 7.0 + 1.0;	/* 増幅率 */
+	double level = mSetNum2 * 1.8 + 0.2;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[ i ];
 
-		if( s < 0.0 ) {
+		if( s >= 0.0 ) {
 			s *= -1.0; /* 音データの全波整流（絶対値） */
 		}
 		s = s * gain; /* 音データの増幅 */
@@ -38,7 +38,6 @@ void Distortion3::apply( Track* track )
 			s = -1.0; /* クリッピング */
 		}
 		s *= level; /* 音の大きさを調節する */
-		
 		waveData[ i ] = s;
 	}
 }

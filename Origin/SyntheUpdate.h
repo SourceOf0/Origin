@@ -14,13 +14,13 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 	for( int i = 0 ; i < EFFECT_SELECT_NUM; ++i ) {
 		mEffectDial[ i ].update();
 		if( !mEffectDial[ i ].isChangeSign() ) continue;
-		Main::SoundManager::inst()->getTrack( i / 3 )->addEffect( i % 3, ( EffectID )( mEffectDial[ i ].getSign() - PARTS_SIGN_NOISE_GATE ) );
+		Main::SoundManager::inst()->getTrack( i / 3 )->addEffect( i % 3, getEffectID( mEffectDial[ i ].getSign() ) );
 	}
 	for( int i = 0 ; i < TRACK_NUM; ++i ) {
 		mWaveDial[ i ].update();
 	}
 
-	updatePad();
+	updatePad( parent->mIsConnectSocket );
 }
 
 BOOL Synthesizer::checkHit( void )
@@ -183,12 +183,14 @@ void Synthesizer::playTrack( Sequence::RoomParent* parent )
 			mPlayTime = ( mPlayTime + 1 ) % NOTE_SET_MAX_NUM;
 		}
 		for( int i = 0 ; i < TRACK_NUM; ++i ) {
-			mPlayWaveID[ i ] = ( WaveID )( mWaveDial[ i ].getSign() - PARTS_SIGN_CURVE );
+//			mPlayWaveID[ i ] = ( WaveID )( mWaveDial[ i ].getSign() - PARTS_SIGN_CURVE );
+			mPlayWaveID[ i ] = getWaveID( mWaveDial[ i ].getSign() );
 			Main::SoundManager::inst()->getTrack( i )->setF( getFixCodeHz( mNoteRatio[ i ][ mPlayTime ] ) );
 		}
 	} else {
 		for( int i = 0 ; i < TRACK_NUM; ++i ) {
-			mPlayWaveID[ i ] = ( WaveID )( mWaveDial[ i ].getSign() - PARTS_SIGN_CURVE );
+//			mPlayWaveID[ i ] = ( WaveID )( mWaveDial[ i ].getSign() - PARTS_SIGN_CURVE );
+			mPlayWaveID[ i ] = getWaveID( mWaveDial[ i ].getSign() );
 			Main::SoundManager::inst()->getTrack( i )->setF( 0.0 );
 			if( i != getSelectTrack() ) continue;
 			for( int j = 0 ; j < KEY_NUM; ++j ) {
@@ -211,14 +213,6 @@ void Synthesizer::playTrack( Sequence::RoomParent* parent )
 		return;
 	}
 	if( Main::SceneManager::isAddWave ) updateWave();
-}
-
-int Synthesizer::getSelectTrack( void )
-{
-	for( int i = 0; i < TRACK_NUM; ++i ) {
-		if( mTrackButton[ i ].isOn() ) return i;
-	}
-	return -1;
 }
 
 void Synthesizer::updateWave( void )
@@ -281,7 +275,7 @@ void Synthesizer::initSoundState( void )
 	soundManager->getTrack( 2 )->setWave( WAVE_NONE );
 
 	for( int i = 0 ; i < EFFECT_SELECT_NUM; ++i ) {
-		soundManager->getTrack( i / 3 )->addEffect( i % 3, ( EffectID )( mEffectDial[ i ].getSign() - PARTS_SIGN_NOISE_GATE ) );
+		soundManager->getTrack( i / 3 )->addEffect( i % 3, getEffectID( mEffectDial[ i ].getSign() ) );
 	}
 
 	for( int i = 0 ; i < VOLUME_FADER_NUM; ++i ) {

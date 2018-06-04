@@ -5,6 +5,7 @@
 #include "ImageFactory.h"
 #include "SceneManager.h"
 #include "HandManager.h"
+#include "NoteManager.h"
 
 #include "DCBitmap.h"
 
@@ -19,7 +20,9 @@
 
 namespace Sequence {
 
-Book4::Book4( HDC& hdc, MainParent* parent )
+Book4::Book4( HDC& hdc, MainParent* parent ) :
+mWasFall( FALSE ),
+mWasKeep( FALSE )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 	int windowWidth = Main::SceneManager::windowWidth;
@@ -83,6 +86,16 @@ Book4::~Book4()
 
 	delete mPieceImage;
 	mPieceImage = 0;
+
+	if( mWasFall ) {
+		if( mWasKeep ) {
+			Main::NoteManager::inst()->setNextPage( NOTE_BOOK4_2 );
+		} else {
+			Main::NoteManager::inst()->setNextPage( NOTE_BOOK4_1 );
+		}
+	} else if( mWasKeep ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK4_3 );
+	}
 }
 
 void Book4::update( MainParent* parent )

@@ -22,8 +22,8 @@ void Distortion1::apply( Track* track )
 {
 	double* waveData = track->getWaveData();
 
-	double gain = mSetNum1 * 15.0;	/* ‘•—¦ */
-	double level = mSetNum2;
+	double gain = mSetNum1 * 14.0 + 1.0;	/* ‘•—¦ */
+	double level = mSetNum2 * 0.9 + 0.1;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[i];

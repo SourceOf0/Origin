@@ -25,6 +25,8 @@ private:
 	Image::LayerData* mBackBmp2;
 
 	Image::LayerData* mSwitchBmp;
+
+	int mEscapeCount;
 };
 
 } // namespace Room

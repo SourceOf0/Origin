@@ -109,6 +109,8 @@ private:
 	ObjState* mEntranceState[ ENTRANCE_PAIR_NUM ][ 2 ];
 
 	ManState mManState[ MAN_NUM ];
+
+	BOOL mIsMove;
 };
 
 } //namespace Sequence

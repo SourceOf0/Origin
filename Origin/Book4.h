@@ -98,6 +98,9 @@ private:
 	BoardState mBoardState;
 	SplashState mSplashState[ MAX_SPLASH_NUM ];
 	PieceState mPieceState[ MAX_PIECE_NUM ];
+
+	BOOL mWasFall;
+	BOOL mWasKeep;
 };
 
 } //namespace Sequence

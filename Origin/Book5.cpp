@@ -6,6 +6,7 @@
 
 #include "SceneManager.h"
 #include "HandManager.h"
+#include "NoteManager.h"
 
 #define LINE_START_X 700
 #define LINE_START_Y 350
@@ -17,7 +18,8 @@
 
 namespace Sequence {
 
-Book5::Book5( HDC& hdc, MainParent* parent )
+Book5::Book5( HDC& hdc, MainParent* parent ) :
+mUseNum( 0 )
 {
 	int windowWidth = Main::SceneManager::windowWidth;
 	int windowHeight = Main::SceneManager::windowHeight;
@@ -63,6 +65,14 @@ Book5::~Book5()
 {
 	delete mBoardBmp;
 	mBoardBmp = 0;
+
+	if( mUseNum == 5 ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK5_1 );
+	} else if( mUseNum > 10 && mUseNum < 100 ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK5_2 );
+	} else if( mUseNum >= 100 ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK5_3 );
+	}
 }
 
 void Book5::update( MainParent* parent )
@@ -93,6 +103,7 @@ void Book5::update( MainParent* parent )
 
 	updateBoard();
 
+	int useNum = LINE_NUM * LINE_NUM;
 	for( int y = 0; y < LINE_NUM; ++y ) {
 		for( int x = 0; x < LINE_NUM; ++x ) {
 			DotState* target = &mDotState[ y ][ x ];
@@ -121,6 +132,7 @@ void Book5::update( MainParent* parent )
 					break;
 
 				case DOT_NONE:
+					--useNum;
 					if( target->ratioB > 0.0 ) {
 						target->ratioB -= ADD_RATIO_SPEED;
 						if( target->ratioB <= 0.0 ) target->ratioB = 0.0;
@@ -142,6 +154,9 @@ void Book5::update( MainParent* parent )
 			SelectObject( mBoardBmp->mHdcBmp, hBrushW );
 			Ellipse( mBoardBmp->mHdcBmp, target->x - setSizeX, target->y - setSizeY, target->x + setSizeX, target->y + setSizeY );
 		}
+	}
+	if( useNum > mUseNum ) {
+		mUseNum = useNum;
 	}
 
 	DeleteObject( hPen );

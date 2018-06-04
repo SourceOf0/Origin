@@ -66,17 +66,20 @@ private:
 	
 	void padInit( void );
 
-	BOOL checkHit( void );
+	EffectID getEffectID( PartsID id );
+	WaveID getWaveID( PartsID id );
+
 	double getCodeRatio( int seed ); /* 0 <= seed <= 23 */
 	double getFixCodeHz( double seed ); /* 0.0 <= seed <= NOTE_HEIGHT_NUM(8.0) */
 	double getCodeHz( int seed ); /* 0 <= seed <= NOTE_HEIGHT_NUM(8) */
 	double getHz( double seed ); /* 0.0 <= seed <= 23.0 */
 	int getSelectTrack( void );
+
+	BOOL checkHit( void );
+	BOOL checkHitPad( void );
 	void updateWave( void );
 	void initSoundState( void );
-
-	BOOL checkHitPad( void );
-	void updatePad( void );
+	void updatePad( BOOL isConnectSocket );
 	void setNoteRatio( double setRatio, int trackIndex, int time );
 
 	static BOOL mIsInit;

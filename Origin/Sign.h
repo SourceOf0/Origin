@@ -24,6 +24,8 @@ public:
 	BOOL isChangeSign( void );
 	PartsID getSign( void );
 
+	BOOL isMaxSign( void );
+	BOOL isMinSign( void );
 	void addTargetSign( void );
 	void decTargetSign( void );
 	BOOL isMoveEnd( void );

@@ -110,8 +110,11 @@ void Book6::updateButton( void )
 		}
 	}
 
+	int moveNum = 0;
 	for( int i = 0; i < BUTTON_MAX_NUM; ++i ) {
-		if( mButtonState[ i ].instruction != CAR_NONE ) isReady = TRUE;
+		if( mButtonState[ i ].instruction == CAR_NONE ) continue;
+		isReady = TRUE;
+		++moveNum;
 	}
 	if( isReady ) {
 		if( mStartButton.partsSize < BUTTON_MOVE_COUNT_MAX ) ++mStartButton.partsSize;
@@ -127,6 +130,7 @@ void Book6::updateButton( void )
 		if( isClick ) {
 			mIsMove = TRUE;
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );
+			if( moveNum > mMaxMoveNum ) mMaxMoveNum = moveNum;
 		} else {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_BEFORE );
 		}

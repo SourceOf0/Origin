@@ -6,6 +6,7 @@
 
 #include "SceneManager.h"
 #include "HandManager.h"
+#include "NoteManager.h"
 
 #include <Math.h>
 
@@ -37,7 +38,8 @@
 namespace Sequence {
 
 Book6::Book6( HDC& hdc, MainParent* parent ) : 
-mIsMove( FALSE )
+mIsMove( FALSE ),
+mMaxMoveNum( 0 )
 {
 	int windowWidth = Main::SceneManager::windowWidth;
 	int windowHeight = Main::SceneManager::windowHeight;
@@ -113,6 +115,15 @@ Book6::~Book6()
 
 	delete mButtonBmp;
 	mButtonBmp = 0;
+
+	if( mMaxMoveNum == 0 ) {
+	} else if( mMaxMoveNum < 4 ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK6_1 );
+	} else if( mMaxMoveNum < 8 ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK6_2 );
+	} else {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK6_3 );
+	}
 }
 
 void Book6::drawPanel( int setX, int setY )

@@ -8,11 +8,19 @@
 #include "Room4.h"
 #include "Synthesizer.h"
 #include "BookCover.h"
+#include "TrashCan.h"
+#include "Note.h"
 
 #include "DCBitmap.h"
 
 #include "SceneManager.h"
 #include "SoundManager.h"
+#include "HandManager.h"
+#include "NoteManager.h"
+
+#define HIDE_COUNT_MAX 500
+#define WRITE_COUNT_MAX 1000
+#define WAIT_COUNT_MAX 10000
 
 namespace Sequence {
 
@@ -30,7 +38,10 @@ mDepthCount( 0 ),
 mFadeCount( 0 ),
 mIsCloseCurtain( FALSE ),
 mIsOnLight( TRUE ),
-mIsConnectSocket( TRUE )
+mIsConnectSocket( TRUE ),
+mWriteCount( 0 ),
+mWaitCount( 0 ),
+mCheckState( 0 )
 {
 	mRoom1 = new Room::Room1( hdc, this );
 	mRoom2 = new Room::Room2( hdc, this );
@@ -38,12 +49,16 @@ mIsConnectSocket( TRUE )
 	mRoom4 = new Room::Room4( hdc, this );
 	mSynthe = new Room::Synthesizer( hdc, this );
 	mBookCover = new Room::BookCover( hdc, this );
+	mTrashCan = new Room::TrashCan( hdc, this );
+	mNote = new Room::Note( hdc, this );
 
 	Room::RoomChild::mFadeBmp = new Image::DCBitmap( hdc, Main::SceneManager::windowWidth, Main::SceneManager::windowHeight );
 
 	mNow = SEQ_ROOM1;
 
 	mSynthe->playTrack( this );
+
+	Main::NoteManager::inst()->setNextPage( NOTE_ROOM_1 );
 }
 
 RoomParent::~RoomParent()
@@ -73,6 +88,14 @@ RoomParent::~RoomParent()
 	if( mBookCover != 0 ) {
 		delete mBookCover;
 		mBookCover = 0;
+	}
+	if( mTrashCan != 0 ) {
+		delete mTrashCan;
+		mTrashCan = 0;
+	}
+	if( mNote != 0 ) {
+		delete mNote;
+		mNote = 0;
 	}
 
 	delete Room::RoomChild::mFadeBmp;
@@ -104,6 +127,7 @@ void RoomParent::update( MainParent* parent )
 			mNow = ( RoomParent::SeqID )( mNow - SEQ_BOOK1 + SEQ_COVER_BOOK1 );
 			mBookCover->mBookKind = mNow - SEQ_COVER_BOOK1;
 			mBookCover->update( this );
+			mWriteCount = 0;
 			break;
 		case SEQ_ROOM3:
 			mRoom3->update( this );
@@ -113,6 +137,7 @@ void RoomParent::update( MainParent* parent )
 			mRoom4->update( this );
 			break;
 		case SEQ_ROOM1_SYNTHE:
+			if( mWriteCount != 0xFFFFFFFF ) mWriteCount = 0;
 			mSynthe->update( this );
 			break;
 		case SEQ_COVER_BOOK1:
@@ -125,7 +150,17 @@ void RoomParent::update( MainParent* parent )
 			mBookCover->mBookKind = mNow - SEQ_COVER_BOOK1;
 			mBookCover->update( this );
 			break;
+		case SEQ_TRASHCAN:
+			mTrashCan->update( this );
+			break;
+		case SEQ_NOTE:
+			mNote->update( this );
+			break;
 	}
+	mCheckState |= 1 << mNow;
+	if( mIsCloseCurtain ) mCheckState |= 1 << SEQ_NONE;
+	if( mIsOnLight ) mCheckState |= 1 << ( SEQ_NONE + 1 );
+	if( mIsConnectSocket ) mCheckState |= 1 << ( SEQ_NONE + 2 );
 
 	Sequence::MainParent::SeqID id = parent->SEQ_NONE;
 	switch( mNow ) {
@@ -170,27 +205,55 @@ void RoomParent::update( MainParent* parent )
 		}
 	}
 	mDepth -= mFadeCount / ( TONE_NONE * 20.0 );
-	if( mDepthCount <= 220 ) {
-	} else if( mDepthCount <= 240 ) {
-		mDepth += 0.02;
-	} else if( mDepthCount <= 260 ) {
-		mDepth += 0.04;
-	} else if( mDepthCount <= 280 ) {
-		mDepth += 0.05;
-	} else if( mDepthCount <= 300 ) {
-		mDepth += 0.07;
-	} else if( mDepthCount <= 620 ) {
+	if( mDepthCount <= 200 ) {
+	} else if( mDepthCount <= 1000 ) {
+		mDepth += ( mDepthCount - 200 ) / 800.0 * 0.09;
+	} else if( mDepthCount <= 1100 ) {
 		mDepth += 0.09;
-	} else if( mDepthCount <= 660 ) {
-		mDepth += 0.07;
-	} else if( mDepthCount <= 680 ) {
-		mDepth += 0.05;
-	} else if( mDepthCount <= 700 ) {
-		mDepth += 0.04;
-	} else if( mDepthCount <= 720 ) {
-		mDepth += 0.02;
+	} else if( mDepthCount <= 1900 ) {
+		mDepth += ( 1.0 - ( mDepthCount - 1100 ) / 800.0 )  * 0.09;
 	} else {
 		mDepthCount = 0;
+	}
+	if( mDepthCount > 0 ) {
+		mDepth = mDepth;
+	}
+
+	BOOL wasAllCheck = TRUE;
+	for( int i = 0; i < SEQ_NONE + 3; ++i ) {
+		if( ( ( mCheckState >> i ) & 1 ) == 1 ) continue;
+		wasAllCheck = FALSE;
+		break;
+	}
+	if( wasAllCheck ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_ROOM_2 );
+	}
+
+	if( Main::HandManager::isMove ) {
+		mWaitCount = 0;
+	} else if( mWaitCount < WAIT_COUNT_MAX ) {
+		++mWaitCount;
+	} else {
+		Main::NoteManager::inst()->setNextPage( NOTE_ROOM_3 );
+	}
+
+	if( mWriteCount == 0xFFFFFFFF ) {
+		if( Main::NoteManager::inst()->canWrite() ) mWriteCount = 0;
+		return;
+	}
+	if( Main::HandManager::isMove || !Main::NoteManager::inst()->canWrite() ) {
+		mWriteCount = 0;
+	} else {
+		if( mWriteCount < HIDE_COUNT_MAX ) {
+			++mWriteCount;
+			return;
+		} else if( mWriteCount < WRITE_COUNT_MAX ) {
+			++mWriteCount;
+		} else {
+			mNote->write( mNow == SEQ_NOTE );
+			mWriteCount = 0xFFFFFFFF;
+		}
+		Main::HandManager::inst()->setState( Main::HandManager::HAND_HIDE );
 	}
 }
 
@@ -222,6 +285,12 @@ void RoomParent::draw( HDC& hdc, MainParent* parent )
 			mRoom3->draw( hdc, this, mDepth, mFadeCount );
 			mBookCover->mBookKind = mNow - SEQ_COVER_BOOK1;
 			mBookCover->draw( hdc, this, mDepth, mFadeCount );
+			break;
+		case SEQ_TRASHCAN:
+			mTrashCan->draw( hdc, this, mDepth, mFadeCount );
+			break;
+		case SEQ_NOTE:
+			mNote->draw( hdc, this, mDepth, mFadeCount );
 			break;
 	}
 }

@@ -43,6 +43,7 @@ BOOL TrackButton::checkHit( void )
 	Main::HandManager* handManager = Main::HandManager::inst();
 
 	if( !isHit( handManager->getX(), handManager->getY() ) ) return FALSE;
+	if( mPartsID == PARTS_BUTTON_TRACK_ON ) return FALSE;
 
 	if( !Main::HandManager::isClick ) {
 		handManager->setState( handManager->HAND_PUSH_BEFORE );

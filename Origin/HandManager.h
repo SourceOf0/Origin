@@ -27,6 +27,8 @@ public:
 		HAND_UP,
 		HAND_DOWN,
 
+		HAND_HIDE,
+
 		HAND_NONE
 	};
 
@@ -53,21 +55,23 @@ public:
 	void update( BOOL isLoading );
 	void draw( void );
 
-	int getX( void );
-	int getY( void );
-
 	void mouseDown( void );
 	void mouseUp( void );
 	void endUpdate( void );
 
+	BOOL checkState( HandState state );
 	void setState( HandState state );
-	void lockX( void );
-	void lockY( void );
+	void setPos( int x, int y );
+	int getX( void );
+	int getY( void );
 	void setRangeX( int min, int max );
 	void setRangeY( int min, int max );
+	void lockX( void );
+	void lockY( void );
 
 	static BOOL isMouseDown;
 	static BOOL isClick;
+	static BOOL isMove;
 
 private:
 	HandManager( HDC& hdc );

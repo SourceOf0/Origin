@@ -5,6 +5,7 @@
 #include "ImageFactory.h"
 #include "SceneManager.h"
 #include "HandManager.h"
+#include "NoteManager.h"
 
 #include "DCBitmap.h"
 
@@ -87,17 +88,23 @@ void Book3::update( MainParent* parent )
 		Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 	}
 
+	int objCount = 0;
 	AnimeState* target = mFirstNode.next;
 	while( target != &mLastNode ) {
+		++objCount;
 		switch( target->image ) {
 			case IMAGE_00:
 				wasHit |= motion00( target, wasHit, isClick, isMouseDown, mouseX, mouseY );
 				break;
 			case IMAGE_01:
 				if( !motion01( target, mouseX, mouseY ) ) target = deleteAnimeState( target );
+				Main::NoteManager::inst()->setNextPage( NOTE_BOOK3_1 );
 				break;
 			case IMAGE_02:
 				motion02( target, mouseX, mouseY );
+				if( Main::NoteManager::inst()->wasSetTargetPage( NOTE_BOOK3_1 ) ) {
+					Main::NoteManager::inst()->setNextPage( NOTE_BOOK3_2 );
+				}
 				break;
 			case IMAGE_10:
 				wasHit |= motion10( target, wasHit, isClick, isMouseDown, mouseX, mouseY );
@@ -137,6 +144,10 @@ void Book3::update( MainParent* parent )
 				break;
 		}
 		target = target->next;
+	}
+
+	if( objCount >= 20 ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK3_3 );
 	}
 
 	if( mouseX > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && mouseY > Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {

@@ -16,7 +16,10 @@ void Dial::setData( PartsID minSign, PartsID maxSign, int x, int y )
 	mSign.setData( minSign, maxSign, x + 29, y - 19 );
 	init( PARTS_DIAL_1, x, y );
 
+	mHitX1 -= 5;
+	mHitX2 += 5;
 	mHitY1 -= 10;
+	mHitY2 += 8;
 	mAnimeCount = 0;
 }
 
@@ -35,12 +38,22 @@ BOOL Dial::checkHit( void )
 	Main::HandManager* handManager = Main::HandManager::inst();
 
 	if( !isHit( handManager->getX(), handManager->getY() ) ) return FALSE;
-	if( Main::HandManager::isClick ){
-		( handManager->getX() < mX + 30 )? mSign.addTargetSign() : mSign.decTargetSign();
-		handManager->setState( handManager->HAND_PUSH_AFTER );
+
+	handManager->setState( handManager->HAND_PUSH_AFTER );
+	if( handManager->getX() < mX + 30 ) {
+		if( mSign.isMaxSign() ) return FALSE;
+		if( Main::HandManager::isClick ){
+			mSign.addTargetSign();
+			return TRUE;
+		}
 	} else {
-		handManager->setState( handManager->HAND_PUSH_BEFORE );
+		if( mSign.isMinSign() ) return FALSE;
+		if( Main::HandManager::isClick ){
+			mSign.decTargetSign();
+			return TRUE;
+		}
 	}
+
 	return TRUE;
 }
 

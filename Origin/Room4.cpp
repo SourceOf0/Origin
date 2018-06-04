@@ -11,7 +11,8 @@
 namespace Sequence {
 namespace Room {
 
-Room4::Room4( HDC& hdc, RoomParent* parent )
+Room4::Room4( HDC& hdc, RoomParent* parent ) :
+mEscapeCount( 0 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 	int windowWidth = Main::SceneManager::windowWidth;
@@ -52,6 +53,23 @@ void Room4::update( RoomParent* parent )
 
 	handManager->setState( handManager->HAND_NORMAL );
 
+	if( mEscapeCount > 0 ) {
+		mouseX += mEscapeCount / 2 + 1;
+		mouseY += mEscapeCount / 2 + 1;
+		handManager->setPos( mouseX, mouseY );
+		handManager->lockX();
+		handManager->lockY();
+		handManager->setRangeX( mouseX, mouseX );
+		handManager->setRangeY( mouseY, mouseY );
+		--mEscapeCount;
+		return;
+	}
+
+	if( mouseX > 480 && mouseX < 560 && mouseY > 350 && mouseY < 450 ){
+		if( isClick ) mEscapeCount = 10;
+		return;
+	}
+
 	if( mouseX > 340 && mouseX < 380 && mouseY > 320 && mouseY < 380 ){
 		if( isClick ) {
 			parent->mIsOnLight = !parent->mIsOnLight;
@@ -59,7 +77,10 @@ void Room4::update( RoomParent* parent )
 		} else {
 			handManager->setState( handManager->HAND_PUSH_BEFORE );
 		}
-	} else if( mouseX < 100 ) {
+		return;
+	}
+	
+	if( mouseX < 100 ) {
 		handManager->setState( handManager->HAND_LEFT );
 		if( isClick ) parent->moveTo( parent->SEQ_ROOM3 );
 	} else if( mouseX > static_cast< int >( mBackBmp1->mWidth ) - 100 ) {

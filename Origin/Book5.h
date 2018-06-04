@@ -42,8 +42,9 @@ private:
 	void changeDot( DotState* target );
 
 	Image::DCBitmap* mBoardBmp;
-	
 	DotState mDotState[ LINE_NUM ][ LINE_NUM ];
+
+	int mUseNum;
 };
 
 } //namespace Sequence

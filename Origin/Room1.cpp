@@ -56,7 +56,7 @@ void Room1::update( RoomParent* parent )
 	} else if( mouseX < 80 ){
 		handManager->setState( handManager->HAND_LEFT );
 		if( isClick ) parent->moveTo( parent->SEQ_ROOM2 );
-	} else if( mouseX > static_cast< int >( mBackBmp1->mWidth ) - 100 ) {
+	} else if( mouseX > static_cast< int >( mBackBmp1->mWidth ) - 200 ) {
 		handManager->setState( handManager->HAND_RIGHT );
 		if( isClick ) parent->moveTo( parent->SEQ_ROOM3 );
 	}

@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "ImageFactory.h"
 #include "HandManager.h"
+#include "NoteManager.h"
 #include "PixelBitmap.h"
 #include "DCBitmap.h"
 
@@ -94,6 +95,7 @@ mWasDraw( FALSE )
 	pixelData = 0;
 
 	HandManager::create( hdc );
+	NoteManager::create();
 
 	ReleaseDC( hwnd, hdc );
 
@@ -114,6 +116,7 @@ SceneManager::~SceneManager( void )
 
 	ImageFactory::destroy();
 	HandManager::destroy();
+	NoteManager::destroy();
 
 	HBITMAP hbmp = 0;
 	hbmp = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcBlackBmp, Image::DCBitmap::mHBmpBlackPrev );

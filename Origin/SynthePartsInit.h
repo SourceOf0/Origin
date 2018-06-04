@@ -130,27 +130,27 @@ void Synthesizer::setEffectDialPos( void )
 	int disX = 0;
 	int disY = 0;
 
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 	disX += disX1;
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 	disX += disX1 - 1;
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 
 	disX = 3;
 	disY += disY1;
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 	disX += disX1;
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 	disX += disX1 - 1;
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 
 	disX = 4;
 	disY += disY1 + 3;
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 	disX += disX1;
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 	disX += disX1 - 1;
-	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, PARTS_SIGN_BAND_ELIMINATE_FILTER, baseX + disX, baseY + disY );
+	mEffectDial[ ++index ].setData( PARTS_SIGN_NOISE_GATE, ( PartsID )( PARTS_SIGN_SCALE_C - 1 ), baseX + disX, baseY + disY );
 }
 
 void Synthesizer::setWaveDialPos( void )
@@ -163,13 +163,13 @@ void Synthesizer::setWaveDialPos( void )
 	int disX = 0;
 	int disY = 0;
 
-	mWaveDial[ ++index ].setData( PARTS_SIGN_CURVE, PARTS_SIGN_TRIANGLE, baseX + disX, baseY + disY );
+	mWaveDial[ ++index ].setData( PARTS_SIGN_SAWTOOTH, PARTS_SIGN_CURVE, baseX + disX, baseY + disY );
 	disX = 3;
 	disY += disY1;
-	mWaveDial[ ++index ].setData( PARTS_SIGN_CURVE, PARTS_SIGN_TRIANGLE, baseX + disX, baseY + disY );
+	mWaveDial[ ++index ].setData( PARTS_SIGN_SAWTOOTH, PARTS_SIGN_CURVE, baseX + disX, baseY + disY );
 	disX = 5;
 	disY += disY2;
-	mWaveDial[ ++index ].setData( PARTS_SIGN_CURVE, PARTS_SIGN_TRIANGLE, baseX + disX, baseY + disY );
+	mWaveDial[ ++index ].setData( PARTS_SIGN_SAWTOOTH, PARTS_SIGN_CURVE, baseX + disX, baseY + disY );
 }
 
 void Synthesizer::setVolumeFaderPos( void )

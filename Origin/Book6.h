@@ -73,6 +73,8 @@ private:
 	CarState mCarState;
 	ButtonState mButtonState[ BUTTON_MAX_NUM ];
 	ButtonState mStartButton;
+
+	int mMaxMoveNum;
 };
 
 } //namespace Sequence

@@ -123,7 +123,7 @@ void Track::setPan( double vol )
 {
 	if( vol < -0.0 || vol > 1.0 ) return;
 	if( mAutoPan->mIsUse ) {
-		mAutoPan->setRate( vol + 0.5 );
+		mAutoPan->setRate( vol * 1.5 + 0.3 );
 		mVolL = 0.5;
 		mVolR = 0.5;
 	} else {

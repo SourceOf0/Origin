@@ -5,6 +5,7 @@
 #include "ImageFactory.h"
 #include "SceneManager.h"
 #include "HandManager.h"
+#include "NoteManager.h"
 
 #include "DCBitmap.h"
 
@@ -115,6 +116,7 @@ void Book2::update( MainParent* parent )
 		Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );
 		setPointMask();
 		mChangeCount = CHANGE_COUNT_MAX;
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK2_1 );
 	} else {
 		Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_BEFORE );
 		mOldMousePos.x = -1;
@@ -154,8 +156,14 @@ void Book2::draw( HDC& hdc, MainParent* parent )
 	switch( mBackIndex ) {
 		case 6:
 			mBackIndex = 1;
+			if( Main::NoteManager::inst()->wasSetTargetPage( NOTE_BOOK2_2 ) ) {
+				Main::NoteManager::inst()->setNextPage( NOTE_BOOK2_3 );
+			}
 		case 1:
 			mBackBmp1->drawWindow();
+			if( Main::NoteManager::inst()->wasSetTargetPage( NOTE_BOOK2_1 ) ) {
+				Main::NoteManager::inst()->setNextPage( NOTE_BOOK2_2 );
+			}
 			break;
 		case 2:
 			mBackBmp2->drawWindow();

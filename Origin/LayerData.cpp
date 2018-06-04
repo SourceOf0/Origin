@@ -61,6 +61,7 @@ void LayerData::drawWindow( int x, int y, int startX, int startY, int width, int
 		mTone[ getToneID( i ) ]->drawImageOr( mViewTone->mHdcBmp, 0, 0, x, y, width, height );
 		mViewTone->drawWindowAnd( x, y, 0, 0, width, height );
 	}
+	if( mLayer[ 0 ] == 0 ) return;
 	mLayer[ 0 ]->drawWindowAnd( x, y, startX, startY, width, height );
 }
 

@@ -7,6 +7,7 @@
 #include "ImageFactory.h"
 #include "SceneManager.h"
 #include "HandManager.h"
+#include "NoteManager.h"
 
 #include "DCBitmap.h"
 
@@ -25,7 +26,8 @@
 namespace Sequence {
 
 Book7::Book7( HDC& hdc, MainParent* parent ) :
-mMoveTarget( 0 )
+mMoveTarget( 0 ),
+mIsMove( FALSE )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 	int windowWidth = Main::SceneManager::windowWidth;
@@ -41,6 +43,12 @@ mMoveTarget( 0 )
 
 	mObjImage = imageFactory->loadDC( hdc, "resource\\map_objects.dad" );
 
+	for( int i = 0; i < ENTRANCE_PAIR_NUM; ++i ) {
+		for( int j = 0; j < 2; ++j ) {
+			mEntranceState[ i ][ j ] = 0;
+		}
+	}
+
 	for( int y = 0; y < OBJ_Y_NUM; ++y ) {
 		for( int x = 0; x < OBJ_X_NUM; ++x ) {
 			ObjState* target = &mObjState[ y ][ x ];
@@ -50,11 +58,18 @@ mMoveTarget( 0 )
 			target->indexY = y;
 			target->useNum = 0;
 			target->isHold = FALSE;
+			target->image = IMAGE_OBJ_NONE;
+		}
+	}
+
+	for( int y = 0; y < OBJ_Y_NUM; ++y ) {
+		for( int x = 0; x < OBJ_X_NUM; ++x ) {
+			ObjState* target = &mObjState[ y ][ x ];
 			if( target->image != IMAGE_OBJ_ENTRANCE ) {
 				if( x >= OBJ_X_NUM - 2 && y == OBJ_Y_NUM - 1 ) {
-					target->image = IMAGE_OBJ_NONE;
+					continue;
 				} else if( static_cast< double >( rand() ) / RAND_MAX < 0.8 ) {
-					target->image = IMAGE_OBJ_NONE;
+					continue;
 				} else if( static_cast< double >( rand() ) / RAND_MAX < 0.3 ) {
 					target->image = IMAGE_OBJ_WALL;
 				} else if( static_cast< double >( rand() ) / RAND_MAX < 0.2 ) {
@@ -63,7 +78,7 @@ mMoveTarget( 0 )
 					int randX = static_cast< int >( ( static_cast< double >( rand() ) / RAND_MAX ) * ( OBJ_X_NUM - 1 ) );
 					int randY = static_cast< int >( ( static_cast< double >( rand() ) / RAND_MAX ) * ( OBJ_Y_NUM - 1 ) );
 					ObjState* pairEnt = &mObjState[ randY ][ randX ];
-					while( pairEnt->image != IMAGE_OBJ_NONE && randX >= OBJ_X_NUM - 2 && randY == OBJ_Y_NUM - 1 ) {
+					while( pairEnt->image != IMAGE_OBJ_NONE || ( randX >= OBJ_X_NUM - 2 && randY == OBJ_Y_NUM - 1 ) ) {
 						randX = static_cast< int >( ( static_cast< double >( rand() ) / RAND_MAX ) * ( OBJ_X_NUM - 1 ) );
 						randY = static_cast< int >( ( static_cast< double >( rand() ) / RAND_MAX ) * ( OBJ_Y_NUM - 1 ) );
 						pairEnt = &mObjState[ randY ][ randX ];
@@ -73,8 +88,6 @@ mMoveTarget( 0 )
 					pairEnt->image = IMAGE_OBJ_ENTRANCE;
 					mEntranceState[ entCount ][ 1 ] = pairEnt;
 					++entCount;
-				} else {
-					target->image = IMAGE_OBJ_NONE;
 				}
 			}
 		}
@@ -107,6 +120,10 @@ Book7::~Book7()
 
 	delete mObjImage;
 	mObjImage = 0;
+
+	if( !mIsMove ) {
+		Main::NoteManager::inst()->setNextPage( NOTE_BOOK7_1 );
+	}
 }
 
 void Book7::update( MainParent* parent )
@@ -125,9 +142,13 @@ void Book7::update( MainParent* parent )
 		( isMouseDown )? moveObj( mouseX, mouseY ) : putObj( mouseX, mouseY );
 	}
 
+	BOOL isSameLine = TRUE;
 	for( int i = 0; i < MAN_NUM; ++i ) {
 		moveMan( &mManState[ i ] );
+		if( !isSameLine || i == 0 ) continue;
+		if( mManState[ i ].line != mManState[ i - 1 ].line ) isSameLine = FALSE;
 	}
+	if( isSameLine ) Main::NoteManager::inst()->setNextPage( NOTE_BOOK7_3 );
 
 	if( mouseX > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && mouseY > Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
 		if( Main::HandManager::isClick ) {
@@ -185,6 +206,7 @@ void Book7::putObj( int mouseX, int mouseY )
 		}
 	}
 
+	Main::NoteManager::inst()->setNextPage( NOTE_BOOK7_2 );
 	mMoveTarget->isHold = FALSE;
 	mMoveTarget = 0;
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_HOLD_BEFORE );
@@ -214,6 +236,7 @@ void Book7::putEntrance( int targetX, int targetY )
 	}
 	target->image = mMoveTarget->image;
 	mMoveTarget->image = IMAGE_OBJ_NONE;
+	mIsMove = TRUE;
 }
 
 void Book7::putLadder( int targetX, int targetY )
@@ -222,6 +245,7 @@ void Book7::putLadder( int targetX, int targetY )
 	if( target->image != IMAGE_OBJ_NONE ) return;
 	target->image = mMoveTarget->image;
 	mMoveTarget->image = IMAGE_OBJ_NONE;
+	mIsMove = TRUE;
 }
 
 void Book7::putWall( int targetX, int targetY )
@@ -241,6 +265,7 @@ void Book7::putWall( int targetX, int targetY )
 
 	target->image = mMoveTarget->image;
 	mMoveTarget->image = IMAGE_OBJ_NONE;
+	mIsMove = TRUE;
 }
 
 void Book7::draw( HDC& hdc, MainParent* parent )

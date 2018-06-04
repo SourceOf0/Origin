@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{20EDB83A-22B2-4D1D-B89B-080BE752F51E}</ProjectGuid>
+    <ProjectGuid>{307B50BF-4D74-4C3F-8FC8-D0295A43444D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -76,6 +76,7 @@
   <ItemGroup>
     <ClCompile Include="AnimeData.cpp" />
     <ClCompile Include="AutoPan.cpp" />
+    <ClCompile Include="AutoPanButton.cpp" />
     <ClCompile Include="BandEliminateFilter.cpp" />
     <ClCompile Include="BandPassFilter.cpp" />
     <ClCompile Include="BitmapBase.cpp" />
@@ -105,15 +106,17 @@
     <ClCompile Include="HandManager.cpp" />
     <ClCompile Include="HighPassFilter.cpp" />
     <ClCompile Include="ImageFactory.cpp" />
+    <ClCompile Include="KeyButton.cpp" />
     <ClCompile Include="LayerData.cpp" />
     <ClCompile Include="Lever.cpp" />
     <ClCompile Include="LowPassFilter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainParent.cpp" />
     <ClCompile Include="NoiseGate.cpp" />
+    <ClCompile Include="Note.cpp" />
+    <ClCompile Include="NoteManager.cpp" />
     <ClCompile Include="PartsBase.cpp" />
     <ClCompile Include="PixelBitmap.cpp" />
-    <ClCompile Include="KeyButton.cpp" />
     <ClCompile Include="PlayButton.cpp" />
     <ClCompile Include="Room1.cpp" />
     <ClCompile Include="Room2.cpp" />
@@ -123,12 +126,12 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sign.cpp" />
     <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="AutoPanButton.cpp" />
-    <ClCompile Include="TrackButton.cpp" />
-    <ClCompile Include="TimeLamp.cpp" />
     <ClCompile Include="Synthesizer.cpp" />
+    <ClCompile Include="TimeLamp.cpp" />
     <ClCompile Include="ToneFactory.cpp" />
     <ClCompile Include="Track.cpp" />
+    <ClCompile Include="TrackButton.cpp" />
+    <ClCompile Include="TrashCan.cpp" />
     <ClCompile Include="Tremolo.cpp" />
     <ClCompile Include="Vibrato.cpp" />
     <ClCompile Include="ViewObj.cpp" />
@@ -137,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="AnimeData.h" />
     <ClInclude Include="AutoPan.h" />
+    <ClInclude Include="AutoPanButton.h" />
     <ClInclude Include="BandEliminateFilter.h" />
     <ClInclude Include="BandPassFilter.h" />
     <ClInclude Include="BitmapBase.h" />
@@ -172,15 +176,17 @@
     <ClInclude Include="HandManager.h" />
     <ClInclude Include="HighPassFilter.h" />
     <ClInclude Include="ImageFactory.h" />
+    <ClInclude Include="KeyButton.h" />
     <ClInclude Include="LayerData.h" />
     <ClInclude Include="Lever.h" />
     <ClInclude Include="LowPassFilter.h" />
     <ClInclude Include="MainChild.h" />
     <ClInclude Include="MainParent.h" />
     <ClInclude Include="NoiseGate.h" />
+    <ClInclude Include="Note.h" />
+    <ClInclude Include="NoteManager.h" />
     <ClInclude Include="PartsBase.h" />
     <ClInclude Include="PixelBitmap.h" />
-    <ClInclude Include="KeyButton.h" />
     <ClInclude Include="PlayButton.h" />
     <ClInclude Include="Room1.h" />
     <ClInclude Include="Room2.h" />
@@ -192,15 +198,15 @@
     <ClInclude Include="Sign.h" />
     <ClInclude Include="SoundBase.h" />
     <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="AutoPanButton.h" />
-    <ClInclude Include="TrackButton.h" />
-    <ClInclude Include="TimeLamp.h" />
     <ClInclude Include="SynthePad.h" />
     <ClInclude Include="SynthePartsInit.h" />
     <ClInclude Include="Synthesizer.h" />
     <ClInclude Include="SyntheUpdate.h" />
+    <ClInclude Include="TimeLamp.h" />
     <ClInclude Include="ToneFactory.h" />
     <ClInclude Include="Track.h" />
+    <ClInclude Include="TrackButton.h" />
+    <ClInclude Include="TrashCan.h" />
     <ClInclude Include="Tremolo.h" />
     <ClInclude Include="Vibrato.h" />
     <ClInclude Include="ViewObj.h" />

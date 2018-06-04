@@ -43,6 +43,7 @@ void Book4::moveBallNormal( BOOL isClick, int mouseX, int mouseY )
 		if( isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );
 			mBallState.image = IMAGE_BALL_SHAKE;
+			mWasKeep = TRUE;
 		} else {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_BEFORE );
 		}
@@ -65,6 +66,7 @@ void Book4::moveBallNormal( BOOL isClick, int mouseX, int mouseY )
 		Main::HandManager::inst()->setState( Main::HandManager::HAND_LEFT );
 		if( isClick ) {
 			mBallState.image = IMAGE_BALL_LEFT;
+			mWasKeep = TRUE;
 		}
 	}
 }
@@ -139,10 +141,12 @@ void Book4::moveBallJump( BOOL isClick, int mouseX, int mouseY )
 	}
 
 	if( mBallState.x >= Main::SceneManager::windowWidth ) {
+		mWasFall = TRUE;
 		breakBallX();
 		resetBall();
 	}
 	if( mBallState.y >= Main::SceneManager::windowHeight ) {
+		mWasFall = TRUE;
 		breakBallY();
 		resetBall();
 	}
@@ -160,6 +164,7 @@ void Book4::moveBallFall( BOOL isClick, int mouseX, int mouseY )
 	}
 
 	if( mBallState.y >= Main::SceneManager::windowHeight ) {
+		mWasFall = TRUE;
 		breakBallY();
 		resetBall();
 	}

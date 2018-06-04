@@ -7,10 +7,11 @@
 #include "ImageFactory.h"
 #include "SceneManager.h"
 #include "HandManager.h"
+#include "NoteManager.h"
 
 #include "DCBitmap.h"
 
-#define STATE_MAX 13
+#define STATE_MAX 14
 #define REST_COUNT 50
 
 #define DOT_ANIME_MAX_NUM 11
@@ -78,6 +79,7 @@ void Book1::nextMotion( void )
 	mAnimeState = 0;
 	mToneIndex = TONE_NONE - 1;
 	if( mScheduleIndex == VIEW_SCHEDULE_NUM ) {
+		if( mState >= 0 ) Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_2 );
 		setSchedule();
 	}
 	mState = mSchedule[ mScheduleIndex++ ];
@@ -135,6 +137,7 @@ void Book1::nextMotion( void )
 			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.0 );
 			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 1.0 );
 			setImage( &mImage[ 4 ], setX, setY, 0, image );
+			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_1 );
 			break;
 
 		case 4:
@@ -188,6 +191,7 @@ void Book1::nextMotion( void )
 			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
 			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
+			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_3 );
 			break;
 
 		case 10:
@@ -208,6 +212,7 @@ void Book1::nextMotion( void )
 			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
 			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
+			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_1 );
 			break;
 
 		case 12:
@@ -216,6 +221,7 @@ void Book1::nextMotion( void )
 			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			mState = 5;
+			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_1 );
 			break;
 
 		case 13:
@@ -224,6 +230,7 @@ void Book1::nextMotion( void )
 			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			mState = 5;
+			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_3 );
 			break;
 	}
 }
@@ -235,16 +242,16 @@ void Book1::setSchedule( void )
 
 	mScheduleIndex = 0;
 
-/*	mSchedule[ 0 ] = 10;
-	mSchedule[ 1 ] = 0;
-	mSchedule[ 2 ] = 1;
+/*	mSchedule[ 0 ] = 0;
+	mSchedule[ 1 ] = 1;
+	mSchedule[ 2 ] = 4;
 	mSchedule[ 3 ] = 7;
-	mSchedule[ 4 ] = 5;
+	mSchedule[ 4 ] = 8;
 	mSchedule[ 5 ] = 9;
-	mSchedule[ 6 ] = 3;
-	mSchedule[ 7 ] = 4;
-	mSchedule[ 8 ] = 6;
-	mSchedule[ 9 ] = 11;*/
+	mSchedule[ 6 ] = 10;
+	mSchedule[ 7 ] = 11;
+	mSchedule[ 8 ] = 12;
+	mSchedule[ 9 ] = 13;*/
 
 	for( int i = 0; i < STATE_MAX; ++i ) {
 		setState[ i ] = FALSE;
@@ -325,7 +332,6 @@ void Book1::update( MainParent* parent )
 	switch( mState ) {
 		case -1:
 			if( ++mAnimeCount > 50 ) {
-				mState = 0;
 				nextMotion();
 			}
 			break;

@@ -9,6 +9,7 @@ namespace Main {
 HandManager* HandManager::mInst = 0;
 BOOL HandManager::isMouseDown = FALSE;
 BOOL HandManager::isClick = FALSE;
+BOOL HandManager::isMove = FALSE;
 
 HandManager* HandManager::inst( void )
 {
@@ -129,6 +130,11 @@ void HandManager::update( BOOL isLoading )
 	mMaxY = -1000;
 	mMinY = -1000;
 
+	if( mMouseX == mouseX && mMouseY == mouseY && !isMouseDown ) {
+		isMove = FALSE;
+	} else {
+		isMove = TRUE;
+	}
 	SetCursorPos( mouseX, mouseY );
 	mMouseX = mouseX;
 	mMouseY = mouseY;
@@ -185,6 +191,8 @@ void HandManager::draw( void )
 {
 	int fixX = 0;
 	int fixY = 0;
+
+	if( mState == HAND_HIDE ) return;
 
 	switch( mImageState ) {
 		case HAND_IMAGE_NORMAL:
@@ -262,9 +270,20 @@ void HandManager::setRangeY( int min, int max )
 	mMaxY = max;
 }
 
+BOOL HandManager::checkState( HandState state )
+{
+	return ( mState == state );
+}
 void HandManager::setState( HandState state )
 {
 	mState = state;
+}
+
+void HandManager::setPos( int x, int y )
+{
+	mMouseX = x;
+	mMouseY = y;
+	SetCursorPos( x, y );
 }
 
 void HandManager::lockX( void )

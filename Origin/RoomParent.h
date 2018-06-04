@@ -10,6 +10,8 @@ namespace Room {
 	class RoomChild;
 	class Synthesizer;
 	class BookCover;
+	class TrashCan;
+	class Note;
 }
 
 class RoomParent : public MainChild {
@@ -28,6 +30,9 @@ public:
 		SEQ_COVER_BOOK5,
 		SEQ_COVER_BOOK6,
 		SEQ_COVER_BOOK7,
+
+		SEQ_TRASHCAN,
+		SEQ_NOTE,
 
 		// 上位シーケンス
 		SEQ_BOOK1,
@@ -61,11 +66,17 @@ private:
 	Room::RoomChild* mRoom4;
 	Room::Synthesizer* mSynthe;
 	Room::BookCover* mBookCover;
+	Room::TrashCan* mTrashCan;
+	Room::Note* mNote;
 	SeqID mNow;
 
 	double mDepth;
 	int mDepthCount;
 	int mFadeCount;
+
+	unsigned int mWriteCount;
+	unsigned int mWaitCount;
+	unsigned int mCheckState;
 };
 
 } //namespace Sequence
