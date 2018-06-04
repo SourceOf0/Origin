@@ -68,7 +68,6 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 	case WM_KEYDOWN:
 		if( wp == VK_ESCAPE ) {
-			gStateSoundThread = 1;
 			PostMessage( hwnd, WM_CLOSE, 0, 0 );
 		}
 		return 0;
@@ -95,6 +94,16 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		Main::SceneManager::inst()->draw( hdc );
 		EndPaint( hwnd, &ps );
 		return 0;
+
+	case WM_CLOSE:
+		/*
+		int messageResult = MessageBox(
+			hwnd, TEXT("ウィンドウを閉じます。\nよろしいですか？"), TEXT("確認"),
+			MB_OKCANCEL | MB_ICONWARNING
+		);
+		if(messageResult != IDOK) return 0;
+		*/
+		gStateSoundThread = 1;
 	}
 
 	return DefWindowProc( hwnd , msg , wp , lp );
@@ -105,12 +114,20 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 {
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
+	Main::SceneManager::setWindowSize();
+
+	int windowWidth  = Main::SceneManager::windowWidth;
+	int windowHeight = Main::SceneManager::windowHeight;
+	int deviceWidth  = Main::SceneManager::deviceWidth;
+	int deviceHeight = Main::SceneManager::deviceHeight;
+
 	TCHAR      szAppName[] = TEXT( "Origin" );
+	DWORD      dwExStyle   = WS_EX_LEFT;
+	DWORD      dwStyle     = WS_CAPTION | WS_SYSMENU;
 	HWND       hwnd;
 	MSG        msg;
 	WNDCLASSEX wc;
 	RECT       rc;
-	DEVMODE    devMode;
 
 	wc.cbSize        = sizeof( WNDCLASSEX );
 	wc.style         = 0;
@@ -127,21 +144,27 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 	
 	if( RegisterClassEx(&wc) == 0 ) return 0;
 
-	SetRect( &rc, 0, 0, 800, 640 );
-	AdjustWindowRectEx( &rc, WS_POPUP, FALSE, WS_EX_TOPMOST );
+	//SetRect( &rc, (deviceWidth - windowWidth)/2, (deviceHeight - windowHeight)/2, (deviceWidth - windowWidth)/2 + windowWidth, (deviceHeight - windowHeight)/2 + windowHeight );
+	SetRect( &rc, (1920 - windowWidth)/2, (1200 - windowHeight)/2, (1920 - windowWidth)/2 + windowWidth, (1200 - windowHeight)/2 + windowHeight );
+	AdjustWindowRectEx( &rc, dwStyle, FALSE, dwExStyle );
 
-	hwnd = CreateWindowEx( WS_EX_LEFT, szAppName, szAppName, WS_POPUP, 0, 0, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hinst, NULL );
+	hwnd = CreateWindowEx( dwExStyle, szAppName, szAppName, dwStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hinst, NULL );
 	if( hwnd == NULL ) return 0;
-	
-	devMode.dmSize       = sizeof(DEVMODE);
-	devMode.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT;
-	devMode.dmPelsWidth  = 800;
-	devMode.dmPelsHeight = 640;
 
-//	ChangeDisplaySettings( &devMode, CDS_FULLSCREEN );
+	/*
+	{  // フルスクリーンモード
+		DEVMODE    devMode;
+		devMode.dmSize       = sizeof(DEVMODE);
+		devMode.dmFields     = DM_PELSWIDTH | DM_PELSHEIGHT;
+		devMode.dmPelsWidth  = deviceWidth;
+		devMode.dmPelsHeight = deviceHeight;
+		
+		ChangeDisplaySettings( &devMode, CDS_FULLSCREEN );
+	}
+	*/
 
-//	ShowWindow( hwnd, nCmdShow );
-	ShowWindow( hwnd, SW_MAXIMIZE );
+	ShowWindow( hwnd, nCmdShow );
+//	ShowWindow( hwnd, SW_MAXIMIZE ); // ウインドウ最大化
 	UpdateWindow( hwnd );
 	
 	while( GetMessage( &msg, NULL, 0, 0 ) > 0 ) {

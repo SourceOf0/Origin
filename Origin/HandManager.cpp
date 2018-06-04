@@ -55,11 +55,6 @@ mAnimeCount( 0 )
 
 	mHandBmp->mDepth = 0.2;
 	mCheckHandBmp->mDepth = 0.2;
-
-	POINT mousePos;
-	GetCursorPos( &mousePos );
-	mMouseX = mousePos.x;
-	mMouseY = mousePos.y;
 }
 
 HandManager::~HandManager( void )
@@ -85,10 +80,9 @@ void HandManager::endUpdate( void )
 	isClick = FALSE;
 }
 
-void HandManager::update( BOOL isLoading )
+void HandManager::update( HWND& hwnd, BOOL isLoading )
 {
-	POINT mousePos;
-	GetCursorPos( &mousePos );
+	POINT mousePos = getScreenToClientPos( hwnd );
 	int mouseX = mousePos.x;
 	int mouseY = mousePos.y;
 
@@ -135,7 +129,8 @@ void HandManager::update( BOOL isLoading )
 	} else {
 		isMove = TRUE;
 	}
-	SetCursorPos( mouseX, mouseY );
+
+	setClientToScreenPos( hwnd, mouseX, mouseY );
 	mMouseX = mouseX;
 	mMouseY = mouseY;
 
@@ -165,6 +160,8 @@ void HandManager::update( BOOL isLoading )
 			break;
 		case HAND_CLOSE:
 			mImageState = HAND_IMAGE_CLOSE;
+			fixX = 12;
+			fixY = 12;
 			break;
 
 		case HAND_BACK:
@@ -172,9 +169,11 @@ void HandManager::update( BOOL isLoading )
 			break;
 		case HAND_LEFT:
 			mImageState = HAND_IMAGE_LEFT;
+			fixX = 72;
 			break;
 		case HAND_RIGHT:
 			mImageState = HAND_IMAGE_RIGHT;
+			fixX = -12;
 			break;
 		case HAND_UP:
 			mImageState = HAND_IMAGE_UP;
@@ -293,6 +292,21 @@ void HandManager::lockX( void )
 void HandManager::lockY( void )
 {
 	mIsLockY = TRUE;
+}
+
+
+POINT HandManager::getScreenToClientPos( HWND& hwnd )
+{
+	POINT mousePos;
+	GetCursorPos( &mousePos );
+	ScreenToClient( hwnd, &mousePos );
+	return mousePos;
+}
+void HandManager::setClientToScreenPos( HWND& hwnd, int x, int y )
+{
+	POINT mousePos = { x, y };
+	ClientToScreen( hwnd, &mousePos );
+	SetCursorPos( mousePos.x, mousePos.y );
 }
 
 } // namespace Main

@@ -9,6 +9,8 @@ HDC DCBitmap::mHdcBlackBmp = 0;
 HBITMAP DCBitmap::mHBmpBlackPrev = 0;
 HDC DCBitmap::mHdcWhiteBmp = 0;
 HBITMAP DCBitmap::mHBmpWhitePrev = 0;
+HDC DCBitmap::mHdcMaskBmp = 0;
+HBITMAP DCBitmap::mHBmpMaskPrev = 0;
 
 DCBitmap::DCBitmap( HDC& hdc, PixelBitmap* target )
 {
@@ -164,58 +166,68 @@ void DCBitmap::setWhite( int x, int y, unsigned int width, unsigned int height )
 
 void DCBitmap::copyWindow( void )
 {
-	BitBlt( mHdcBmp, 0, 0, mWidth, mHeight, Main::SceneManager::inst()->mHdcBmp, 0, 0, SRCCOPY );
+	Main::SceneManager* inst = Main::SceneManager::inst();
+	const int setX = ( inst->deviceWidth - inst->windowWidth ) / 2;
+	const int setY = ( inst->deviceHeight - inst->windowHeight ) / 2;
+	BitBlt( mHdcBmp, 0, 0, mWidth, mHeight, Main::SceneManager::inst()->mHdcBmp, setX, setY, SRCCOPY );
 }
 void DCBitmap::drawWindow( void )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, mHdcBmp, 0, 0, SRCCOPY );
+	drawWindow( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, 0, 0, SRCCOPY );
 }
 void DCBitmap::drawWindow( int x, int y )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, x, y, mWidth, mHeight, mHdcBmp, 0, 0, SRCCOPY );
+	drawWindow( x, y, mWidth, mHeight, 0, 0, SRCCOPY );
 }
 void DCBitmap::drawWindow( int x, int y, int startX, int startY, int width, int height )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, x, y, width, height, mHdcBmp, startX, startY, SRCCOPY );
+	drawWindow( x, y, width, height, startX, startY, SRCCOPY );
+}
+void DCBitmap::drawWindow( int x, int y, int width, int height, int startX, int startY, DWORD drawOperation )
+{
+	Main::SceneManager* inst = Main::SceneManager::inst();
+	const int setX = ( inst->deviceWidth - inst->windowWidth ) / 2 + x;
+	const int setY = ( inst->deviceHeight - inst->windowHeight ) / 2 + y;
+	BitBlt( inst->mHdcBmp, setX, setY, width, height, mHdcBmp, startX, startY, drawOperation );
 }
 
 void DCBitmap::drawWindowAnd( void )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, mHdcBmp, 0, 0, SRCAND );
+	drawWindow( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, 0, 0, SRCAND );
 }
 void DCBitmap::drawWindowAnd( int x, int y )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, x, y, mWidth, mHeight, mHdcBmp, 0, 0, SRCAND );
+	drawWindow( x, y, mWidth, mHeight, 0, 0, SRCAND );
 }
 void DCBitmap::drawWindowAnd( int x, int y, int startX, int startY, int width, int height )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, x, y, width, height, mHdcBmp, startX, startY, SRCAND );
+	drawWindow( x, y, width, height, startX, startY, SRCAND );
 }
 
 void DCBitmap::drawWindowOr( void )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, mHdcBmp, 0, 0, SRCPAINT );
+	drawWindow( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, 0, 0, SRCPAINT );
 }
 void DCBitmap::drawWindowOr( int x, int y )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, x, y, mWidth, mHeight, mHdcBmp, 0, 0, SRCPAINT );
+	drawWindow( x, y, mWidth, mHeight, 0, 0, SRCPAINT );
 }
 void DCBitmap::drawWindowOr( int x, int y, int startX, int startY, int width, int height )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, x, y, width, height, mHdcBmp, startX, startY, SRCPAINT );
+	drawWindow( x, y, width, height, startX, startY, SRCPAINT );
 }
 
 void DCBitmap::drawWindowInv( void )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, mHdcBmp, 0, 0, SRCINVERT );
+	drawWindow( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, 0, 0, SRCINVERT );
 }
 void DCBitmap::drawWindowInv( int x, int y )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, x, y, mWidth, mHeight, mHdcBmp, 0, 0, SRCINVERT );
+	drawWindow( x, y, mWidth, mHeight, 0, 0, SRCINVERT );
 }
 void DCBitmap::drawWindowInv( int x, int y, int startX, int startY, int width, int height )
 {
-	BitBlt( Main::SceneManager::inst()->mHdcBmp, x, y, width, height, mHdcBmp, startX, startY, SRCINVERT );
+	drawWindow( x, y, width, height, startX, startY, SRCINVERT );
 }
 
 

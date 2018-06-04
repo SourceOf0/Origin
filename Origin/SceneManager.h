@@ -15,6 +15,7 @@ public:
 	static SceneManager* inst();
 	static void create( HWND& hwnd );
 	static void destroy( void );
+	static void setWindowSize( void );
 
 	int update( void );
 	int draw( HDC& hdc );
@@ -23,6 +24,8 @@ public:
 
 	static int windowWidth;
 	static int windowHeight;
+	static int deviceWidth;
+	static int deviceHeight;
 
 	static BOOL isAddWave;
 

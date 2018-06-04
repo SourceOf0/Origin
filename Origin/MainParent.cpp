@@ -136,7 +136,7 @@ void MainParent::update( void )
 {
 	DWORD id;
 
-	Main::HandManager::inst()->update( mFadeState != 0 );
+	Main::HandManager::inst()->update( mHWnd, mFadeState != 0 );
 
 	switch( mThreadState ) {
 		case 2:
@@ -154,7 +154,7 @@ void MainParent::update( void )
 				mFadeState = 1;
 				mFadeCount = 0;
 				mToneIndex = 0;
-				BitBlt( mPrevBmp->mHdcBmp, 0, 0, Main::SceneManager::windowWidth, Main::SceneManager::windowHeight, Main::SceneManager::inst()->mHdcBmp, 0, 0, SRCCOPY );
+				mPrevBmp->copyWindow();
 			}
 			break;
 

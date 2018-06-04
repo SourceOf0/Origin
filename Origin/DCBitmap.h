@@ -26,6 +26,7 @@ public:
 	void drawWindow( void );
 	void drawWindow( int x, int y );
 	void drawWindow( int x, int y, int startX, int startY, int width, int height );
+	void drawWindow( int x, int y, int width, int height, int startX, int startY, DWORD drawOperation );
 	void drawWindowAnd( void );
 	void drawWindowAnd( int x, int y );
 	void drawWindowAnd( int x, int y, int startX, int startY, int width, int height );
@@ -54,6 +55,8 @@ public:
 	static HBITMAP mHBmpBlackPrev;
 	static HDC mHdcWhiteBmp;
 	static HBITMAP mHBmpWhitePrev;
+	static HDC mHdcMaskBmp;
+	static HBITMAP mHBmpMaskPrev;
 
 	HDC mHdcBmp;
 

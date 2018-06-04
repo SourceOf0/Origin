@@ -1,10 +1,8 @@
 
 void Book4::moveBall( void )
 {
-	POINT mousePos;
-	GetCursorPos( &mousePos );
-	int mouseX = mousePos.x;
-	int mouseY = mousePos.y;
+	int mouseX = Main::HandManager::inst()->getX();
+	int mouseY = Main::HandManager::inst()->getY();
 	BOOL isClick = Main::HandManager::isClick;
 
 	switch( mBallState.image ) {

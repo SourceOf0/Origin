@@ -1,0 +1,87 @@
+﻿2018/06/03 19:16:28 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "E:\VisualStudio\Origin\Origin\Origin.vcxproj" (build ターゲット)。
+     1>InitializeBuildStatus:
+         "AlwaysCreate" が指定されたため "Debug\Origin.unsuccessfulbuild" を作成しています。
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Book4.cpp
+         Book4.cpp
+       ManifestResourceCompile:
+         すべての出力が最新のものです。
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\VisualStudio\Origin\Debug\Origin.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Origin.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\VisualStudio\Origin\Debug\Origin.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\VisualStudio\Origin\Debug\Origin.lib" /MACHINE:X86 Debug\Origin.exe.embed.manifest.res
+         Debug\AnimeData.obj
+         Debug\AutoPan.obj
+         Debug\AutoPanButton.obj
+         Debug\BandEliminateFilter.obj
+         Debug\BandPassFilter.obj
+         Debug\BitmapBase.obj
+         Debug\Book1.obj
+         Debug\Book2.obj
+         Debug\Book3.obj
+         Debug\Book4.obj
+         Debug\Book5.obj
+         Debug\Book6.obj
+         Debug\Book7.obj
+         Debug\BookCover.obj
+         Debug\Chorus.obj
+         Debug\Compressor.obj
+         Debug\DCBitmap.obj
+         Debug\Debug1.obj
+         Debug\Debug2.obj
+         Debug\DebugLoading.obj
+         Debug\Delay.obj
+         Debug\Dial.obj
+         Debug\Distortion1.obj
+         Debug\Distortion2.obj
+         Debug\Distortion3.obj
+         Debug\EffectBase.obj
+         Debug\Equalizer.obj
+         Debug\FaderH.obj
+         Debug\FaderV.obj
+         Debug\HandManager.obj
+         Debug\HighPassFilter.obj
+         Debug\ImageFactory.obj
+         Debug\KeyButton.obj
+         Debug\LayerData.obj
+         Debug\Lever.obj
+         Debug\LowPassFilter.obj
+         Debug\main.obj
+         Debug\MainParent.obj
+         Debug\NoiseGate.obj
+         Debug\Note.obj
+         Debug\NoteManager.obj
+         Debug\PartsBase.obj
+         Debug\PixelBitmap.obj
+         Debug\PlayButton.obj
+         Debug\Room1.obj
+         Debug\Room2.obj
+         Debug\Room3.obj
+         Debug\Room4.obj
+         Debug\RoomParent.obj
+         Debug\SceneManager.obj
+         Debug\Sign.obj
+         Debug\SoundManager.obj
+         Debug\Synthesizer.obj
+         Debug\TimeLamp.obj
+         Debug\ToneFactory.obj
+         Debug\Track.obj
+         Debug\TrackButton.obj
+         Debug\TrashCan.obj
+         Debug\Tremolo.obj
+         Debug\Vibrato.obj
+         Debug\ViewObj.obj
+         Debug\Wave.obj
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\Origin.exe.embed.manifest" /manifest Debug\Origin.exe.intermediate.manifest
+         すべての出力が最新のものです。
+       LinkEmbedManifest:
+         すべての出力が最新のものです。
+         Origin.vcxproj -> E:\VisualStudio\Origin\Debug\Origin.exe
+       FinalizeBuildStatus:
+         ファイル "Debug\Origin.unsuccessfulbuild" を削除しています。
+         "Debug\Origin.lastbuildstate" のタッチ タスクを実行しています。
+     1>プロジェクト "E:\VisualStudio\Origin\Origin\Origin.vcxproj" (build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:00.76

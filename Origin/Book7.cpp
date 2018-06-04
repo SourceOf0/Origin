@@ -162,6 +162,8 @@ void Book7::update( MainParent* parent )
 
 void Book7::checkHitObj( int mouseX, int mouseY )
 {
+	if( mouseX < 0 || (mouseX / USE_OBJ_IMAGE_WIDTH >= OBJ_X_NUM) ) return;
+	if( mouseY < 0 || (mouseY / USE_OBJ_IMAGE_HEIGHT >= OBJ_Y_NUM) ) return;
 	ObjState* target = &mObjState[ mouseY / USE_OBJ_IMAGE_HEIGHT ][ mouseX / USE_OBJ_IMAGE_WIDTH ];
 	if( target->image == IMAGE_OBJ_NONE ) return;
 	if( target->useNum != 0 ) return;
@@ -170,6 +172,8 @@ void Book7::checkHitObj( int mouseX, int mouseY )
 
 void Book7::takeObj( int mouseX, int mouseY )
 {
+	if( mouseX < 0 || (mouseX / USE_OBJ_IMAGE_WIDTH >= OBJ_X_NUM) ) return;
+	if( mouseY < 0 || (mouseY / USE_OBJ_IMAGE_HEIGHT >= OBJ_Y_NUM) ) return;
 	ObjState* target = &mObjState[ mouseY / USE_OBJ_IMAGE_HEIGHT ][ mouseX / USE_OBJ_IMAGE_WIDTH ];
 	if( target->image == IMAGE_OBJ_NONE ) return;
 	if( target->useNum != 0 ) return;
@@ -214,6 +218,8 @@ void Book7::putObj( int mouseX, int mouseY )
 
 void Book7::putEntrance( int targetX, int targetY )
 {
+	if( targetX < 0 || targetX >= OBJ_X_NUM ) return;
+	if( targetY < 0 || targetY >= OBJ_Y_NUM ) return;
 	ObjState* target = &mObjState[ targetY ][ targetX ];
 	if( target->image != IMAGE_OBJ_NONE ) return;
 
@@ -241,6 +247,8 @@ void Book7::putEntrance( int targetX, int targetY )
 
 void Book7::putLadder( int targetX, int targetY )
 {
+	if( targetX < 0 || targetX >= OBJ_X_NUM ) return;
+	if( targetY < 0 || targetY >= OBJ_Y_NUM ) return;
 	ObjState* target = &mObjState[ targetY ][ targetX ];
 	if( target->image != IMAGE_OBJ_NONE ) return;
 	target->image = mMoveTarget->image;
@@ -250,6 +258,8 @@ void Book7::putLadder( int targetX, int targetY )
 
 void Book7::putWall( int targetX, int targetY )
 {
+	if( targetX < 0 || targetX >= OBJ_X_NUM ) return;
+	if( targetY < 0 || targetY >= OBJ_Y_NUM ) return;
 	ObjState* target = &mObjState[ targetY ][ targetX ];
 	if( target->image != IMAGE_OBJ_NONE ) return;
 

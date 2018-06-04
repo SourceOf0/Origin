@@ -52,7 +52,7 @@ public:
 	static void create( HDC& hdc );
 	static void destroy( void );
 
-	void update( BOOL isLoading );
+	void update( HWND& hwnd, BOOL isLoading );
 	void draw( void );
 
 	void mouseDown( void );
@@ -77,6 +77,9 @@ private:
 	HandManager( HDC& hdc );
 	HandManager( HandManager& );
 	~HandManager( void );
+
+	POINT getScreenToClientPos( HWND& hwnd );
+	void setClientToScreenPos( HWND& hwnd, int x, int y );
 
 	static HandManager* mInst;
 
