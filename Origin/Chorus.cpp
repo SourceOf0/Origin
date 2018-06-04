@@ -3,9 +3,9 @@
 
 namespace Sound {
 
-Chorus::Chorus()
+Chorus::Chorus() :
+EffectBase( mWaveLog )
 {
-	init( mWaveLog );
 }
 
 
@@ -30,9 +30,7 @@ void Chorus::apply( Track* track )
 	double t, delta, tau;
 	int m;
 
-	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		mWaveLog[ mLogIndex ][ i ] = waveData[ i ];
-	}
+	memcpy( mWaveLog[ mLogIndex ], waveData, WAVE_DATA_LENGTH * sizeof( double ) );
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[ i ];

@@ -44,6 +44,7 @@ enum ToneID {
 	TONE_NONE
 };
 
+
 namespace Image {
 
 class DCBitmap;

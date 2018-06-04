@@ -15,6 +15,7 @@ class Track;
 
 class EffectBase {
 public:
+	EffectBase( double waveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ] );
 	virtual ~EffectBase( void ) {} // 何もしない
 	
 	// 中身なし（派生クラスで定義されてないとエラー）

@@ -37,12 +37,13 @@ mIsConnectSocket( TRUE )
 	mRoom3 = new Room::Room3( hdc, this );
 	mRoom4 = new Room::Room4( hdc, this );
 	mSynthe = new Room::Synthesizer( hdc, this );
-	mSynthe->playTrack( this );
 	mBookCover = new Room::BookCover( hdc, this );
 
 	Room::RoomChild::mFadeBmp = new Image::DCBitmap( hdc, Main::SceneManager::windowWidth, Main::SceneManager::windowHeight );
 
 	mNow = SEQ_ROOM1;
+
+	mSynthe->playTrack( this );
 }
 
 RoomParent::~RoomParent()
@@ -76,6 +77,11 @@ RoomParent::~RoomParent()
 
 	delete Room::RoomChild::mFadeBmp;
 	Room::RoomChild::mFadeBmp = 0;
+}
+
+void RoomParent::playSound( void )
+{
+	mSynthe->playTrack( this );
 }
 
 void RoomParent::update( MainParent* parent )
@@ -148,8 +154,6 @@ void RoomParent::update( MainParent* parent )
 	if( id != parent->SEQ_NONE ) {
 		Main::SoundManager::inst()->stop();
 		parent->moveTo( id );
-	} else {
-		mSynthe->playTrack( this );
 	}
 
 	mDepth = ( mIsOnLight )? 0.15 : -0.1;

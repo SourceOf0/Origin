@@ -32,6 +32,8 @@ private:
 	Image::DCBitmap* mBackBmp1;
 	Image::DCBitmap* mBackBmp2;
 	Image::DCBitmap* mBackBmp3;
+	Image::DCBitmap* mBackBmp4;
+	Image::DCBitmap* mBackBmp5;
 	Image::DCBitmap* mFrontBmp;
 	Image::DCBitmap* mMaskBmp;
 	Image::DCBitmap* mMaskBlockBmp;

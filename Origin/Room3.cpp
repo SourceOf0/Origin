@@ -28,9 +28,6 @@ Room3::Room3( HDC& hdc, RoomParent* parent )
 	mSocketBmp->mX = 855;
 	mSocketBmp->mY = 605;
 
-	mX = ( windowWidth - mBackBmp1->mWidth ) / 2;
-	mY = ( windowHeight - mBackBmp1->mHeight ) / 2;
-
 	mSocketBmp->drawWindow();
 }
 
@@ -52,8 +49,8 @@ void Room3::update( RoomParent* parent )
 	int windowHeight = Main::SceneManager::windowHeight;
 	BOOL isClick = Main::HandManager::isClick;
 	Main::HandManager* handManager = Main::HandManager::inst();
-	int mouseX = handManager->getX() - mX;
-	int mouseY = handManager->getY() - mY;
+	int mouseX = handManager->getX();
+	int mouseY = handManager->getY();
 
 	handManager->setState( handManager->HAND_NORMAL );
 
@@ -104,19 +101,19 @@ void Room3::update( RoomParent* parent )
 	}*/
 
 	if( mouseY > 370 && mouseY < 450 ) {
-		if( mouseX > 240 && mouseX < 270 ) {
+		if( mouseX > 235 && mouseX < 275 ) {
 			( isClick ) ? parent->moveTo( parent->SEQ_COVER_BOOK1 ) : handManager->setState( handManager->HAND_CHECK );
-		} else if( mouseX > 310 && mouseX < 330 ) {
+		} else if( mouseX > 305 && mouseX < 335 ) {
 			( isClick ) ? parent->moveTo( parent->SEQ_COVER_BOOK2 ) : handManager->setState( handManager->HAND_CHECK );
-		} else if( mouseX > 350 && mouseX < 370 ) {
+		} else if( mouseX > 345 && mouseX < 375 ) {
 			( isClick ) ? parent->moveTo( parent->SEQ_COVER_BOOK3 ) : handManager->setState( handManager->HAND_CHECK );
-		} else if( mouseX > 410 && mouseX < 430 ) {
+		} else if( mouseX > 405 && mouseX < 435 ) {
 			( isClick ) ? parent->moveTo( parent->SEQ_COVER_BOOK4 ) : handManager->setState( handManager->HAND_CHECK );
-		} else if( mouseX > 450 && mouseX < 470 ) {
+		} else if( mouseX > 445 && mouseX < 475 ) {
 			( isClick ) ? parent->moveTo( parent->SEQ_COVER_BOOK5 ) : handManager->setState( handManager->HAND_CHECK );
-		} else if( mouseX > 490 && mouseX < 510 ) {
+		} else if( mouseX > 485 && mouseX < 515 ) {
 			( isClick ) ? parent->moveTo( parent->SEQ_COVER_BOOK6 ) : handManager->setState( handManager->HAND_CHECK );
-		} else if( mouseX > 590 && mouseX < 620 ) {
+		} else if( mouseX > 585 && mouseX < 625 ) {
 			( isClick ) ? parent->moveTo( parent->SEQ_COVER_BOOK7 ) : handManager->setState( handManager->HAND_CHECK );
 		}
 	}

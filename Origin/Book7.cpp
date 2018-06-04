@@ -17,7 +17,7 @@
 #define USE_MAN_IMAGE_WIDTH 32
 #define USE_MAN_IMAGE_HEIGHT 64
 #define USE_MAN_IMAGE_LADDER_HEIGHT 128
-#define ANIME_SPEED 4
+#define ANIME_SPEED 3
 
 #define WALK_SPEED 2
 #define STAY_COUNT 30
@@ -87,6 +87,7 @@ mMoveTarget( 0 )
 		while( mObjState[ target->line ][ ( target->x / OBJ_X_NUM ) ].image != IMAGE_OBJ_NONE ) {
 			target->x = static_cast< int >( ( static_cast< double >( rand() ) / RAND_MAX ) * ( OBJ_X_NUM - 1 ) );
 			target->line = static_cast< int >( ( static_cast< double >( rand() ) / RAND_MAX ) * ( OBJ_Y_NUM - 1 ) );
+			if( target->x % WALK_SPEED != 0 ) target->x = ( target->x / WALK_SPEED ) * WALK_SPEED;
 		}
 		target->count = 0;
 		target->animeState = 0;
@@ -119,17 +120,9 @@ void Book7::update( MainParent* parent )
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 
 	if( mMoveTarget == 0 ) {
-		if( isMouseDown ) {
-			takeObj( mouseX, mouseY );
-		} else {
-			checkHitObj( mouseX, mouseY );
-		}
+		( isClick )? takeObj( mouseX, mouseY ) : checkHitObj( mouseX, mouseY );
 	} else {
-		if( isMouseDown ) {
-			moveObj( mouseX, mouseY );
-		} else {
-			putObj( mouseX, mouseY );
-		}
+		( isMouseDown )? moveObj( mouseX, mouseY ) : putObj( mouseX, mouseY );
 	}
 
 	for( int i = 0; i < MAN_NUM; ++i ) {

@@ -10,7 +10,7 @@
 
 #include "DCBitmap.h"
 
-#define STATE_MAX 14
+#define STATE_MAX 13
 #define REST_COUNT 50
 
 #define DOT_ANIME_MAX_NUM 11
@@ -18,7 +18,7 @@
 namespace Sequence {
 
 Book1::Book1( HDC& hdc, MainParent* parent ) : 
-mState( 0 ),
+mState( -1 ),
 mToneIndex( 0 ),
 mAnimeCount( 0 ),
 mAnimeState( 0 ),
@@ -44,8 +44,6 @@ mScheduleIndex( VIEW_SCHEDULE_NUM )
 
 	mMainBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
 	mMainBmp->setBlack();
-
-	nextMotion();
 }
 
 Book1::~Book1()
@@ -79,7 +77,6 @@ void Book1::nextMotion( void )
 	mAnimeCount = 0;
 	mAnimeState = 0;
 	mToneIndex = TONE_NONE - 1;
-	mState = STATE_MAX - 1;
 	if( mScheduleIndex == VIEW_SCHEDULE_NUM ) {
 		setSchedule();
 	}
@@ -201,8 +198,8 @@ void Book1::nextMotion( void )
 			mask = MASK_3;
 			setX = static_cast< int >( mBmp[ mask ]->mWidth / 2 );
 			setY = static_cast< int >( mBmp[ image ]->mHeight );
-			for( int i = 0; i < BOOK1_MASK_NUM; ++i ) {
-				setMask( &mMask[ i ], ( rand() % windowWidth ) - setX, setY + setY / 2 * ( rand() % 3 ) , ( rand() % 3 ) + 1, mask );
+			for( int i = 0; i < 5; ++i ) {
+				setMask( &mMask[ i ], ( rand() % windowWidth ) - setX, setY + setY / 2 * ( rand() % 3 ), ( rand() % 3 ) + 2, mask );
 			}
 			break;
 
@@ -237,6 +234,17 @@ void Book1::setSchedule( void )
 	BOOL isFailure = TRUE;
 
 	mScheduleIndex = 0;
+
+/*	mSchedule[ 0 ] = 10;
+	mSchedule[ 1 ] = 0;
+	mSchedule[ 2 ] = 1;
+	mSchedule[ 3 ] = 7;
+	mSchedule[ 4 ] = 5;
+	mSchedule[ 5 ] = 9;
+	mSchedule[ 6 ] = 3;
+	mSchedule[ 7 ] = 4;
+	mSchedule[ 8 ] = 6;
+	mSchedule[ 9 ] = 11;*/
 
 	for( int i = 0; i < STATE_MAX; ++i ) {
 		setState[ i ] = FALSE;
@@ -315,6 +323,12 @@ BOOL Book1::fadeOut( int partition )
 void Book1::update( MainParent* parent )
 {
 	switch( mState ) {
+		case -1:
+			if( ++mAnimeCount > 50 ) {
+				mState = 0;
+				nextMotion();
+			}
+			break;
 		case 0:
 			motion1();
 			break;

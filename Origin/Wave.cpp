@@ -103,7 +103,7 @@ void Wave::setSawtooth( Track* track )
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		if( mF == mTargetF ) {
 			double s = 0;
-			for( int j = 1; j <= 18; ++j ) {		/* ”{‰¹‚Ìd‚Ë‡‚í‚¹ */
+			for( int j = 1; j <= 16; ++j ) {		/* ”{‰¹‚Ìd‚Ë‡‚í‚¹ */
 				s += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
 			}
 			waveData[ i ] = s;
@@ -112,7 +112,7 @@ void Wave::setSawtooth( Track* track )
 		}
 		double s1 = 0.0;
 		double s2 = 0.0;
-		for( int j = 1; j <= 18; ++j ) {		/* ”{‰¹‚Ìd‚Ë‡‚í‚¹ */
+		for( int j = 1; j <= 16; ++j ) {		/* ”{‰¹‚Ìd‚Ë‡‚í‚¹ */
 			s1 += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
 			s2 += mA / j * sin( 2.0 * M_PI * mTargetF * j * time / SAMPLES_PER_SEC );
 		}
@@ -138,7 +138,7 @@ void Wave::setSquare( Track* track )
 		if( mF == mTargetF ) {
 			double s = 0;
 			/* Šï”ŽŸ‚Ì”{‰¹‚Ì‚Ýd‚Ë‡‚í‚¹‚é */
-			for( int j = 1; j <= 30; j += 2 ) {
+			for( int j = 1; j <= 20; j += 2 ) {
 				s += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
 			}
 			waveData[ i ] = s;
@@ -148,7 +148,7 @@ void Wave::setSquare( Track* track )
 		double s1 = 0.0;
 		double s2 = 0.0;
 		/* Šï”ŽŸ‚Ì”{‰¹‚Ì‚Ýd‚Ë‡‚í‚¹‚é */
-		for( int j = 1; j <= 30; j += 2 ) {
+		for( int j = 1; j <= 20; j += 2 ) {
 			s1 += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
 			s2 += mA / j * sin( 2.0 * M_PI * mTargetF * j * time / SAMPLES_PER_SEC );
 		}
@@ -174,7 +174,7 @@ void Wave::setTriangle( Track* track )
 		if( mF == mTargetF ) {
 			double s = 0;
 			/* Šï”ŽŸ‚Ì”{‰¹‚Ì‚Ýd‚Ë‡‚í‚¹‚é */
-			for( int j = 1; j <= 16; j += 2 ) {
+			for( int j = 1; j <= 12; j += 2 ) {
 				if( j % 4 == 1 ) {
 					s += mA / ( j * j ) * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
 				} else if( j % 4 == 3 ){
@@ -188,7 +188,7 @@ void Wave::setTriangle( Track* track )
 		double s1 = 0.0;
 		double s2 = 0.0;
 		/* Šï”ŽŸ‚Ì”{‰¹‚Ì‚Ýd‚Ë‡‚í‚¹‚é */
-		for( int j = 1; j <= 16; j += 2 ) {
+		for( int j = 1; j <= 12; j += 2 ) {
 			if( j % 4 == 1 ) {
 				s1 += mA / ( j * j ) * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
 				s1 += mA / ( j * j ) * sin( 2.0 * M_PI * mTargetF * j * time / SAMPLES_PER_SEC );

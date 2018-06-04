@@ -54,7 +54,7 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		Main::SceneManager::create( hwnd );
 		_CrtCheckMemory();
 
-		gHSoundThread = CreateThread( NULL, 0, SoundThread, hwnd , 0, &dwParam );
+		gHSoundThread = CreateThread( NULL, 0, SoundThread, hwnd, 0, &dwParam );
 		
 //		SetTimer( hwnd, 1, 10, NULL );	//ñ≥ë Ç…çÇë¨Ç…çƒï`âÊÇ≥ÇπÇÈ
 		SetTimer( hwnd, 1, 20, NULL );	//ñ≥ë Ç…çÇë¨Ç…çƒï`âÊÇ≥ÇπÇÈ

@@ -3,9 +3,9 @@
 
 namespace Sound {
 
-Tremolo::Tremolo( void )
+Tremolo::Tremolo( void ) :
+EffectBase( 0 )
 {
-	init( 0 );
 }
 
 

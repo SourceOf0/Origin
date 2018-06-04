@@ -5,7 +5,8 @@
 
 namespace Sound {
 
-Equalizer::Equalizer( void )
+Equalizer::Equalizer( void ) :
+EffectBase( 0 )
 {
 	reset();
 }

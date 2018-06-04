@@ -43,6 +43,8 @@ private:
 	HBITMAP mHBmp;
 	HBITMAP mHBmpOld;
 	BITMAPINFO* mBmpInfo;
+
+	BOOL mWasDraw;
 };
 
 } // namespace Main

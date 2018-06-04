@@ -38,6 +38,9 @@
     <ClCompile Include="Book7.cpp">
       <Filter>Sequence\Book7</Filter>
     </ClCompile>
+    <ClCompile Include="BookCover.cpp">
+      <Filter>Sequence\Room\BookCover</Filter>
+    </ClCompile>
     <ClCompile Include="Debug1.cpp">
       <Filter>Sequence\Debug1</Filter>
     </ClCompile>
@@ -47,14 +50,14 @@
     <ClCompile Include="DebugLoading.cpp">
       <Filter>Sequence\DebugLoading</Filter>
     </ClCompile>
+    <ClCompile Include="DCBitmap.cpp">
+      <Filter>Image</Filter>
+    </ClCompile>
     <ClCompile Include="Chorus.cpp">
       <Filter>Sound\Effect2</Filter>
     </ClCompile>
     <ClCompile Include="Compressor.cpp">
       <Filter>Sound\Effect1</Filter>
-    </ClCompile>
-    <ClCompile Include="DCBitmap.cpp">
-      <Filter>Image</Filter>
     </ClCompile>
     <ClCompile Include="Delay.cpp">
       <Filter>Sound\Effect2</Filter>
@@ -137,8 +140,41 @@
     <ClCompile Include="Wave.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="BookCover.cpp">
-      <Filter>Sequence\Room\BookCover</Filter>
+    <ClCompile Include="Dial.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="PartsBase.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Sign.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeLamp.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="TrackButton.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoPanButton.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyButton.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayButton.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewObj.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="FaderH.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="FaderV.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Lever.cpp">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +232,9 @@
     <ClInclude Include="Book7.h">
       <Filter>Sequence\Book7</Filter>
     </ClInclude>
+    <ClInclude Include="BookCover.h">
+      <Filter>Sequence\Room\BookCover</Filter>
+    </ClInclude>
     <ClInclude Include="Debug1.h">
       <Filter>Sequence\Debug1</Filter>
     </ClInclude>
@@ -205,14 +244,14 @@
     <ClInclude Include="DebugLoading.h">
       <Filter>Sequence\DebugLoading</Filter>
     </ClInclude>
+    <ClInclude Include="DCBitmap.h">
+      <Filter>Image</Filter>
+    </ClInclude>
     <ClInclude Include="Chorus.h">
       <Filter>Sound\Effect2</Filter>
     </ClInclude>
     <ClInclude Include="Compressor.h">
       <Filter>Sound\Effect1</Filter>
-    </ClInclude>
-    <ClInclude Include="DCBitmap.h">
-      <Filter>Image</Filter>
     </ClInclude>
     <ClInclude Include="Delay.h">
       <Filter>Sound\Effect2</Filter>
@@ -313,85 +352,121 @@
     <ClInclude Include="Wave.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="BookCover.h">
-      <Filter>Sequence\Room\BookCover</Filter>
+    <ClInclude Include="Dial.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="PartsBase.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Sign.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeLamp.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackButton.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoPanButton.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyButton.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayButton.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewObj.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="FaderH.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="FaderV.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Lever.h">
+      <Filter>Sequence\Room\Room1\Synthesizer\Parts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Image">
-      <UniqueIdentifier>{c081d4ec-d7d4-45e9-b715-c5524d537e80}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main">
-      <UniqueIdentifier>{6d132287-5b39-4cc6-ae38-1d7e51bd4bf7}</UniqueIdentifier>
+      <UniqueIdentifier>{33c06435-eed1-4d4f-b049-3fe0d05704b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sound">
-      <UniqueIdentifier>{2faa964d-5d4c-4e9c-aac3-910c850e4b49}</UniqueIdentifier>
+    <Filter Include="Image">
+      <UniqueIdentifier>{f45effa5-0985-450b-a256-d4b50cf63f7c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence">
-      <UniqueIdentifier>{ae097f11-e4f5-49b7-ba34-7a3746119146}</UniqueIdentifier>
+      <UniqueIdentifier>{1a7c94b0-3b16-4922-861f-3c5de645fdc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{80e8b82f-3749-4f72-8eb1-b210eceb5d3a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect1">
-      <UniqueIdentifier>{331b79bf-98f6-44ac-963a-3b606a16b216}</UniqueIdentifier>
+      <UniqueIdentifier>{b61485e9-24ae-46b8-a6dc-b98c90f08e41}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect2">
-      <UniqueIdentifier>{ef820418-a890-42f5-ae56-98aa16aafe3a}</UniqueIdentifier>
+      <UniqueIdentifier>{07d9e13c-12e1-4d13-88c5-e9df646446e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect3">
-      <UniqueIdentifier>{9cd93376-58af-4250-bb58-5985c7f92e74}</UniqueIdentifier>
+      <UniqueIdentifier>{4e8d2cb7-507c-493c-92b8-fefcae7a75f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect4">
-      <UniqueIdentifier>{5bfa3bae-831a-469e-9514-eb3b5edc3ffd}</UniqueIdentifier>
+      <UniqueIdentifier>{7d881fa8-11e1-4024-b6ee-0f5b218fdcd8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Book1">
-      <UniqueIdentifier>{19191176-c05f-4474-8cf2-bb04c08eeb37}</UniqueIdentifier>
+      <UniqueIdentifier>{2d6ebf40-2905-4a8b-809c-1021cac9e005}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Book2">
-      <UniqueIdentifier>{c54d6e1a-4f2e-4081-a97c-19003991b4f2}</UniqueIdentifier>
+      <UniqueIdentifier>{d449b575-465b-4c89-8fdf-9d12b0d1d177}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Book3">
-      <UniqueIdentifier>{a5451a18-d50c-4920-b0f6-9e11f28b2c3c}</UniqueIdentifier>
+      <UniqueIdentifier>{cb30750a-b639-4baa-8a08-a6fd7ea158d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Book4">
-      <UniqueIdentifier>{414704ac-0a55-428d-bb88-6283abe248bd}</UniqueIdentifier>
+      <UniqueIdentifier>{0ac1f738-719d-41e6-a6e2-eb055d7a7574}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Book5">
-      <UniqueIdentifier>{384fcc88-fab8-46b9-a05f-6f06ef923147}</UniqueIdentifier>
+      <UniqueIdentifier>{00e26274-f01a-4780-982a-d5da5906f1b0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Book6">
-      <UniqueIdentifier>{07e909cb-fe56-4332-b1e7-4be25efb50a2}</UniqueIdentifier>
+      <UniqueIdentifier>{4d7e81cd-ad36-457a-b7ce-9c1813e7e150}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Book7">
-      <UniqueIdentifier>{0d206f0b-713b-4e79-a762-97055a559f42}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Debug1">
-      <UniqueIdentifier>{24bac899-5c73-4236-8433-905a720c2495}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Debug2">
-      <UniqueIdentifier>{f93356c1-2ab7-455f-b96d-3085004316d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\DebugLoading">
-      <UniqueIdentifier>{d449563f-68e6-4686-9bb4-b629bce695b5}</UniqueIdentifier>
+      <UniqueIdentifier>{0e520c6f-ed8e-47fb-939c-57590dee6eac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Room">
-      <UniqueIdentifier>{a3a944c9-9e0a-4d0f-a23c-f833f424516b}</UniqueIdentifier>
+      <UniqueIdentifier>{7aa084dd-2bc0-458d-828d-19bac93efb78}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Room\Room1">
-      <UniqueIdentifier>{713fc45f-ae96-4c80-a76f-13f35ea16691}</UniqueIdentifier>
+      <UniqueIdentifier>{cae72cf6-7b65-486d-94c8-fce4afd737cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Room\Room2">
-      <UniqueIdentifier>{0c856488-ad3c-4442-8201-0639358a2e83}</UniqueIdentifier>
+      <UniqueIdentifier>{c94bc910-2b28-43d1-a5d3-a4bbc7eeac1e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Room\Room3">
-      <UniqueIdentifier>{d367c08b-164e-407a-b6fb-85d0cdf9a996}</UniqueIdentifier>
+      <UniqueIdentifier>{7448cac2-1793-4787-9094-32338ae9038d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Room\Room4">
-      <UniqueIdentifier>{6097fe8f-c7e6-4354-841f-a007cc9342c6}</UniqueIdentifier>
+      <UniqueIdentifier>{a9a5410a-fe1e-4722-93f1-70a1657d6d83}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Room\Room1\Synthesizer">
-      <UniqueIdentifier>{c0dcfcba-8dc1-4df2-ad13-051e368b611c}</UniqueIdentifier>
+      <UniqueIdentifier>{9233db9a-d1e3-4d99-85e0-29ae5394a0ad}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Room\BookCover">
-      <UniqueIdentifier>{0c72a132-de74-4da5-9e67-ce8276ff54aa}</UniqueIdentifier>
+      <UniqueIdentifier>{b33ba660-5242-429a-a692-5b3899a820d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Debug1">
+      <UniqueIdentifier>{fd1f6999-5d67-47e7-92d4-2e01ebb56ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Debug2">
+      <UniqueIdentifier>{ad53a91a-7d76-46c4-8552-7887002b6f75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\DebugLoading">
+      <UniqueIdentifier>{daa69971-a2c7-4700-93f8-f5563b91acdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Room\Room1\Synthesizer\Parts">
+      <UniqueIdentifier>{a1245f93-ef92-4807-93c3-ff37a7bb3264}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

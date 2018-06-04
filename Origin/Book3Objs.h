@@ -3,7 +3,7 @@ BOOL Book3::motion00( AnimeState* target, BOOL wasHit, BOOL isClick, BOOL isMous
 {
 	BOOL ret = FALSE;
 
-	if( mouseX > target->x + 120 && mouseX < target->x + 140 && mouseY > target->y + 115 && mouseY < target->y + 140 ) {
+	if( mouseX > target->x + 110 && mouseX < target->x + 150 && mouseY > target->y + 105 && mouseY < target->y + 150 ) {
 		ret = TRUE;
 		if( !wasHit ) {
 			if( isClick ) {
@@ -86,7 +86,7 @@ BOOL Book3::motion10( AnimeState* target, BOOL wasHit, BOOL isClick, BOOL isMous
 {
 	BOOL ret = FALSE;
 
-	if( mouseX > target->x + 120 && mouseX < target->x + 140 && mouseY > target->y + 50 && mouseY < target->y + 140 ) {
+	if( mouseX > target->x + 110 && mouseX < target->x + 150 && mouseY > target->y + 40 && mouseY < target->y + 150 ) {
 		ret = TRUE;
 		if( !wasHit ) {
 			if( isClick ) {
@@ -178,7 +178,7 @@ BOOL Book3::motion20( AnimeState* target, BOOL wasHit, BOOL isClick, BOOL isMous
 	int disY = mouseY - ( target->y + USE_IMAGE_SIZE_HALF - 10 );
 	int dis = disX * disX + disY * disY;
 	int maxDis = 80 * 80;
-	int minDis = 60 * 60;
+	int minDis = 50 * 50;
 	if( dis > minDis && dis < maxDis ) {
 		ret = TRUE;
 		if( !wasHit ) {
@@ -233,7 +233,7 @@ BOOL Book3::motion30( AnimeState* target, BOOL wasHit, BOOL isClick, BOOL isMous
 {
 	BOOL ret = FALSE;
 
-	if( mouseX > target->x + 50 && mouseX < target->x + 200 && mouseY > target->y + 170 && mouseY < target->y + 190 ) {
+	if( mouseX > target->x + 40 && mouseX < target->x + 210 && mouseY > target->y + 160 && mouseY < target->y + 200 ) {
 		ret = TRUE;
 		if( !wasHit ) {
 			if( isClick ) {
@@ -301,7 +301,7 @@ BOOL Book3::motion40( AnimeState* target, BOOL wasHit, BOOL isClick, BOOL isMous
 	int dis = disX * disX + disY * disY;
 	int maxDis = 160 * 160;
 
-	if( disX < 0 && disY < 0 && dis < maxDis ) {
+	if( disX < 10 && disY < 10 && dis < maxDis ) {
 		ret = TRUE;
 		if( !wasHit ) {
 			if( isClick ) {

@@ -3,8 +3,8 @@
 
 #include "MainChild.h"
 
-#define MAX_SPLASH_NUM 20
-#define MAX_PIECE_NUM 20
+#define MAX_SPLASH_NUM 30
+#define MAX_PIECE_NUM 30
 
 namespace Image {
 	class DCBitmap;

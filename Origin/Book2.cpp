@@ -28,21 +28,29 @@ Book2::Book2( HDC& hdc, MainParent* parent )
 		mPointTrack[i].count = 0;
 	}
 
-	mBackBmp1 = imageFactory->loadDC( hdc, "resource\\pic03.dad" );
-	mBackBmp1->mX = ( float )( windowWidth - mBackBmp1->mWidth ) / 2;
-	mBackBmp1->mY = ( float )( windowHeight - mBackBmp1->mHeight ) / 2;
+	mBackBmp1 = imageFactory->loadDC( hdc, "resource\\pic02.dad" );
+	mBackBmp1->mX = static_cast< double >( windowWidth - mBackBmp1->mWidth ) / 2;
+	mBackBmp1->mY = static_cast< double >( windowHeight - mBackBmp1->mHeight ) / 2 - 10;
 
-	mBackBmp2 = imageFactory->loadDC( hdc, "resource\\pic02.dad" );
-	mBackBmp2->mX = ( float )( windowWidth - mBackBmp2->mWidth ) / 2;
-	mBackBmp2->mY = ( float )( windowHeight - mBackBmp2->mHeight ) / 2;
+	mBackBmp2 = imageFactory->loadDC( hdc, "resource\\pic01.dad" );
+	mBackBmp2->mX = static_cast< double >( windowWidth - mBackBmp2->mWidth ) / 2;
+	mBackBmp2->mY = static_cast< double >( windowHeight - mBackBmp2->mHeight ) / 2 - 10;
 
-	mBackBmp3 = imageFactory->loadDC( hdc, "resource\\pic01.dad" );
-	mBackBmp3->mX = ( float )( windowWidth - mBackBmp3->mWidth ) / 2;
-	mBackBmp3->mY = ( float )( windowHeight - mBackBmp3->mHeight ) / 2;
+	mBackBmp3 = imageFactory->loadDC( hdc, "resource\\pic03.dad" );
+	mBackBmp3->mX = static_cast< double >( windowWidth - mBackBmp3->mWidth ) / 2;
+	mBackBmp3->mY = static_cast< double >( windowHeight - mBackBmp3->mHeight ) / 2 - 10;
+
+	mBackBmp4 = imageFactory->loadDC( hdc, "resource\\pic05.dad" );
+	mBackBmp4->mX = static_cast< double >( windowWidth - mBackBmp4->mWidth ) / 2;
+	mBackBmp4->mY = static_cast< double >( windowHeight - mBackBmp4->mHeight ) / 2 - 10;
+
+	mBackBmp5 = imageFactory->loadDC( hdc, "resource\\pic04.dad" );
+	mBackBmp5->mX = static_cast< double >( windowWidth - mBackBmp5->mWidth ) / 2;
+	mBackBmp5->mY = static_cast< double >( windowHeight - mBackBmp5->mHeight ) / 2 - 10;
 
 	mFrontBmp = imageFactory->loadDC( hdc, "resource\\frame.dad" );
-	mFrontBmp->mX = ( float )( windowWidth - mFrontBmp->mWidth ) / 2;
-	mFrontBmp->mY = ( float )( windowHeight - mFrontBmp->mHeight ) / 2;
+	mFrontBmp->mX = static_cast< double >( windowWidth - mFrontBmp->mWidth ) / 2;
+	mFrontBmp->mY = static_cast< double >( windowHeight - mFrontBmp->mHeight ) / 2;
 
 	mMaskBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
 
@@ -67,6 +75,12 @@ Book2::~Book2()
 
 	delete mBackBmp3;
 	mBackBmp3 = 0;
+
+	delete mBackBmp4;
+	mBackBmp4 = 0;
+
+	delete mBackBmp5;
+	mBackBmp5 = 0;
 
 	delete mFrontBmp;
 	mFrontBmp = 0;
@@ -138,7 +152,7 @@ void Book2::draw( HDC& hdc, MainParent* parent )
 		++mBackIndex;
 	}
 	switch( mBackIndex ) {
-		case 4:
+		case 6:
 			mBackIndex = 1;
 		case 1:
 			mBackBmp1->drawWindow();
@@ -148,6 +162,12 @@ void Book2::draw( HDC& hdc, MainParent* parent )
 			break;
 		case 3:
 			mBackBmp3->drawWindow();
+			break;
+		case 4:
+			mBackBmp4->drawWindow();
+			break;
+		case 5:
+			mBackBmp5->drawWindow();
 			break;
 	}
 	mMaskBmp->drawWindowAnd();

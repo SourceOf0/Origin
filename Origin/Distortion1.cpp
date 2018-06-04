@@ -3,9 +3,9 @@
 
 namespace Sound {
 
-Distortion1::Distortion1( void )
+Distortion1::Distortion1( void ) :
+EffectBase( 0 )
 {
-	init( 0 );
 }
 
 Distortion1::~Distortion1( void )

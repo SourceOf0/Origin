@@ -172,10 +172,10 @@ void Book5::updateBoard( void )
 			double ratio = static_cast< double >( target->y ) / ( windowHeight + 100 );
 			int sizeX = static_cast< int >( ratio * 20 ) + 10;
 			int sizeY = static_cast< int >( sizeX * ratio ) + 5;
-			int setX1 = target->x - sizeX;
-			int setY1 = target->y - sizeY;
-			int setX2 = target->x + sizeX;
-			int setY2 = target->y + sizeY;
+			int setX1 = target->x - sizeX - 10;
+			int setY1 = target->y - sizeY - 10;
+			int setX2 = target->x + sizeX + 10;
+			int setY2 = target->y + sizeY + 10;
 			if( sizeY > sizeX ) sizeY = sizeX;
 			target->sizeX = sizeX;
 			target->sizeY = sizeY;

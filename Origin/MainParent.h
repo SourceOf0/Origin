@@ -36,6 +36,8 @@ public:
 	void draw( HDC& hdc );
 	void moveTo( SeqID );
 
+	void playSound( void );
+
 private:
 	static MainParent* getInst( void );
 	static MainParent* mInst;

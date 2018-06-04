@@ -1,319 +1,153 @@
 
 void Synthesizer::update( Sequence::RoomParent* parent )
 {
-	Main::SoundManager* soundManager = Main::SoundManager::inst();
-	Main::HandManager* handManager = Main::HandManager::inst();
-	BOOL isClick = Main::HandManager::isClick;
-	BOOL isHit = !Main::HandManager::isMouseDown;
-	int mouseX = handManager->getX() - mX;
-	int mouseY = handManager->getY() - mY;
-
-	handManager->setState( handManager->HAND_NORMAL );
-
-	for( int i = 0; i < TRACK_NUM; ++i ) {
-		mPlayWaveID[ i ] = WAVE_NONE;
-	}
-
-	for( int i = 0 ; i < EFFECT_FADER_NUM; ++i ) {
-		if( checkHit( mEffectFader[ i ], mouseX , mouseY ) ) {
-			if( !isHit ) {
-				PartsData& target = mEffectFader[ i ];
-				int setY = mouseY - 5;
-				if( setY < target.defY ) setY = target.defY;
-				if( setY > target.hitY2 - 10 ) setY = target.hitY2 - 10;
-				target.y = setY;
-				if( i % 2 == 0 ) {
-					soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum1( getFaderV( target ) );
-				} else {
-					soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum2( getFaderV( target ) );
-				}
-				isHit = TRUE;
-				handManager->setState( handManager->HAND_HOLD_AFTER );
-				handManager->lockX();
-				handManager->setRangeY( target.defY + 5, target.hitY2 - 5 );
+	if( !checkHit() ) {
+		if( Main::HandManager::inst()->getX() < 50 || Main::HandManager::inst()->getY() < 100 || ( Main::HandManager::inst()->getX() > static_cast< int >( mBackBmp1->mWidth ) - 50 ) || ( Main::HandManager::inst()->getY() > static_cast< int >( mBackBmp1->mHeight ) - 50 ) ) {
+			if( Main::HandManager::isClick ) {
+				parent->moveTo( parent->SEQ_ROOM1 );
 			} else {
-				handManager->setState( handManager->HAND_HOLD_BEFORE );
-			}
-		}
-	}
-
-	for( int i = 0 ; i < EQ_FADER_NUM; ++i ) {
-		if( checkHit( mEQFader[ i ], mouseX , mouseY ) ) {
-			if( !isHit ) {
-				PartsData& target = mEQFader[ i ];
-				int setY = mouseY - 5;
-				double setFc = 0;
-				double setG = 0;
-				if( setY < target.defY ) setY = target.defY;
-				if( setY > target.hitY2 - 10 ) setY = target.hitY2 - 10;
-				target.y = setY;
-				if( i % 2 == 0 ) {
-					setFc = getFaderV( mEQFader[ i ] ) * 1400 + 100;
-					setG = ( getFaderV( mEQFader[ i + 1 ] ) - 0.5 ) * 2;
-				} else {
-					setFc = getFaderV( mEQFader[ i - 1 ] ) * 1400 + 100;
-					setG = ( getFaderV( mEQFader[ i ] ) - 0.5 ) * 2;
-				}
-				switch( mEQLever[ i / 2 ].partsID ) {
-					case PARTS_LEVER_1:
-						soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
-						break;
-					case PARTS_LEVER_2:
-						soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
-						break;
-					case PARTS_LEVER_3:
-						soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
-						break;
-					case PARTS_LEVER_4:
-						soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
-						break;
-				}
-				isHit = TRUE;
-				handManager->lockX();
-				handManager->setRangeY( target.defY + 5, target.hitY2 - 5 );
-				handManager->setState( handManager->HAND_HOLD_AFTER );
-			} else {
-				handManager->setState( handManager->HAND_HOLD_BEFORE );
+				Main::HandManager::inst()->setState( Main::HandManager::HAND_BACK );
 			}
 		}
 	}
 
 	for( int i = 0 ; i < EFFECT_SELECT_NUM; ++i ) {
-		PartsData& target = mEffectDial[ i ];
-		PartsData& targetSign = mEffectSign[ i ];
-		if( checkHit( target, mouseX , mouseY ) ) {
-			isHit = TRUE;
-			if( isClick ) {
-				if( mouseX < target.x + 30 ) {
-					targetSign.defY = targetSign.defY + 1;
-					if( targetSign.defY <= PARTS_SIGN_BAND_ELIMINATE_FILTER ) {
-						if( target.defX == 100 ) target.defX = 0;
-					} else {
-						targetSign.defY = PARTS_SIGN_BAND_ELIMINATE_FILTER;
-					}
-				} else {
-					targetSign.defY = targetSign.defY - 1;
-					if( targetSign.defY >= PARTS_SIGN_NOISE_GATE ) {
-						if( target.defX == 100 ) target.defX = 0;
-					} else {
-						targetSign.defY = PARTS_SIGN_NOISE_GATE;
-					}
-				}
-				handManager->setState( handManager->HAND_PUSH_AFTER );
-			} else {
-				handManager->setState( handManager->HAND_PUSH_BEFORE );
-			}
+		mEffectDial[ i ].update();
+		if( !mEffectDial[ i ].isChangeSign() ) continue;
+		Main::SoundManager::inst()->getTrack( i / 3 )->addEffect( i % 3, ( EffectID )( mEffectDial[ i ].getSign() - PARTS_SIGN_NOISE_GATE ) );
+	}
+	for( int i = 0 ; i < TRACK_NUM; ++i ) {
+		mWaveDial[ i ].update();
+	}
+
+	updatePad();
+}
+
+BOOL Synthesizer::checkHit( void )
+{
+	Main::SoundManager* soundManager = Main::SoundManager::inst();
+	Main::HandManager* handManager = Main::HandManager::inst();
+
+	handManager->setState( handManager->HAND_NORMAL );
+
+	if( handManager->getX() > 550 ) {
+		BOOL isKeyHit = FALSE;
+		for( int i = 0 ; i < KEY_NUM; ++i ) {
+			if( mKeyButton[ i ].checkHit() ) isKeyHit = TRUE;
 		}
-		updateDial( i, target, targetSign );
+		if( isKeyHit ) return TRUE;
+	
+		if( checkHitPad() )	return TRUE;
+		return FALSE;
+	}
+
+
+	for( int i = 0 ; i < EFFECT_FADER_NUM; ++i ) {
+		if( !mEffectFader[ i ].checkHit() ) continue;
+		if( !mEffectFader[ i ].isHold() ) return TRUE;
+		if( i % 2 == 0 ) {
+			soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum1( mEffectFader[ i ].getVal() );
+		} else {
+			soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum2( mEffectFader[ i ].getVal() );
+		}
+		return TRUE;
+	}
+
+	for( int i = 0 ; i < EFFECT_SELECT_NUM; ++i ) {
+		if( mEffectDial[ i ].checkHit() ) return TRUE;
 	}
 
 	for( int i = 0 ; i < TRACK_NUM; ++i ) {
-		PartsData& target = mWaveDial[ i ];
-		PartsData& targetSign = mWaveSign[ i ];
-		if( checkHit( target, mouseX , mouseY ) ) {
-			isHit = TRUE;
-			if( isClick ) {
-				if( mouseX < target.x + 30 ) {
-					targetSign.defY = targetSign.defY + 1;
-					if( targetSign.defY <= PARTS_SIGN_TRIANGLE ) {
-						if( target.defX == 100 ) target.defX = 0;
-					} else {
-						targetSign.defY = PARTS_SIGN_TRIANGLE;
-					}
-				} else {
-					targetSign.defY = targetSign.defY - 1;
-					if( targetSign.defY >= PARTS_SIGN_CURVE ) {
-						if( target.defX == 100 ) target.defX = 0;
-					} else {
-						targetSign.defY = PARTS_SIGN_CURVE;
-					}
-				}
-				handManager->setState( handManager->HAND_PUSH_AFTER );
-			} else {
-				handManager->setState( handManager->HAND_PUSH_BEFORE );
-			}
-		}
-		updateDial( -1, target, targetSign );
+		if( mWaveDial[ i ].checkHit() ) return TRUE;
 	}
 
 	for( int i = 0 ; i < VOLUME_FADER_NUM; ++i ) {
-		if( checkHit( mVolumeFader[ i ], mouseX , mouseY ) ) {
-			if( !isHit ) {
-				PartsData& target = mVolumeFader[ i ];
-				int setX = mouseX - 5;
-				if( setX < target.defX ) setX = target.defX;
-				if( setX > target.hitX2 - 10 ) setX = target.hitX2 - 10;
-				target.x = setX;
-				if( i == 0 ) {
-					soundManager->setVol( getFaderH( target ) );
-				} else if( i == 1 ) {
-					soundManager->setPan( getFaderH( target ) );
-				} else if( i % 2 == 0 ) {
-					soundManager->getTrack( i / 2 - 1 )->setVol( getFaderH( target ) );
-				} else {
-					soundManager->getTrack( i / 2 - 1 )->setPan( getFaderH( target ) );
-				}
-				isHit = TRUE;
-
-				handManager->lockY();
-				handManager->setRangeX( target.defX + 5, target.hitX2 - 5 );
-				handManager->setState( handManager->HAND_HOLD_AFTER );
-			} else {
-				handManager->setState( handManager->HAND_HOLD_BEFORE );
-			}
+		if( !mVolumeFader[ i ].checkHit() ) continue;
+		if( !mVolumeFader[ i ].isHold() ) return TRUE;
+		if( i == 0 ) {
+			soundManager->setVol( mVolumeFader[ 0 ].getVal() );
+		} else if( i == 1 ) {
+			soundManager->setPan( mVolumeFader[ 1 ].getVal() );
+		} else if( i % 2 == 0 ) {
+			soundManager->getTrack( i / 2 - 1 )->setVol( mVolumeFader[ i ].getVal() );
+		} else {
+			soundManager->getTrack( i / 2 - 1 )->setPan( mVolumeFader[ i ].getVal() );
 		}
+		return TRUE;
 	}
 
 	for( int i = 0 ; i < TRACK_NUM; ++i ) {
-		if( checkHit( mAutoPanButton[ i ], mouseX , mouseY ) ) {
-			isHit = TRUE;
-			if( isClick ) {
-				if( mAutoPanButton[ i ].partsID == PARTS_BUTTON_AUTOPAN_OFF ) {
-					mAutoPanButton[ i ].partsID = PARTS_BUTTON_AUTOPAN_ON;
-					soundManager->getTrack( i )->setAutoPan( TRUE );
-				} else {
-					mAutoPanButton[ i ].partsID = PARTS_BUTTON_AUTOPAN_OFF;
-					soundManager->getTrack( i )->setAutoPan( FALSE );
-				}
-				soundManager->getTrack( i )->setPan( getFaderH( mVolumeFader[ i * 2 + 3 ] ) );
-				handManager->setState( handManager->HAND_PUSH_AFTER );
-			} else {
-				handManager->setState( handManager->HAND_PUSH_BEFORE );
-			}
+		if( !mAutoPanButton[ i ].checkHit() ) continue;
+		if( !mAutoPanButton[ i ].isSwitch() ) return TRUE;
+		if( mAutoPanButton[ i ].isOn() ) {
+			soundManager->getTrack( i )->setAutoPan( TRUE );
+			soundManager->getTrack( i )->setPan( mVolumeFader[ i * 2 + 3 ].getVal() );
+		} else {
+			soundManager->getTrack( i )->setAutoPan( FALSE );
+			soundManager->getTrack( i )->setPan( mVolumeFader[ i * 2 + 3 ].getVal() );
 		}
+		return TRUE;
 	}
 
 	int waveButtonIndex = -1;
 	for( int i = 0 ; i < TRACK_NUM; ++i ) {
-		if( checkHit( mTrackButton[ i ], mouseX , mouseY ) ) {
-			isHit = TRUE;
-			if( isClick ) {
-				waveButtonIndex = i;
-				mTrackButton[ i ].partsID = ( mTrackButton[ i ].partsID == PARTS_BUTTON_TRACK_OFF )? PARTS_BUTTON_TRACK_ON : PARTS_BUTTON_TRACK_OFF;
-				handManager->setState( handManager->HAND_PUSH_AFTER );
-			} else {
-				handManager->setState( handManager->HAND_PUSH_BEFORE );
-			}
-		}
+		if( !mTrackButton[ i ].checkHit() ) continue;
+		if( !mTrackButton[ i ].isSwitch() ) continue;
+		waveButtonIndex = i;
 	}
 	if( waveButtonIndex != -1 ) {
 		for( int i = 0 ; i < TRACK_NUM; ++i ) {
-			if( i == waveButtonIndex ) continue;
-			mTrackButton[ i ].partsID = PARTS_BUTTON_TRACK_OFF;
+			if( i == waveButtonIndex ) {
+				for( int j = 0; j < NOTE_SET_MAX_NUM; ++j ) {
+					mNoteLamp[ i ][ j ].setPartsID( PARTS_LAMP_NOTE_1 );
+				}
+				continue;
+			}
+			mTrackButton[ i ].setOff();
+			for( int j = 0; j < NOTE_SET_MAX_NUM; ++j ) {
+				mNoteLamp[ i ][ j ].setPartsID( PARTS_LAMP_NOTE_2 );
+			}
 		}
+		return TRUE;
 	}
 
 	for( int i = 0 ; i < EFFECT_EQ_NUM; ++i ) {
-		if( checkHit( mEQLever[ i ], mouseX , mouseY ) ) {
-			if( !isHit ) {
-				PartsData& target = mEQLever[ i ];
-				int setX = mouseX - 12;
-				if( setX < target.defX ) {
-					target.partsID = PARTS_LEVER_4;
-					soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_HIGH_SHELVING );
-					setX = target.defX;
-				} else if( setX < target.defX + 12 ) {
-					target.partsID = PARTS_LEVER_3;
-					soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_PEAKING );
-					setX = target.defX + 12;
-				} else if( setX < target.defX + 23 ) {
-					target.partsID = PARTS_LEVER_2;
-					soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_LOW_SHELVING );
-					setX = target.defX + 23;
-				} else {
-					target.partsID = PARTS_LEVER_1;
-					soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_NONE );
-					setX = target.hitX2 - 20;
-				}
-				target.x = setX;
-				isHit = TRUE;
-				handManager->lockY();
-				handManager->setRangeX( target.defX + 8, target.hitX2 - 4 );
-				handManager->setState( handManager->HAND_HOLD_AFTER );
-			} else {
-				handManager->setState( handManager->HAND_HOLD_BEFORE );
-			}
+		if( !mEQLever[ i ].checkHit() ) continue;
+		if( !mEQLever[ i ].isChangeVal() ) return TRUE;
+		switch( mEQLever[ i ].getVal() ) {
+			case 4:
+				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_HIGH_SHELVING );
+				break;
+			case 3:
+				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_PEAKING );
+				break;
+			case 2:
+				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_LOW_SHELVING );
+				break;
+			case 1:
+				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_NONE );
+				break;
 		}
+		return TRUE;
 	}
 
-	BOOL isPushKey = FALSE;
-	for( int i = 0 ; i < KEY_NUM; ++i ) {
-		if( checkHit( mKeyButton[ i ], mouseX , mouseY ) ) {
-			if( !isHit ) {
-				if( mKeyButton[ i ].partsID == PARTS_BUTTON_KEY_OFF ) {
-					int trackIndex = getSelectTrack();
-					if( trackIndex >= 0 ) {
-						soundManager->getTrack( trackIndex )->setF( getHz( i ) );
-					}
-				}
-				if( mPlayButton[ 0 ].partsID == PARTS_BUTTON_PLAY_OFF && mPlayButton[ 1 ].partsID == PARTS_BUTTON_PLAY_OFF && mPlayButton[ 2 ].partsID == PARTS_BUTTON_PLAY_OFF ) {
-					for( int k = 0; k < TRACK_NUM; ++k ) {
-						mPlayWaveID[ k ] = ( WaveID )( mWaveSign[ k ].partsID - PARTS_SIGN_CURVE );
-					}
-				}
-				isHit = TRUE;
-				mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_ON;
-				handManager->setState( handManager->HAND_PUSH_AFTER );
-				isPushKey = TRUE;
-			} else {
-				if( !isPushKey ) handManager->setState( handManager->HAND_PUSH_BEFORE );
-				mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_OFF;
-			}
+	for( int i = 0 ; i < EQ_FADER_NUM; ++i ) {
+		if( !mEQFader[ i ].checkHit() ) continue;
+		if( !mEQFader[ i ].isHold() ) return TRUE;
+		double setFc = 0;
+		double setG = 0;
+		if( i % 2 == 0 ) {
+			setFc = mEQFader[ i ].getVal() * 1400 + 100;
+			setG = ( mEQFader[ i + 1 ].getVal() - 0.5 ) * 2;
 		} else {
-			mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_OFF;
+			setFc = mEQFader[ i - 1 ].getVal() * 1400 + 100;
+			setG = ( mEQFader[ i ].getVal() - 0.5 ) * 2;
 		}
+		soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
+		return TRUE;
 	}
 
-	int playButtonIndex = -1;
-	for( int i = 0 ; i < PLAY_BUTTON_NUM; ++i ) {
-		if( checkHit( mPlayButton[ i ], mouseX , mouseY ) ) {
-			isHit = TRUE;
-			PartsData& target = mPlayButton[ i ];
-			if( isClick && checkHit( target, mouseX , mouseY ) ) {
-				playButtonIndex = i;
-				if( target.partsID == PARTS_BUTTON_PLAY_OFF ) {
-					target.partsID = PARTS_BUTTON_PLAY_ON;
-					mPlaySign[ i ].y = mPlaySign[ i ].defY + 3;
-				} else {
-					target.partsID = PARTS_BUTTON_PLAY_OFF;
-					mPlaySign[ i ].y = mPlaySign[ i ].defY;
-				}
-				handManager->setState( handManager->HAND_PUSH_AFTER );
-			} else {
-				handManager->setState( handManager->HAND_PUSH_BEFORE );
-			}
-		}
-	}
-	if( playButtonIndex != -1 ) {
-		for( int i = 0 ; i < PLAY_BUTTON_NUM; ++i ) {
-			if( i == playButtonIndex ) continue;
-			mPlayButton[ i ].partsID = PARTS_BUTTON_PLAY_OFF;
-			mPlaySign[ i ].y = mPlaySign[ i ].defY;
-		}
-	}
-
-	isHit |= updatePad( isHit, isClick, mouseX, mouseY );
-
-	if( mouseX < 50 || mouseY < 100 || ( mouseX > static_cast< int >( mBackBmp1->mWidth ) - 50 ) || ( mouseY > static_cast< int >( mBackBmp1->mHeight ) - 50 ) ) {
-		isHit = TRUE;
-		if( isClick ) {
-			parent->moveTo( parent->SEQ_ROOM1 );
-		} else {
-			handManager->setState( handManager->HAND_BACK );
-		}
-	}
-
-	if( !mIsInit ) {
-		mIsInit = TRUE;
-		updateSoundState();
-		Main::SoundManager::inst()->play();
-		updateWave();
-		return;
-	}
-
-	if( Main::SceneManager::isAddWave ) {
-		updateWave();
-	}
+	return FALSE;
 }
 
 void Synthesizer::playTrack( Sequence::RoomParent* parent )
@@ -323,25 +157,22 @@ void Synthesizer::playTrack( Sequence::RoomParent* parent )
 	if( !parent->mIsConnectSocket ) {
 		for( int i = 0; i < TRACK_NUM; ++i ) {
 			for( int j = 0; j < NOTE_SET_MAX_NUM; ++j ) {
-				mNoteRatio[ i ][ j ] = -1.0;
+				setNoteRatio( -1.0, i, j );
 			}
 		}
 	}
 
-	if( mPlayButton[ 0 ].partsID == PARTS_BUTTON_PLAY_ON ) {
+	if( mPlayButton[ 0 ].isOn() ) {
 		isPlay = TRUE;
 		++mPlayCount;
 	}
-	if( mPlayButton[ 1 ].partsID == PARTS_BUTTON_PLAY_ON ) {
+	if( mPlayButton[ 1 ].isOn() ) {
 		isPlay = TRUE;
-		mPlayCount = 0;
 	}
-	if( mPlayButton[ 2 ].partsID == PARTS_BUTTON_PLAY_ON ) {
-		isPlay = TRUE;
-		mPlayCount = 0;
+	if( mPlayButton[ 2 ].isOn() ) {
 		for( int i = 0 ; i < KEY_NUM; ++i ) {
-			if( mKeyButton[ i ].partsID == PARTS_BUTTON_KEY_OFF ) continue;
-			mNoteRatio[ getSelectTrack() ][ mPlayTime ] = getCodeRatio( i );
+			if( !mKeyButton[ i ].isOn() ) continue;
+			setNoteRatio( getCodeRatio( i ), getSelectTrack(), mPlayTime );
 			break;
 		}
 	}
@@ -352,81 +183,42 @@ void Synthesizer::playTrack( Sequence::RoomParent* parent )
 			mPlayTime = ( mPlayTime + 1 ) % NOTE_SET_MAX_NUM;
 		}
 		for( int i = 0 ; i < TRACK_NUM; ++i ) {
-			mPlayWaveID[ i ] = ( WaveID )( mWaveSign[ i ].partsID - PARTS_SIGN_CURVE );
+			mPlayWaveID[ i ] = ( WaveID )( mWaveDial[ i ].getSign() - PARTS_SIGN_CURVE );
 			Main::SoundManager::inst()->getTrack( i )->setF( getFixCodeHz( mNoteRatio[ i ][ mPlayTime ] ) );
+		}
+	} else {
+		for( int i = 0 ; i < TRACK_NUM; ++i ) {
+			mPlayWaveID[ i ] = ( WaveID )( mWaveDial[ i ].getSign() - PARTS_SIGN_CURVE );
+			Main::SoundManager::inst()->getTrack( i )->setF( 0.0 );
+			if( i != getSelectTrack() ) continue;
+			for( int j = 0 ; j < KEY_NUM; ++j ) {
+				if( !mKeyButton[ j ].isOn() ) continue;
+				Main::SoundManager::inst()->getTrack( i )->setF( getHz( j ) );
+				break;
+			}
 		}
 	}
 
 	for( int i = 0; i < TRACK_NUM; ++i ) {
 		Main::SoundManager::inst()->getTrack( i )->setWave( mPlayWaveID[ i ] );
 	}
-}
 
-BOOL Synthesizer::checkHit( PartsData& target, int x, int y )
-{
-	return ( x >= target.hitX1 && x <= target.hitX2 && y >= target.hitY1 && y <= target.hitY2 );
+	if( !mIsInit ) {
+		mIsInit = TRUE;
+		initSoundState();
+		Main::SoundManager::inst()->play();
+		updateWave();
+		return;
+	}
+	if( Main::SceneManager::isAddWave ) updateWave();
 }
 
 int Synthesizer::getSelectTrack( void )
 {
 	for( int i = 0; i < TRACK_NUM; ++i ) {
-		if( mTrackButton[ i ].partsID == PARTS_BUTTON_TRACK_ON ) return i;
+		if( mTrackButton[ i ].isOn() ) return i;
 	}
 	return -1;
-}
-
-double Synthesizer::getFaderH( PartsData& target )
-{
-	return ( static_cast< double >( target.x - target.defX ) / ( target.hitX2 - 10 - target.defX ) );
-}
-double Synthesizer::getFaderV( PartsData& target )
-{
-	return ( static_cast< double >( target.y - target.defY ) / ( target.hitY2 - 10 - target.defY ) );
-}
-
-void Synthesizer::updateDial( int index, PartsData& target, PartsData& targetSign )
-{
-	if( targetSign.defY < targetSign.partsID ) {
-		targetSign.x += 4;
-		if( targetSign.x > targetSign.defX + 18 ) {
-			targetSign.x = targetSign.defX - 18;
-			targetSign.partsID = ( PartsID )( targetSign.partsID - 1 );
-			if( index >= 0 ) {
-				Main::SoundManager::inst()->getTrack( index / 3 )->addEffect( index % 3, ( EffectID )( targetSign.partsID - PARTS_SIGN_NOISE_GATE ) );
-			}
-		}
-	} else if( targetSign.defY > targetSign.partsID ) {
-		targetSign.x -= 4;
-		if( targetSign.x < targetSign.defX - 18 ) {
-			targetSign.x = targetSign.defX + 18;
-			targetSign.partsID = ( PartsID )( targetSign.partsID + 1 );
-			if( index >= 0 ) {
-				Main::SoundManager::inst()->getTrack( index / 3 )->addEffect( index % 3, ( EffectID )( targetSign.partsID - PARTS_SIGN_NOISE_GATE ) );
-			}
-		}
-	} else if( targetSign.x != targetSign.defX ) {
-		if( targetSign.x > targetSign.defX ) {
-			targetSign.x -= 4;
-			if( targetSign.x <= targetSign.defX ) {
-				targetSign.x = targetSign.defX;
-			}
-		} else {
-			targetSign.x += 4;
-			if( targetSign.x >= targetSign.defX ) {
-				targetSign.x = targetSign.defX;
-			}
-		}
-	}
-	if( target.defX >= 10 ) {
-		if( targetSign.defY == targetSign.partsID ) {
-			target.defX = 100;
-		} else {
-			target.defX = 0;
-		}
-	}
-	if( target.defX == 100 ) return;
-	++target.defX;
-	target.partsID = ( target.defX / 5 == 0 )? PARTS_DIAL_2 : PARTS_DIAL_1;
 }
 
 void Synthesizer::updateWave( void )
@@ -481,7 +273,7 @@ void Synthesizer::updateWave( void )
 	DeleteObject( hBrush );
 }
 
-void Synthesizer::updateSoundState( void )
+void Synthesizer::initSoundState( void )
 {
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
 	soundManager->getTrack( 0 )->setWave( WAVE_NONE );
@@ -489,48 +281,72 @@ void Synthesizer::updateSoundState( void )
 	soundManager->getTrack( 2 )->setWave( WAVE_NONE );
 
 	for( int i = 0 ; i < EFFECT_SELECT_NUM; ++i ) {
-		soundManager->getTrack( i / 3 )->addEffect( i % 3, ( EffectID )( mEffectSign[ i ].partsID - PARTS_SIGN_NOISE_GATE ) );
+		soundManager->getTrack( i / 3 )->addEffect( i % 3, ( EffectID )( mEffectDial[ i ].getSign() - PARTS_SIGN_NOISE_GATE ) );
 	}
 
 	for( int i = 0 ; i < VOLUME_FADER_NUM; ++i ) {
-		PartsData& target = mVolumeFader[ i ];
 		if( i == 0 ) {
-			soundManager->setVol( getFaderH( target ) );
+			soundManager->setVol( mVolumeFader[ 0 ].getVal() );
 		} else if( i == 1 ) {
-			soundManager->setPan( getFaderH( target ) );
+			soundManager->setPan( mVolumeFader[ 1 ].getVal() );
 		} else if( i % 2 == 0 ) {
-			soundManager->getTrack( i / 2 - 1 )->setVol( getFaderH( target ) );
+			soundManager->getTrack( i / 2 - 1 )->setVol( mVolumeFader[ i ].getVal() );
 		} else {
-			soundManager->getTrack( i / 2 - 1 )->setPan( getFaderH( target ) );
+			soundManager->getTrack( i / 2 - 1 )->setPan( mVolumeFader[ i ].getVal() );
 		}
 	}
 
 	for( int i = 0 ; i < TRACK_NUM; ++i ) {
-		if( mAutoPanButton[ i ].partsID == PARTS_BUTTON_AUTOPAN_ON ) {
-			soundManager->getTrack( i )->setAutoPan( TRUE );
-		} else {
-			soundManager->getTrack( i )->setAutoPan( FALSE );
-		}
-		soundManager->getTrack( i )->setF( 0 );
+		soundManager->getTrack( i )->setAutoPan( mAutoPanButton[ i ].isOn() );
+		soundManager->getTrack( i )->setF( 0.0 );
 	}
 
 	for( int i = 0 ; i < EFFECT_EQ_NUM; ++i ) {
-		double setFc = getFaderV( mEQFader[ i * 2 ] ) * 1400 + 100;
-		double setG = ( getFaderV( mEQFader[ i * 2 + 1 ] ) - 0.5 ) * 2;
-		switch( mEQLever[ i ].partsID ) {
-			case PARTS_LEVER_1:
+		double setFc = mEQFader[ i * 2 ].getVal() * 1400 + 100;
+		double setG = ( mEQFader[ i * 2 + 1 ].getVal() - 0.5 ) * 2;
+		switch( mEQLever[ i ].getVal() ) {
+			case 1:
 				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_NONE );
 				break;
-			case PARTS_LEVER_2:
+			case 2:
 				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_LOW_SHELVING );
 				break;
-			case PARTS_LEVER_3:
+			case 3:
 				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_PEAKING );
 				break;
-			case PARTS_LEVER_4:
+			case 4:
 				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_HIGH_SHELVING );
 				break;
 		}
 		soundManager->getTrack( i / 3 )->setEQState( i % 3, setFc, setG );
+	}
+
+	mTempo = static_cast< int >( ( 1 - mPadFader[ 0 ].getVal() ) * 15 + 1 );
+
+	for( int i = 0; i < TRACK_NUM; ++i ) {
+		for( int j = 0; j < NOTE_SET_MAX_NUM; ++j ) {
+			int noteIndex = static_cast< int >( mNoteRatio[ i ][ j ] );
+			double nodeRatio = mNoteRatio[ i ][ j ] - noteIndex;
+			ViewObj *target = &mNoteLamp[ i ][ j ];
+			if( noteIndex < 0 ) {
+				target->setView( FALSE );
+			} else {
+				int setX = 0;
+				int setY = 0;
+				target->setView( TRUE );
+				target->setPartsID( ( mTrackButton[ i ].isOn() )? PARTS_LAMP_NOTE_1 : PARTS_LAMP_NOTE_2 );
+				if( ( noteIndex + 1 ) < NOTE_HEIGHT_NUM ) {
+					setX = static_cast< int >( mNotePosX[ noteIndex ][ j ] + ( mNotePosX[ noteIndex + 1 ][ j ] - mNotePosX[ noteIndex ][ j ] ) * nodeRatio + 0.5 );
+					setY = static_cast< int >( mNotePosY[ noteIndex ][ j ] + ( mNotePosY[ noteIndex + 1 ][ j ] - mNotePosY[ noteIndex ][ j ] ) * nodeRatio + 0.5 );
+				} else if( noteIndex < NOTE_HEIGHT_NUM ) {
+					setX = mNotePosX[ noteIndex ][ j ];
+					setY = mNotePosY[ noteIndex ][ j ];
+				} else {
+					setX = mNotePosX[ NOTE_HEIGHT_NUM - 1 ][ j ];
+					setY = mNotePosY[ NOTE_HEIGHT_NUM - 1 ][ j ];
+				}
+				target->setPos( setX, setY );
+			}
+		}
 	}
 }

@@ -16,7 +16,8 @@ public:
 
 	void drawWindow( void );
 	void drawWindow( int x, int y );
-	void drawWindow( int x, int y, int startX, int startY, int width, int height, BOOL isTransparent = FALSE );
+	void drawWindow( int x, int y, int startX, int startY, int width, int height );
+	void drawWindow( int x, int y, int startX, int startY, int width, int height, unsigned int skipColor );
 	void drawDCBitmap( DCBitmap* target, int x, int y, int width, int index );
 
 	BOOL mUseAlpha;

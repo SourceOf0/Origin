@@ -38,12 +38,12 @@ public:
 	int setWave( WaveID id );
 
 private:
-	double* mWaveData;
+	double mWaveData[ WAVE_DATA_LENGTH ];
 
 	double mVolL;
 	double mVolR;
 
-	double* mPlayData;
+	double mPlayData[ WAVE_DATA_LENGTH ];
 	double mPlayTime;
 	AutoPan* mAutoPan;
 	Equalizer* mEQ;

@@ -3,9 +3,9 @@
 
 namespace Sound {
 
-Delay::Delay( void )
+Delay::Delay( void ) :
+EffectBase( mWaveLog )
 {
-	init( mWaveLog );
 }
 
 
@@ -23,8 +23,8 @@ void Delay::apply( Track* track )
 {
 	double* waveData = track->getWaveData();
 
-	double a = mSetNum1;			/* Œ¸Š—¦ */
-	double delayTime = SAMPLES_PER_SEC * mSetNum2 * 0.2;	/* ’x‰„ŠÔ */
+	double a = mSetNum1 * 0.8;			/* Œ¸Š—¦ */
+	double delayTime = SAMPLES_PER_SEC * mSetNum2 * 0.2 + 10;	/* ’x‰„ŠÔ */
 	int repeat = 10;		/* ŒJ‚è•Ô‚µ‰ñ” */
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {

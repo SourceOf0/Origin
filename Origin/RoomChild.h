@@ -22,10 +22,6 @@ public:
 	virtual void draw( HDC& hdc, Sequence::RoomParent* parent, double depth, int fadeCount ) = 0;
 	
 	static Image::DCBitmap* mFadeBmp;
-
-protected:
-	int mX;
-	int mY;
 };
 
 } // namespace Room

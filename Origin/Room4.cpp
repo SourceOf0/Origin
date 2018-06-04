@@ -27,9 +27,6 @@ Room4::Room4( HDC& hdc, RoomParent* parent )
 	mSwitchBmp->mUseAlpha = FALSE;
 	mSwitchBmp->mX = 344;
 	mSwitchBmp->mY = 327;
-
-	mX = ( windowWidth - mBackBmp1->mWidth ) / 2;
-	mY = ( windowHeight - mBackBmp1->mHeight ) / 2;
 }
 
 Room4::~Room4()
@@ -50,8 +47,8 @@ void Room4::update( RoomParent* parent )
 	int windowHeight = Main::SceneManager::windowHeight;
 	BOOL isClick = Main::HandManager::isClick;
 	Main::HandManager* handManager = Main::HandManager::inst();
-	int mouseX = handManager->getX() - mX;
-	int mouseY = handManager->getY() - mY;
+	int mouseX = handManager->getX();
+	int mouseY = handManager->getY();
 
 	handManager->setState( handManager->HAND_NORMAL );
 

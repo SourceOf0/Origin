@@ -36,10 +36,10 @@ void SceneManager::destroy( void )
 }
 
 SceneManager::SceneManager( HWND& hwnd ) :
-mFrameRate( 40 )
+mFrameRate( 40 ),
+mWasDraw( FALSE )
 {
 	HDC hdc;
-//	long black = RGB( 0, 0, 0 );
 //	long black = RGB( 100, 100, 100 );
 	long black = RGB( 10, 10, 10 );
 	long white = RGB( 255, 255, 255 );
@@ -128,36 +128,40 @@ SceneManager::~SceneManager( void )
 void SceneManager::endSetWave( void )
 {
 	isAddWave = TRUE;
+	mParent->playSound();
 }
 
 int SceneManager::update()
 {
-	int nowTime;
-	SYSTEMTIME localTime;
-
-	GetLocalTime( &localTime );
-	nowTime = ( localTime.wSecond == mLocalTime.wMilliseconds )? localTime.wMilliseconds : ( 1000 + localTime.wMilliseconds );
-	while( nowTime - mLocalTime.wMilliseconds < mFrameRate ) {
-		Sleep( 1 );
-		GetLocalTime( &localTime );
-		nowTime = ( localTime.wSecond == mLocalTime.wMilliseconds )? localTime.wMilliseconds : ( 1000 + localTime.wMilliseconds );
-	}
-	GetLocalTime( &localTime );
-	mLocalTime = localTime;
-
+	if( !mWasDraw ) return 1;
 	mParent->update();
 	HandManager::inst()->endUpdate();
 	isAddWave = FALSE;
+	mWasDraw = FALSE;
 	return 0;
 }
 
 int SceneManager::draw( HDC& hdc )
 {
+	int nowTime;
+	SYSTEMTIME localTime;
+	GetLocalTime( &localTime );
+	nowTime = ( localTime.wSecond == mLocalTime.wSecond )? localTime.wMilliseconds : ( 1000 + localTime.wMilliseconds );
+	while( nowTime - mLocalTime.wMilliseconds < mFrameRate ) {
+		Sleep( 5 );
+		GetLocalTime( &localTime );
+		nowTime = ( localTime.wSecond == mLocalTime.wSecond )? localTime.wMilliseconds : ( 1000 + localTime.wMilliseconds );
+	}
+	GetLocalTime( &localTime );
+	mLocalTime = localTime;
+
 	for ( int i = 0; i < windowWidth * windowHeight / 32; ++i ) {
 		mWindowPixel[i] = 0;
 	}
 	mParent->draw( hdc );
 	BitBlt( hdc, 0, 0, windowWidth, windowHeight, mHdcBmp, 0, 0, SRCCOPY );
+
+	mWasDraw = TRUE;
 
 	return 0;
 }

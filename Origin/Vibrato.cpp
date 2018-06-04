@@ -6,9 +6,9 @@
 namespace Sound {
 
 Vibrato::Vibrato( void ) :
-mTime( 0 )
+mTime( 0 ),
+EffectBase( mWaveLog )
 {
-	init( mWaveLog );
 }
 
 

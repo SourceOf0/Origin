@@ -3,9 +3,9 @@
 
 namespace Sound {
 
-NoiseGate::NoiseGate( void )
+NoiseGate::NoiseGate( void ) :
+EffectBase( 0 )
 {
-	init( 0 );
 }
 
 
@@ -23,7 +23,7 @@ void NoiseGate::apply( Track* track )
 {
 	double* waveData = track->getWaveData();
 
-	double threshold = mSetNum1;
+	double threshold = mSetNum1 + mSetNum2;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[ i ];

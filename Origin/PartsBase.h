@@ -1,0 +1,106 @@
+#ifndef INCLUDED_SEQUENCE_ROOM_PARTS_H
+#define INCLUDED_SEQUENCE_ROOM_PARTS_H
+
+#include <windows.h>
+
+namespace Image {
+	class LayerData;
+}
+
+namespace Sequence {
+
+namespace Room {
+
+enum PartsID {
+	PARTS_BUTTON_AUTOPAN_ON,
+	PARTS_BUTTON_AUTOPAN_OFF,
+	PARTS_BUTTON_TRACK_ON,
+	PARTS_BUTTON_TRACK_OFF,
+	PARTS_BUTTON_PLAY_ON,
+	PARTS_BUTTON_PLAY_OFF,
+	PARTS_BUTTON_KEY_ON,
+	PARTS_BUTTON_KEY_OFF,
+	PARTS_FADER_H,
+	PARTS_FADER_V,
+	PARTS_LEVER_1,
+	PARTS_LEVER_2,
+	PARTS_LEVER_3,
+	PARTS_LEVER_4,
+	PARTS_DIAL_1,
+	PARTS_DIAL_2,
+	PARTS_LAMP_TIME,
+	PARTS_LAMP_NOTE_1,
+	PARTS_LAMP_NOTE_2,
+	PARTS_SIGN_PLAY,
+	PARTS_SIGN_PAUSE,
+	PARTS_SIGN_REC,
+
+	PARTS_SIGN_CURVE,
+	PARTS_SIGN_SAWTOOTH,
+	PARTS_SIGN_SQUARE,
+	PARTS_SIGN_TRIANGLE,
+	PARTS_SIGN_NOISE_GATE,
+	PARTS_SIGN_DISTORTION1,
+	PARTS_SIGN_DISTORTION2,
+	PARTS_SIGN_DISTORTION3,
+	PARTS_SIGN_COMPRESSOR,
+	PARTS_SIGN_TREMOLO,
+	PARTS_SIGN_DELAY,
+	PARTS_SIGN_CHORUS,
+	PARTS_SIGN_VIBRATO,
+	PARTS_SIGN_LOW_PASS_FILTER,
+	PARTS_SIGN_HIGH_PASS_FILTER,
+	PARTS_SIGN_BAND_PASS_FILTER,
+	PARTS_SIGN_BAND_ELIMINATE_FILTER,
+//	PARTS_SIGN_EQUALIZER,
+
+	PARTS_SIGN_SCALE_C,
+	PARTS_SIGN_SCALE_CM,
+	PARTS_SIGN_SCALE_D,
+	PARTS_SIGN_SCALE_DM,
+	PARTS_SIGN_SCALE_E,
+	PARTS_SIGN_SCALE_EM,
+	PARTS_SIGN_SCALE_F,
+	PARTS_SIGN_SCALE_FM,
+	PARTS_SIGN_SCALE_G,
+	PARTS_SIGN_SCALE_GM,
+	PARTS_SIGN_SCALE_A,
+	PARTS_SIGN_SCALE_AM,
+	PARTS_SIGN_SCALE_B,
+	PARTS_SIGN_SCALE_BM,
+
+	PARTS_NONE
+};
+
+
+class PartsBase {
+public:
+	virtual BOOL checkHit( void ) = 0;
+	virtual void draw( Image::LayerData *partsBmp ) = 0;
+
+protected:
+	void init( PartsID id, int x, int y );
+
+	void setPartsSize( PartsID id );
+	BOOL isHit( int mouseX, int mouseY );
+
+	PartsID mPartsID;
+	int mX;
+	int mY;
+	int mWidth;
+	int mHeight;
+	int mCutStartX;
+	int mCutStartY;
+	int mHitX1;
+	int mHitY1;
+	int mHitX2;
+	int mHitY2;
+
+private:
+	void setSize( int cutStartX, int cutStartY, int width, int height );
+};
+
+} // namespace Room
+} // namespace Sequence
+
+#endif // INCLUDED_SEQUENCE_ROOM_PARTS_H

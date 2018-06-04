@@ -35,14 +35,12 @@ mIsUpdate( FALSE )
 {
 	mWave = new Wave();
 
-	mWaveData = new double[ WAVE_DATA_LENGTH ];
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		mWaveData[i] = 0;
+		mWaveData[ i ] = 0;
 	}
 
-	mPlayData = new double[ WAVE_DATA_LENGTH ];
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		mPlayData[i] = 0;
+		mPlayData[ i ] = 0;
 	}
 
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
@@ -57,12 +55,6 @@ Track::~Track( void )
 {
 	delete mWave;
 	mWave = 0;
-
-	delete[] mWaveData;
-	mWaveData = 0;
-
-	delete[] mPlayData;
-	mPlayData = 0;
 
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
 		delete mEffectList[ i ];

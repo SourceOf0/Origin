@@ -40,9 +40,6 @@ mBookKind( 0 )
 	mCoverBmp[ 4 ]->mDepth = -0.1;
 	mCoverBmp[ 5 ]->mDepth = -0.3;
 	mCoverBmp[ 6 ]->mDepth = -0.2;
-
-	mX = 0;
-	mY = 0;
 }
 
 BookCover::~BookCover()
@@ -59,10 +56,10 @@ void BookCover::update( RoomParent* parent )
 	int windowHeight = Main::SceneManager::windowHeight;
 	BOOL isClick = Main::HandManager::isClick;
 	Main::HandManager* handManager = Main::HandManager::inst();
-	int mouseX = handManager->getX() - mX;
-	int mouseY = handManager->getY() - mY;
+	int mouseX = handManager->getX();
+	int mouseY = handManager->getY();
 
-	handManager->setState( handManager->HAND_NORMAL );
+	handManager->setState( handManager->HAND_BACK );
 
 	Image::LayerData* target = mCoverBmp[ mBookKind ];
 	double setX = target->mX;

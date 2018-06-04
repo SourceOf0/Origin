@@ -3,9 +3,9 @@
 
 namespace Sound {
 
-Compressor::Compressor( void )
+Compressor::Compressor( void ) :
+EffectBase( 0 )
 {
-	init( 0 );
 }
 
 
@@ -28,7 +28,7 @@ void Compressor::apply( Track* track )
 	double gain = 1.0 / ( threshold + ( 1.0 - threshold ) * ratio );		 /* ‘•—¦ */
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = waveData[i];
+		double s = waveData[ i ];
 
 		if( s > threshold ) {
 			s = threshold + ( s - threshold ) * ratio; /* U•‚Ìˆ³k */

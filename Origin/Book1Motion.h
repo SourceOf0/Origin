@@ -439,7 +439,7 @@ void Book1::motion11( void )
 
 	int height = static_cast< int >( mBmp[ mMask[ 0 ].kind ]->mHeight );
 	BOOL isEnd = TRUE;
-	for( int i = 0; i < BOOK1_MASK_NUM; ++i ) {
+	for( int i = 0; i < 5; ++i ) {
 		if( mMask[ i ].y < -height ) continue;
 		isEnd = FALSE;
 		MaskState *mask = &mMask[ i ];

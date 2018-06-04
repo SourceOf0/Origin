@@ -78,9 +78,10 @@ void Book6::updateButton( void )
 		ButtonState *target = &mButtonState[ i ];
 		int x = mouseX - target->x;
 		int y = mouseY - target->y;
-		int size = target->partsSize + 5;
-		int hitSize = 15;
-		if( x > BUTTON_SIZE_HALF - hitSize && x < BUTTON_SIZE_HALF + hitSize && y > 0 && y < size ) {
+		int size = target->partsSize;
+		int fixSize = 20;
+		int hitSize = 25;
+		if( x > BUTTON_SIZE_HALF - hitSize && x < BUTTON_SIZE_HALF + hitSize && y > -fixSize && y < size + fixSize ) {
 			if( isClick ) {
 				target->instruction = ( target->instruction == CAR_FORWARD )? CAR_NONE : CAR_FORWARD;
 				Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );
@@ -89,7 +90,7 @@ void Book6::updateButton( void )
 			}
 			break;
 		} else if( y > BUTTON_SIZE_HALF - hitSize && y < BUTTON_SIZE_HALF + hitSize ) {
-			if( x > 0 && x < size ) {
+			if( x > -fixSize && x < size + fixSize ) {
 				if( isClick ) {
 					target->instruction = ( target->instruction == CAR_TURN_LEFT )? CAR_NONE : CAR_TURN_LEFT;
 					Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );
@@ -97,7 +98,7 @@ void Book6::updateButton( void )
 					Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_BEFORE );
 				}
 				break;
-			} else if( x > BUTTON_SIZE - size && x < BUTTON_SIZE ) {
+			} else if( x > BUTTON_SIZE - size - fixSize && x < BUTTON_SIZE + fixSize ) {
 				if( isClick ) {
 					target->instruction = ( target->instruction == CAR_TURN_RIGHT )? CAR_NONE : CAR_TURN_RIGHT;
 					Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );
@@ -122,7 +123,7 @@ void Book6::updateButton( void )
 
 	int targetX = mouseX - mStartButton.x;
 	int targetY = mouseY - mStartButton.y;
-	if( targetX > 0 && targetX < BUTTON_WIDTH && targetY > 0 && targetY < BUTTON_HEIGHT ) {
+	if( targetX > -10 && targetX < BUTTON_WIDTH + 10 && targetY > -10 && targetY < BUTTON_HEIGHT + 10 ) {
 		if( isClick ) {
 			mIsMove = TRUE;
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );

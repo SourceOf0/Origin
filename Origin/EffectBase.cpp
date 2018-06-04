@@ -7,6 +7,10 @@ namespace Sound {
 
 double EffectBase::mSinCosTable[ SIN_COS_TABLE_NUM ];
 
+EffectBase::EffectBase( double waveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ] )
+{
+	init( waveLog );
+}
 void EffectBase::init( double waveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ] )
 {
 	mLogIndex = 0;

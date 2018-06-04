@@ -57,6 +57,7 @@ mSysVol( 0 )
 	wfe.nBlockAlign = BLOCK_ALIGN;
 	wfe.nSamplesPerSec = SAMPLES_PER_SEC;	//標本化周波数
 	wfe.nAvgBytesPerSec = BYTES_PER_SEC;
+	wfe.cbSize = 0;
 
 	waveOutOpen( &mHWaveOut, WAVE_MAPPER, &wfe, ( DWORD )hwnd, 0, CALLBACK_WINDOW );
 
@@ -66,12 +67,13 @@ mSysVol( 0 )
 		}
 		mWaveHeader[k].lpData = ( LPSTR )mLpWave[k];
 		mWaveHeader[k].dwBufferLength = BUFFER_SIZE;
+		mWaveHeader[k].dwBytesRecorded = 0;
 		mWaveHeader[k].dwLoops = 1;
 		mWaveHeader[k].dwFlags = WHDR_BEGINLOOP | WHDR_ENDLOOP;
 		mWaveHeader[k].reserved = 0;
 		mWaveHeader[k].lpNext = 0;
 
-		waveOutPrepareHeader( mHWaveOut, &mWaveHeader[k], sizeof(WAVEHDR) );
+		waveOutPrepareHeader( mHWaveOut, &mWaveHeader[ k ], sizeof(WAVEHDR) );
 	}
 	setSysVol();
 }
@@ -146,20 +148,13 @@ int SoundManager::makeWave( void )
 {
 	if( !mIsPlay ) {
 		if( mSysVol == 0 ) {
+			waveOutUnprepareHeader( mHWaveOut, &mWaveHeader[ 0 ], sizeof(WAVEHDR) );
+			waveOutUnprepareHeader( mHWaveOut, &mWaveHeader[ 1 ], sizeof(WAVEHDR) );
 			return 0;
 		} else {
 			--mSysVol;
 			setSysVol();
 		}
-/*		if( mWasReset ) return 0;
-		mWasReset = TRUE;
-		waveOutReset( mHWaveOut );
-		mSetBufferNum = 0;
-		mSetBufferIndex = 0;
-		mTrack1->reset();
-		mTrack2->reset();
-		mTrack3->reset();
-		return 0;*/
 	} else if( mSysVol < MAX_SYSTEM_VOL ) {
 		++mSysVol;
 		setSysVol();
@@ -167,6 +162,9 @@ int SoundManager::makeWave( void )
 
 	if( mSetBufferNum >= 2 ) return 0;
 	++mSetBufferNum;
+
+	waveOutUnprepareHeader( mHWaveOut, &mWaveHeader[ mSetBufferIndex ], sizeof(WAVEHDR) );
+	waveOutPrepareHeader( mHWaveOut, &mWaveHeader[ mSetBufferIndex ], sizeof(WAVEHDR) );
 
 	mTrack1->update();
 	mTrack2->update();
@@ -179,7 +177,7 @@ int SoundManager::makeWave( void )
 		s += mTrack3->getPlayDataR( i );
 		s = clipping( s / 3.0 * mMainVol * mMainVolR );
 		// 右   /* 四捨五入とオフセットの調節 */
-		mLpWave[ mSetBufferIndex ][ i*2 ] = static_cast< short >( s + 0.5 ) - 32768;
+		mLpWave[ mSetBufferIndex ][ i * 2 ] = static_cast< short >( s + 0.5 ) - 32768;
 		
 		s = 0;
 		s += mTrack1->getPlayDataL( i );
@@ -187,12 +185,13 @@ int SoundManager::makeWave( void )
 		s += mTrack3->getPlayDataL( i );
 		s = clipping( s / 3.0 * mMainVol * mMainVolL );
 		// 左   /* 四捨五入とオフセットの調節 */
-		mLpWave[ mSetBufferIndex ][ i*2+1 ] = static_cast< short >( s + 0.5 ) - 32768;
+		mLpWave[ mSetBufferIndex ][ i * 2 + 1 ] = static_cast< short >( s + 0.5 ) - 32768;
 	}
 	waveOutWrite( mHWaveOut, &mWaveHeader[ mSetBufferIndex ], sizeof( WAVEHDR ) );
 
 	mSetBufferIndex = ( mSetBufferIndex + 1 ) % 2;
-	return 0;
+
+	return 1;
 }
 
 double SoundManager::clipping( double s )
@@ -201,7 +200,7 @@ double SoundManager::clipping( double s )
 	
 	if( s > 65535.0 ) {
 		s = 65535.0; /* クリッピング */
-	} else if (s < 0.0) {
+	} else if( s < 0.0 ) {
 		s = 0.0; /* クリッピング */
 	}
 

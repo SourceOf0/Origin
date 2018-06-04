@@ -22,9 +22,6 @@ Room1::Room1( HDC& hdc, RoomParent* parent )
 
 	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room1_2.dad" ) );
 	mBackBmp2->mUseAlpha = FALSE;
-
-	mX = ( windowWidth - mBackBmp1->mWidth ) / 2;
-	mY = ( windowHeight - mBackBmp1->mHeight ) / 2;
 }
 
 Room1::~Room1()
@@ -42,18 +39,18 @@ void Room1::update( RoomParent* parent )
 	int windowHeight = Main::SceneManager::windowHeight;
 	BOOL isClick = Main::HandManager::isClick;
 	Main::HandManager* handManager = Main::HandManager::inst();
-	int mouseX = handManager->getX() - mX;
-	int mouseY = handManager->getY() - mY;
+	int mouseX = handManager->getX();
+	int mouseY = handManager->getY();
 
 	handManager->setState( handManager->HAND_NORMAL );
 
 	if( mouseX > 380 && mouseX < 560 && mouseY > 380 && mouseY < 450 ) {
 		handManager->setState( handManager->HAND_CHECK );
 		if( isClick ) parent->moveTo( parent->SEQ_ROOM1_SYNTHE );
-	} else if( !parent->mIsCloseCurtain && mouseX > 550 && mouseX < 600 && mouseY > 100 && mouseY < 350 ) {
+	} else if( !parent->mIsCloseCurtain && mouseX > 540 && mouseX < 610 && mouseY > 80 && mouseY < 350 ) {
 		handManager->setState( handManager->HAND_HOLD_BEFORE );
 		if( isClick ) parent->mIsCloseCurtain = TRUE;
-	} else if( parent->mIsCloseCurtain && mouseX > 100 && mouseX < 600 && mouseY > 100 && mouseY < 350 ) {
+	} else if( parent->mIsCloseCurtain && mouseX >= 80 && mouseX < 610 && mouseY > 80 && mouseY < 350 ) {
 		handManager->setState( handManager->HAND_HOLD_BEFORE );
 		if( isClick ) parent->mIsCloseCurtain = FALSE;
 	} else if( mouseX < 80 ){

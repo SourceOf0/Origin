@@ -126,8 +126,9 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 	}
 	ReleaseDC( inst->mHWnd, hdc );
 
-	inst->mThreadState = 2;
 	inst->mNext = SEQ_NONE;
+	inst->mThreadState = 2;
+
 	ExitThread( 1 );
 }
 
@@ -182,16 +183,16 @@ void MainParent::draw( HDC& hdc )
 
 	if( mFadeState != 0 ) {
 		if( mFadeState == 1 ) {
-			mPrevBmp->drawWindow();
-			if( ++mFadeCount % 2 == 0 ) {
-				if( mToneIndex < TONE_NONE - 1 ) {
-					++mToneIndex;
-				} else {
-					mToneIndex = TONE_NONE - 1;
-					mFadeState = 2;
-					mFadeCount = 0;
-				}
+			if( mToneIndex < TONE_NONE - 1 ) {
+				if( ++mFadeCount % 2 == 0 ) ++mToneIndex;
+			} else if( mThreadState == 0 ) {
+				mToneIndex = TONE_NONE - 1;
+				mFadeState = 2;
+				mFadeCount = 0;
+			} else {
+				mPrevBmp->setBlack();
 			}
+			mPrevBmp->drawWindow();
 		} else if( mFadeState == 2 ) {
 			if( ++mFadeCount % 2 == 0 ) {
 				if( mToneIndex > 0 ) {
@@ -214,6 +215,12 @@ void MainParent::moveTo( SeqID next )
 {
 	mNext = next;
 }
+
+void MainParent::playSound( void )
+{
+	mRoom->playSound();
+}
+
 
 } //namespace Sequence
 

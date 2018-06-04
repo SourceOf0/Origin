@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C68238E1-5125-44A5-B441-938CA7D7BF64}</ProjectGuid>
+    <ProjectGuid>{20EDB83A-22B2-4D1D-B89B-080BE752F51E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -94,32 +94,44 @@
     <ClCompile Include="Debug2.cpp" />
     <ClCompile Include="DebugLoading.cpp" />
     <ClCompile Include="Delay.cpp" />
+    <ClCompile Include="Dial.cpp" />
     <ClCompile Include="Distortion1.cpp" />
     <ClCompile Include="Distortion2.cpp" />
     <ClCompile Include="Distortion3.cpp" />
     <ClCompile Include="EffectBase.cpp" />
     <ClCompile Include="Equalizer.cpp" />
+    <ClCompile Include="FaderH.cpp" />
+    <ClCompile Include="FaderV.cpp" />
     <ClCompile Include="HandManager.cpp" />
     <ClCompile Include="HighPassFilter.cpp" />
     <ClCompile Include="ImageFactory.cpp" />
     <ClCompile Include="LayerData.cpp" />
+    <ClCompile Include="Lever.cpp" />
     <ClCompile Include="LowPassFilter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainParent.cpp" />
     <ClCompile Include="NoiseGate.cpp" />
+    <ClCompile Include="PartsBase.cpp" />
     <ClCompile Include="PixelBitmap.cpp" />
+    <ClCompile Include="KeyButton.cpp" />
+    <ClCompile Include="PlayButton.cpp" />
     <ClCompile Include="Room1.cpp" />
     <ClCompile Include="Room2.cpp" />
     <ClCompile Include="Room3.cpp" />
     <ClCompile Include="Room4.cpp" />
     <ClCompile Include="RoomParent.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Sign.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="AutoPanButton.cpp" />
+    <ClCompile Include="TrackButton.cpp" />
+    <ClCompile Include="TimeLamp.cpp" />
     <ClCompile Include="Synthesizer.cpp" />
     <ClCompile Include="ToneFactory.cpp" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="Tremolo.cpp" />
     <ClCompile Include="Vibrato.cpp" />
+    <ClCompile Include="ViewObj.cpp" />
     <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,20 +161,27 @@
     <ClInclude Include="Debug2.h" />
     <ClInclude Include="DebugLoading.h" />
     <ClInclude Include="Delay.h" />
+    <ClInclude Include="Dial.h" />
     <ClInclude Include="Distortion1.h" />
     <ClInclude Include="Distortion2.h" />
     <ClInclude Include="Distortion3.h" />
     <ClInclude Include="EffectBase.h" />
     <ClInclude Include="Equalizer.h" />
+    <ClInclude Include="FaderH.h" />
+    <ClInclude Include="FaderV.h" />
     <ClInclude Include="HandManager.h" />
     <ClInclude Include="HighPassFilter.h" />
     <ClInclude Include="ImageFactory.h" />
     <ClInclude Include="LayerData.h" />
+    <ClInclude Include="Lever.h" />
     <ClInclude Include="LowPassFilter.h" />
     <ClInclude Include="MainChild.h" />
     <ClInclude Include="MainParent.h" />
     <ClInclude Include="NoiseGate.h" />
+    <ClInclude Include="PartsBase.h" />
     <ClInclude Include="PixelBitmap.h" />
+    <ClInclude Include="KeyButton.h" />
+    <ClInclude Include="PlayButton.h" />
     <ClInclude Include="Room1.h" />
     <ClInclude Include="Room2.h" />
     <ClInclude Include="Room3.h" />
@@ -170,8 +189,12 @@
     <ClInclude Include="RoomChild.h" />
     <ClInclude Include="RoomParent.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Sign.h" />
     <ClInclude Include="SoundBase.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="AutoPanButton.h" />
+    <ClInclude Include="TrackButton.h" />
+    <ClInclude Include="TimeLamp.h" />
     <ClInclude Include="SynthePad.h" />
     <ClInclude Include="SynthePartsInit.h" />
     <ClInclude Include="Synthesizer.h" />
@@ -180,6 +203,7 @@
     <ClInclude Include="Track.h" />
     <ClInclude Include="Tremolo.h" />
     <ClInclude Include="Vibrato.h" />
+    <ClInclude Include="ViewObj.h" />
     <ClInclude Include="Wave.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

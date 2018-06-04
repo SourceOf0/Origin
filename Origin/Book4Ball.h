@@ -37,7 +37,7 @@ void Book4::moveBallNormal( BOOL isClick, int mouseX, int mouseY )
 	int disX = mouseX - ( mBallState.x + USE_BALL_IMAGE_SIZE_HALF );
 	int disY = mouseY - ( mBallState.y + USE_BALL_IMAGE_SIZE_HALF );
 	int dis = disX * disX + disY * disY;
-	int maxDis = 50 * 50;
+	int maxDis = 60 * 60;
 	
 	if( dis < maxDis ) {
 		if( isClick ) {
@@ -122,7 +122,7 @@ void Book4::moveBallJump( BOOL isClick, int mouseX, int mouseY )
 			mBallState.vy += 1;
 			if( mBallState.x >= 470 ) {
 				mBallState.state = STATE_BALL_JUMP;
-				mBallState.vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -20 - 15 );
+				mBallState.vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -20 - 20 );
 			}
 			break;
 		case STATE_BALL_JUMP:
@@ -198,7 +198,7 @@ void Book4::resetBall( void )
 
 BOOL Book4::isHitBoard( int mouseX, int mouseY )
 {
-	if( mouseY >= mBoardState.y + 190 || mouseX >= USE_BOARD_IMAGE_SIZE + USE_BOARD_IMAGE_SIZE ) {
+	if( mouseY >= mBoardState.y + 210 || mouseX >= USE_BOARD_IMAGE_SIZE + USE_BOARD_IMAGE_SIZE ) {
 		return FALSE;
 	}
 	if( mouseY > mBoardState.y + 150 ) {
@@ -220,22 +220,22 @@ void Book4::breakBallX( void )
 		SplashState* target = &mSplashState[ i ];
 		target->x = mBallState.x - 15;
 		target->y = mBallState.y + static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 50 );
-		target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -10 - 2 );
+		target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -15 );
 		target->count = 0;
-		if( target->y < mBallState.y - 100 ) {
-			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 2 );
-			target->kind = 3;
-		} else if( target->y < mBallState.y - 50 ) {
+		if( target->y < mBallState.y + 10 ) {
 			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 4 );
-			target->kind = 4;
-		} else if( target->y < mBallState.y - 30 ) {
-			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 6 );
-			target->kind = 5;
-		} else if( target->y < mBallState.y - 10 ) {
+			target->kind = 3;
+		} else if( target->y < mBallState.y + 20 ) {
 			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 8 );
+			target->kind = 4;
+		} else if( target->y < mBallState.y + 30 ) {
+			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 12 );
+			target->kind = 5;
+		} else if( target->y < mBallState.y + 40 ) {
+			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 16 );
 			target->kind = 6;
 		} else {
-			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 10 );
+			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 20 );
 			target->kind = 7;
 		}
 	}
@@ -244,7 +244,7 @@ void Book4::breakBallX( void )
 		PieceState* target = &mPieceState[ i ];
 		target->x = mBallState.x - 15;
 		target->y = mBallState.y - static_cast< int >( static_cast< double >( rand() - RAND_MAX * 0.5 ) / ( RAND_MAX * 0.5 ) * 50 );
-		target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -20 - 1 );
+		target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -20 );
 		target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 20 );
 		target->count = 0;
 		float random = static_cast< float >( rand() ) / RAND_MAX;
@@ -267,19 +267,19 @@ void Book4::breakBallY( void )
 		target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -10 - 10 );
 		target->count = 0;
 		if( target->x < mBallState.x - 50 ) {
-			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -10 );
+			target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -20 );
 			target->kind = 4;
 		} else if( target->x < mBallState.x - 10 ) {
-			target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -5 );
+			target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -10 );
 			target->kind = 3;
 		} else if( target->x < mBallState.x + 10 ) {
 			target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -1 );
 			target->kind = 2;
 		} else if( target->x < mBallState.x + 50 ) {
-			target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 5 );
+			target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 10 );
 			target->kind = 1;
 		} else {
-			target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 10 );
+			target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 20 );
 			target->kind = 0;
 		}
 	}
@@ -295,7 +295,7 @@ void Book4::breakBallY( void )
 		} else {
 			target->vx = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * 15 );
 		}
-		target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -30 - 2 );
+		target->vy = static_cast< int >( static_cast< double >( rand() ) / RAND_MAX * -25 - 2 );
 		target->count = 0;
 		float random = static_cast< float >( rand() ) / RAND_MAX;
 		if( random < 0.3 ) {

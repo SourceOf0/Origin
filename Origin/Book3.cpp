@@ -8,7 +8,7 @@
 
 #include "DCBitmap.h"
 
-#define ANIME_SPEED 4
+#define ANIME_SPEED 3
 #define USE_IMAGE_SIZE 256
 #define USE_IMAGE_SIZE_HALF 128
 #define SET_MAX_DISTANCE 50
@@ -81,7 +81,12 @@ void Book3::update( MainParent* parent )
 	BOOL isMouseDown = Main::HandManager::isMouseDown;
 	BOOL wasHit = FALSE;
 
-	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
+	if( isMouseDown ) {
+		Main::HandManager::inst()->setState( Main::HandManager::HAND_HOLD_BEFORE );
+	} else {
+		Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
+	}
+
 	AnimeState* target = mFirstNode.next;
 	while( target != &mLastNode ) {
 		switch( target->image ) {

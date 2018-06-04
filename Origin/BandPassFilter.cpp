@@ -12,10 +12,9 @@ mDelta( 1000.0 ),
 mB( 0 ),
 mJ( 0 ),
 mX( 0 ),
-mY( 0 )
+mY( 0 ),
+EffectBase( mWaveLog )
 {
-	init( mWaveLog );
-
 	mL = WAVE_DATA_LENGTH / 10; /* ÉtÉåÅ[ÉÄÇÃí∑Ç≥ */
 	mY = new double[ mL ];
 

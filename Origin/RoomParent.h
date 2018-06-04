@@ -48,6 +48,8 @@ public:
 	void moveTo( SeqID next );
 	void setParentSeq( MainParent::SeqID setSeq );
 
+	void playSound( void );
+
 	BOOL mIsCloseCurtain;
 	BOOL mIsOnLight;
 	BOOL mIsConnectSocket;

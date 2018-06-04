@@ -22,9 +22,6 @@ Room2::Room2( HDC& hdc, RoomParent* parent )
 
 	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room2_2.dad" ) );
 	mBackBmp2->mUseAlpha = FALSE;
-
-	mX = ( windowWidth - mBackBmp1->mWidth ) / 2;
-	mY = ( windowHeight - mBackBmp1->mHeight ) / 2;
 }
 
 Room2::~Room2()
@@ -42,8 +39,8 @@ void Room2::update( RoomParent* parent )
 	int windowHeight = Main::SceneManager::windowHeight;
 	BOOL isClick = Main::HandManager::isClick;
 	Main::HandManager* handManager = Main::HandManager::inst();
-	int mouseX = handManager->getX() - mX;
-	int mouseY = handManager->getY() - mY;
+	int mouseX = handManager->getX();
+	int mouseY = handManager->getY();
 
 	handManager->setState( handManager->HAND_NORMAL );
 

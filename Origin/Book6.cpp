@@ -29,7 +29,7 @@
 
 #define BUTTON_WIDTH 200
 #define BUTTON_HEIGHT 80
-#define BUTTON_MOVE_COUNT_MAX 10 
+#define BUTTON_MOVE_COUNT_MAX 8 
 
 #define MOVE_SPEED 4
 #define TURN_SPEED 0.08

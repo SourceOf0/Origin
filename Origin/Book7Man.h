@@ -75,6 +75,8 @@ void Book7::drawMan( ManState* target )
 void Book7::moveMan( ManState* target )
 {
 	switch( target->state ) {
+		case MAN_ENTER_START:
+		case MAN_ENTER_END:
 		case MAN_WALK:
 			moveManWalk( target );
 			break;
@@ -83,12 +85,6 @@ void Book7::moveMan( ManState* target )
 			break;
 		case MAN_STAY_REST:
 			moveManRest( target );
-			break;
-		case MAN_ENTER_START:
-			moveManEnterStart( target );
-			break;
-		case MAN_ENTER_END:
-			moveManEnterEnd( target );
 			break;
 		case MAN_LADDER_UP:
 			moveManLadderUp( target );
@@ -124,6 +120,15 @@ void Book7::moveManWalk( ManState* target )
 	}
 
 	if( checkLadder( target ) ) return;
+
+	if( target->state == MAN_ENTER_START ) {
+		moveManEnterStart( target );
+		return;
+	} else if( target->state == MAN_ENTER_END ) {
+		moveManEnterEnd( target );
+		return;
+	}
+
 	if( checkEntrance( target ) ) return;
 }
 
@@ -133,17 +138,6 @@ void Book7::moveManEnterStart( ManState* target )
 	if( target->target->image != IMAGE_OBJ_ENTRANCE ) return;
 
 	int windowWidth = Main::SceneManager::windowWidth;
-
-	if( target->isLeft ) {
-		target->x -= WALK_SPEED;
-	} else {
-		target->x += WALK_SPEED;
-	}
-
-	++target->count;
-	if( target->count >= getMaxCount( target->image ) ) {
-		target->count = 0;
-	}
 
 	if( ++target->animeState < USE_OBJ_IMAGE_WIDTH_HALF ) return;
 
@@ -173,17 +167,6 @@ void Book7::moveManEnterEnd( ManState* target )
 	if( target->target->image != IMAGE_OBJ_ENTRANCE ) return;
 
 	int windowWidth = Main::SceneManager::windowWidth;
-
-	if( target->isLeft ) {
-		target->x -= WALK_SPEED;
-	} else {
-		target->x += WALK_SPEED;
-	}
-
-	++target->count;
-	if( target->count >= getMaxCount( target->image ) ) {
-		target->count = 0;
-	}
 
 	if( !checkWall( target, FALSE ) ) {
 		if( ++target->animeState < USE_OBJ_IMAGE_WIDTH_HALF ) return;
@@ -383,11 +366,10 @@ int Book7::getMaxCount( ManImageID image )
 void Book7::setManState( ManState* target, ManStateID state )
 {
 	target->animeState = 0;
-	target->state = state;
 
 	switch( state ) {
 		case MAN_WALK:
-			target->count = ANIME_SPEED * 2;
+			if( target->state != MAN_ENTER_START && target->state != MAN_ENTER_END ) target->count = ANIME_SPEED * 2;
 			target->image = IMAGE_MAN_WALK;
 			break;
 		case MAN_STAY_TURN:
@@ -411,6 +393,7 @@ void Book7::setManState( ManState* target, ManStateID state )
 			target->image = IMAGE_MAN_LADDER;
 			break;
 	}
+	target->state = state;
 }
 
 void Book7::addTarget( ManState* targetMan, ObjState* targetObj )

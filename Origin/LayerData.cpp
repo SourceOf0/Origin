@@ -37,27 +37,53 @@ void LayerData::drawWindow( int x, int y )
 	drawWindow( x, y, 0, 0, mWidth, mHeight );
 }
 
-void LayerData::drawWindow( int x, int y, int startX, int startY, int width, int height, BOOL isTransparent )
+void LayerData::drawWindow( int x, int y, int startX, int startY, int width, int height )
 {
 	int i = 1;
-	if( !isTransparent ) {
-		mViewTone->setWhite( x, y, width, height );
-		if( mUseAlpha ) {
-			if( mLayer[ 1 ] != 0 ) {
-				mLayer[ 1 ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
-			}
-			if( mLayer[ 3 ] != 0 ) {
-				mLayer[ 3 ]->drawImageAnd( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
-			}
-			mViewTone->drawWindowOr( x, y, 0, 0, width, height );
-			++i;
-		} else {
-			mViewTone->drawWindow( x, y, startX, startY, width, height );
+	mViewTone->setWhite( x, y, width, height );
+	if( mUseAlpha ) {
+		if( mLayer[ 1 ] != 0 ) {
+			mLayer[ 1 ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
 		}
+		if( mLayer[ 3 ] != 0 ) {
+			mLayer[ 3 ]->drawImageAnd( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+		}
+		mViewTone->drawWindowOr( x, y, 0, 0, width, height );
+		++i;
+	} else {
+		mViewTone->drawWindow( x, y, startX, startY, width, height );
 	}
 	
 	for( ; i < COLOR_KIND_NUM; ++ i ) {
 		if( mLayer[ i ] == 0 ) continue;
+		mViewTone->setBlack( x, y, width, height );
+		mLayer[ i ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+		mTone[ getToneID( i ) ]->drawImageOr( mViewTone->mHdcBmp, 0, 0, x, y, width, height );
+		mViewTone->drawWindowAnd( x, y, 0, 0, width, height );
+	}
+	mLayer[ 0 ]->drawWindowAnd( x, y, startX, startY, width, height );
+}
+
+
+void LayerData::drawWindow( int x, int y, int startX, int startY, int width, int height, unsigned int skipColor )
+{
+	int i = 1;
+	mViewTone->setWhite( x, y, width, height );
+	if( mUseAlpha ) {
+		if( mLayer[ 1 ] != 0 ) {
+			mLayer[ 1 ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+		}
+		if( mLayer[ 3 ] != 0 ) {
+			mLayer[ 3 ]->drawImageAnd( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+		}
+		mViewTone->drawWindowOr( x, y, 0, 0, width, height );
+		++i;
+	} else {
+		mViewTone->drawWindow( x, y, startX, startY, width, height );
+	}
+	
+	for( ; i < COLOR_KIND_NUM; ++ i ) {
+		if( mLayer[ i ] == 0 || ( ( skipColor >> i ) & 1 ) == 1 ) continue;
 		mViewTone->setBlack( x, y, width, height );
 		mLayer[ i ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
 		mTone[ getToneID( i ) ]->drawImageOr( mViewTone->mHdcBmp, 0, 0, x, y, width, height );
