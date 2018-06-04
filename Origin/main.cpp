@@ -10,11 +10,12 @@
 #include "SoundManager.h"
 
 BOOL gIsSoundThreadEnd = FALSE;
-HANDLE gHThread;
+HANDLE gHSoundThread;
+
 
 DWORD WINAPI SoundThread(LPVOID hWnd)
 {
-	while (TRUE) {
+	while( TRUE ) {
 		if( gIsSoundThreadEnd ) break;
 		Main::SoundManager::inst()->makeWave();
 		Sleep( 10 );
@@ -28,7 +29,7 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 	PAINTSTRUCT ps;
 	DWORD dwParam;
 
-	switch (msg) {
+	switch( msg ) {
 	case WM_DESTROY:
 		Main::SoundManager::destroy();
 		Main::SceneManager::destroy();
@@ -37,13 +38,14 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 		PostQuitMessage( 0 );
 
+		_CrtDumpMemoryLeaks();
 		return 0;
 
 	case WM_CREATE:
 		Main::SoundManager::create( hwnd );
 		Main::SceneManager::create( hwnd );
 
-		gHThread = CreateThread( NULL, 0, SoundThread, hwnd , 0, &dwParam );
+		gHSoundThread = CreateThread( NULL, 0, SoundThread, hwnd , 0, &dwParam );
 
 //		SetTimer( hwnd, 1, 10, NULL );	//ñ≥ë Ç…çÇë¨Ç…çƒï`âÊÇ≥ÇπÇÈ
 		SetTimer( hwnd, 1, 20, NULL );	//ñ≥ë Ç…çÇë¨Ç…çƒï`âÊÇ≥ÇπÇÈ

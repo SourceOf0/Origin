@@ -23,7 +23,7 @@ Debug1::Debug1( HDC& hdc )
 
 	Image::PixelBitmap* tempBmp;
 
-	tempBmp = new Image::PixelBitmap( windowWidth, windowHeight, windowWidth * windowHeight / 8 );
+	tempBmp = new Image::PixelBitmap( windowWidth, windowHeight );
 
 	mBackBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;

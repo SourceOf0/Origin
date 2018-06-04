@@ -2,12 +2,13 @@
 #define INCLUDED_IMAGE_DC_BITMAP_H
 
 #include <windows.h>
+#include "BitmapBase.h"
 
 namespace Image {
 
 class PixelBitmap;
 
-class DCBitmap
+class DCBitmap : public BitmapBase
 {
 public:
 	DCBitmap( HDC& hdc, PixelBitmap* target );
@@ -15,20 +16,16 @@ public:
 	~DCBitmap( void );
 
 	int setData( int index, unsigned char data );
-	int drawWindow( void );
-	int drawWindow( int x, int y );
-	int drawWindowAnd( void );
-	int drawWindowAnd( int x, int y );
-	int drawWindowOr( void );
-	int drawWindowOr( int x, int y );
-	int drawBlock( HDC& targetHdc, int x, int y, int width, int index );
-	int drawBlockAnd( HDC& targetHdc, int x, int y, int width, int index );
-	int drawBlockOr( HDC& targetHdc, int x, int y, int width, int index );
+	void drawWindow( void );
+	void drawWindow( int x, int y );
+	void drawWindowAnd( void );
+	void drawWindowAnd( int x, int y );
+	void drawWindowOr( void );
+	void drawWindowOr( int x, int y );
+	void drawBlock( HDC& targetHdc, int x, int y, int width, int index );
+	void drawBlockAnd( HDC& targetHdc, int x, int y, int width, int index );
+	void drawBlockOr( HDC& targetHdc, int x, int y, int width, int index );
 
-	float mX;
-	float mY;
-	int mWidth;
-	int mHeight;
 	HDC mHdcBmp;
 
 private:

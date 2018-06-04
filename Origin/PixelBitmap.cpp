@@ -3,17 +3,20 @@
 
 namespace Image {
 
-PixelBitmap::PixelBitmap( int width, int height, int dataLeng ) : 
+PixelBitmap::PixelBitmap( int width, int height ) : 
 mWidth( width ),
 mHeight( height ),
 mWidthIndex( width / 32 ),
 mHeightIndex( height / 32 ),
-mDataLeng( dataLeng ),
 mX( 0 ),
 mY( 0 )
 {
-	mPixelData = new unsigned char[ dataLeng ];
-	for( int i = 0; i < dataLeng; ++i ) {
+	unsigned int bmpSize = width * height;
+	unsigned int bitDataLeng = ( bmpSize % 32 == 0) ? bmpSize / 32 : (int)( bmpSize / 32 ) + 1;
+	mDataLeng = bitDataLeng * 4;
+
+	mPixelData = new unsigned char[ mDataLeng ];
+	for( unsigned int i = 0; i < mDataLeng; ++i ) {
 		mPixelData[i] = 0;
 	}
 }
@@ -34,13 +37,17 @@ char PixelBitmap::getBit( int x, int y )
 
 }
 
-int PixelBitmap::setData( int index, unsigned char data )
+int PixelBitmap::setData( unsigned int index, unsigned char data )
 {
-	mPixelData[index] = data;
+	if( index >= mDataLeng ) {
+		return 1;
+	}
+	mPixelData[ index ] = data;
 	return 0;
 }
 int PixelBitmap::setBlack( int x, int y )
 {
+	return 0;
 	if( x < 0 || y < 0 ) return 1;
 	unsigned int index = ( y * mWidth + x ) / 8;
 	int sift = 7 - ( y * mWidth + x ) % 8;

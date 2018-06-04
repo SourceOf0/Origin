@@ -4,25 +4,19 @@
 
 namespace Image {
 
-CmpBitmap::CmpBitmap( unsigned int width, unsigned int height, char colorNum ) :
-mX( 0 ),
-mY( 0 ),
-mWidth( width ),
-mHeight( height ),
+CmpBitmap::CmpBitmap( unsigned int width, unsigned int height, char colorNum, unsigned int dataNum ) :
 mColorNum( colorNum ),
-mUseColor( 0 ),
-mFirstNode( 0 ),
-mNowNode( 0 )
+mMaxDataNum( dataNum ),
+mSetDataNum( 0 )
 {
-	mFirstNode = new ColorNode();
-	mFirstNode->color = CLR_OTHER;
-	mFirstNode->count = 0;
-	mFirstNode->next = 0;
-	mNowNode = mFirstNode;
+	init( width, height );
 
-	unsigned int bmpSize = width * height;
-	unsigned int bitDataLeng = ( bmpSize % 32 == 0) ? bmpSize / 32 : (int)( bmpSize / 32 ) + 1;
-	mPixelBitmap = new Image::PixelBitmap( width, height, bitDataLeng * 4 );
+	mColorData = new ColorData*[ dataNum ];
+	for( unsigned int i = 0; i < dataNum; ++i ) {
+		mColorData[ i ] = 0;
+	}
+
+	mPixelBitmap = new Image::PixelBitmap( width, height );
 
 	mLayer = new DCBitmap*[ colorNum ];
 	for( int i = 0; i < colorNum; ++i ) {
@@ -33,22 +27,33 @@ mNowNode( 0 )
 CmpBitmap::~CmpBitmap( void )
 {
 	for( int i = 0; i < mColorNum; ++i ) {
-		if( mLayer[ i ] != 0 ) {
-			delete mLayer[ i ];
-			mLayer[ i ] = 0;
-		}
+		delete mLayer[ i ];
+		mLayer[ i ] = 0;
 	}
 
 	delete[] mLayer;
 	mLayer = 0;
+
+	for( unsigned int i = 0; i < mSetDataNum; ++i ) {
+		if( mColorData[ i ] != 0 ) {
+			delete mColorData[ i ];
+			mColorData[ i ] = 0;
+		}
+	}
+
+	delete[] mColorData;
+	mColorData = 0;
+
+	if( mPixelBitmap != 0 ) {
+		delete mPixelBitmap;
+		mPixelBitmap = 0;
+	}
 }
 
 int CmpBitmap::setData( unsigned char color, unsigned int count )
 {
 	ColorID setColor = CLR_OTHER;
-
-	mNowNode->next = new ColorNode();
-	mNowNode = mNowNode->next;
+	ColorData* setData = new ColorData();
 
 	switch( color ) {
 		case 0:
@@ -80,8 +85,10 @@ int CmpBitmap::setData( unsigned char color, unsigned int count )
 			break;
 	}
 	mUseColor |= setColor;
-	mNowNode->color = setColor;
-	mNowNode->count = count;
+	setData->color = setColor;
+	setData->count = count;
+
+	mColorData[ mSetDataNum++ ] = setData;
 
 	return 0;
 }
@@ -89,8 +96,9 @@ int CmpBitmap::setData( unsigned char color, unsigned int count )
 int CmpBitmap::drawData( HDC& hdc )
 {
 	ColorID targetColor = CLR_BLACK;
+	ColorData* targetData = 0; 
 	unsigned int index = 0;
-	int setIndex = 0;
+	int setLayerIndex = 0;
 
 	for( int i = 0; i < mColorNum; ++i ) {
 		while( ( mUseColor & targetColor ) == 0 ) {
@@ -98,31 +106,27 @@ int CmpBitmap::drawData( HDC& hdc )
 			continue;
 		}
 		index = 0;
-		mNowNode = mFirstNode->next;
-		while( mNowNode != 0 ) {
-			if( mNowNode->color == targetColor ) {
-				for( unsigned int j = mNowNode->count - 1; j != 0xFFFFFFFF; --j ) {
+		for( unsigned int j = 0; j < mSetDataNum; ++j ) {
+			targetData = mColorData[ j ];
+			if( targetData->color == targetColor ) {
+				for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
 					mPixelBitmap->setBlack( index );
 					++index;
 				}
 			} else {
-				for( unsigned int j = mNowNode->count - 1; j != 0xFFFFFFFF; --j ) {
+				for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
 					mPixelBitmap->setWhite( index );
 					++index;
 				}
 			}
-			mNowNode = mNowNode->next;
 		}
-		mLayer[ setIndex++ ] = new DCBitmap( hdc, mPixelBitmap );
+		mLayer[ setLayerIndex++ ] = new DCBitmap( hdc, mPixelBitmap );
 		targetColor = ( ColorID )( targetColor << 1 );
 	}
 
-	ColorNode* target = mFirstNode;
-
-	while( target != 0 ) {
-		mNowNode = target->next;
-		delete target;
-		target = mNowNode;
+	for( unsigned int i = 0; i < mSetDataNum; ++i ) {
+		delete mColorData[ i ];
+		mColorData[ i ] = 0;
 	}
 
 	delete mPixelBitmap;
@@ -133,18 +137,18 @@ int CmpBitmap::drawData( HDC& hdc )
 
 int CmpBitmap::drawData( PixelBitmap* target )
 {
+	ColorData* targetData = 0; 
 	unsigned int index = 0;
 
-	mNowNode = mFirstNode->next;
-
-	while( mNowNode != 0 ) {
-		if( mNowNode->color == CLR_WHITE ) {
-			for( unsigned int j = mNowNode->count - 1; j != 0xFFFFFFFF; --j ) {
+	for( unsigned int j = 0; j < mSetDataNum; ++j ) {
+		targetData = mColorData[ j ];
+		if( targetData->color == CLR_WHITE ) {
+			for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
 				target->setWhite( index );
 				++index;
 			}
-		} else if( mNowNode->color != CLR_BLACK ) {
-			for( unsigned int j = mNowNode->count - 1; j != 0xFFFFFFFF; --j ) {
+		} else if( targetData->color != CLR_BLACK ) {
+			for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
 				if( index % 3 != 0 ) {
 					target->setWhite( index );
 				} else {
@@ -153,25 +157,31 @@ int CmpBitmap::drawData( PixelBitmap* target )
 				++index;
 			}
 		} else {
-			for( unsigned int j = mNowNode->count - 1; j != 0xFFFFFFFF; --j ) {
+			for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
 				target->setBlack( index );
 				++index;
 			}
 		}
-		mNowNode = mNowNode->next;
 	}
 	return 0;
 }
 
-int CmpBitmap::drawWindow( void )
+void CmpBitmap::drawWindow( void )
 {
 	mLayer[ 1 ]->drawWindowOr( (int)( mX + 0.5 ), (int)( mY + 0.5 ) );
 	mLayer[ 0 ]->drawWindowAnd( (int)( mX + 0.5 ), (int)( mY + 0.5 ) );
 /*	for( int i = 2; i < mColorNum; ++ i ) {
 		mLayer[ i ]->drawWindowAnd( mX + 0.5, mY + 0.5 );
 	}*/
-	return 0;
 }
 
+void CmpBitmap::drawWindow( int x, int y )
+{
+	mLayer[ 1 ]->drawWindowOr( x, y );
+	mLayer[ 0 ]->drawWindowAnd( x, y );
+/*	for( int i = 2; i < mColorNum; ++ i ) {
+		mLayer[ i ]->drawWindowAnd( x, y );
+	}*/
+}
 
 } // namespace Image

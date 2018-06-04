@@ -7,7 +7,7 @@
 
 namespace Image {
 	class DCBitmap;
-	class CmpBitmap;
+	class BitmapBase;
 }
 
 namespace Sequence {
@@ -31,10 +31,10 @@ private:
 
 	int setPointMask( void );
 
-	Image::CmpBitmap* mTempBmp;
-	Image::DCBitmap* mBackBmp1;
-	Image::DCBitmap* mBackBmp2;
-	Image::DCBitmap* mBackBmp3;
+	Image::BitmapBase* mTempBmp;
+	Image::BitmapBase* mBackBmp1;
+	Image::BitmapBase* mBackBmp2;
+	Image::BitmapBase* mBackBmp3;
 	Image::DCBitmap* mFrontBmp;
 	Image::DCBitmap* mMaskBmp;
 	Image::DCBitmap* mMaskBlockBmp;

@@ -8,17 +8,18 @@ namespace Image {
 class PixelBitmap
 {
 public:
-	PixelBitmap( int width, int height, int dataLeng );
+	PixelBitmap( int width, int height );
 	~PixelBitmap( void );
 
+	int drawWindow( void );
+
 	char getBit( int x, int y );
-	int setData( int index, unsigned char data );
+	int setData( unsigned int index, unsigned char data );
 	int setBlack( int x, int y );
 	int setBlack( unsigned int index );
 	int setWhite( int x, int y );
 	int setWhite( unsigned int index );
 	int setRev( int x, int y );
-	int drawWindow( void );
 
 	float mX;
 	float mY;

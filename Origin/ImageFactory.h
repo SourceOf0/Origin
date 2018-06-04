@@ -7,6 +7,7 @@ namespace Image {
 	class DCBitmap;
 	class PixelBitmap;
 	class CmpBitmap;
+	class BitmapBase;
 }
 
 namespace Main {
@@ -20,6 +21,7 @@ public:
 
 	Image::DCBitmap* loadDC( HDC& hdc, const char* fileName );
 	Image::CmpBitmap* loadCmp( HDC& hdc, const char* fileName );
+	Image::BitmapBase* load( HDC& hdc, const char* fileName );
 
 private:
 	ImageFactory( void );
