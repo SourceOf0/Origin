@@ -34,25 +34,26 @@ Title::Title( HDC& hdc )
 
 	Image::PixelBitmap* tempBmp;
 
-	tempBmp = imageFactory->load( "pic03.dad" );
+//	tempBmp = imageFactory->load( "resource\\pic03.dad" );
+	tempBmp = imageFactory->load( "resource\\test.dad" );
 	mBackBmp1 = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 	mBackBmp1->mX = ( float )( windowWidth - mBackBmp1->mWidth ) / 2;
 	mBackBmp1->mY = ( float )( windowHeight - mBackBmp1->mHeight ) / 2;
 
-	tempBmp = imageFactory->load( "pic02.dad" );
+	tempBmp = imageFactory->load( "resource\\pic02.dad" );
 	mBackBmp2 = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 	mBackBmp2->mX = ( float )( windowWidth - mBackBmp2->mWidth ) / 2;
 	mBackBmp2->mY = ( float )( windowHeight - mBackBmp2->mHeight ) / 2;
 
-	tempBmp = imageFactory->load( "pic01.dad" );
+	tempBmp = imageFactory->load( "resource\\pic01.dad" );
 	mBackBmp3 = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 	mBackBmp3->mX = ( float )( windowWidth - mBackBmp3->mWidth ) / 2;
 	mBackBmp3->mY = ( float )( windowHeight - mBackBmp3->mHeight ) / 2;
 
-	tempBmp = imageFactory->load( "frame.dad" );
+	tempBmp = imageFactory->load( "resource\\frame.dad" );
 	mFrontBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 	mFrontBmp->mX = ( float )( windowWidth - mFrontBmp->mWidth ) / 2;
@@ -62,11 +63,11 @@ Title::Title( HDC& hdc )
 	mMaskBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 
-	tempBmp = imageFactory->load( "smallFilter.dad" );
+	tempBmp = imageFactory->load( "resource\\smallFilter.dad" );
 	mMaskBlockBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 
-	tempBmp = imageFactory->load( "pointMask.dad" );
+	tempBmp = imageFactory->load( "resource\\pointMask.dad" );
 	mPointBmp = new Image::DCBitmap( hdc, tempBmp );
 	delete tempBmp;
 

@@ -1,5 +1,5 @@
-#ifndef INCLUDED_COMMON_PIXEL_BITMAP_H
-#define INCLUDED_COMMON_PIXEL_BITMAP_H
+#ifndef INCLUDED_IMAGE_PIXEL_BITMAP_H
+#define INCLUDED_IMAGE_PIXEL_BITMAP_H
 
 #include <windows.h>
 
@@ -14,7 +14,9 @@ public:
 	char getBit( int x, int y );
 	int setData( int index, unsigned char data );
 	int setBlack( int x, int y );
+	int setBlack( unsigned int index );
 	int setWhite( int x, int y );
+	int setWhite( unsigned int index );
 	int setRev( int x, int y );
 	int drawWindow( void );
 
@@ -27,9 +29,9 @@ public:
 private:
 	int mWidthIndex;
 	int mHeightIndex;
-	int mDataLeng;
+	unsigned int mDataLeng;
 };
 
 } // namespace Image
 
-#endif // INCLUDED_COMMON_PIXEL_BITMAP_H
+#endif // INCLUDED_IMAGE_PIXEL_BITMAP_H

@@ -10,7 +10,6 @@ class Track;
 class Delay : public EffectBase
 {
 public:
-//	Delay( void );
 	Delay( double** setWaveLog );
 	~Delay( void );
 

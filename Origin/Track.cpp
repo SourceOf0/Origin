@@ -9,6 +9,7 @@
 #include "Compressor.h"
 #include "Tremolo.h"
 #include "Delay.h"
+#include "Chorus.h"
 
 namespace Sound {
 
@@ -131,6 +132,9 @@ int Track::addEffect( EffectID id )
 			break;
 		case EFFECT_DELAY:
 			newEffect = new Sound::Delay( mWaveLog );
+			break;
+		case EFFECT_CHORUS:
+			newEffect = new Sound::Chorus( mWaveLog );
 			break;
 		default:
 			return 1;

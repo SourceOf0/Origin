@@ -16,7 +16,7 @@ public:
 	static void create( void );
 	static void destroy( void );
 
-	Image::PixelBitmap* load( const char* outfile );
+	Image::PixelBitmap* load( const char* fileName );
 
 private:
 	ImageFactory( void );

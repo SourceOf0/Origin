@@ -26,9 +26,10 @@ PixelBitmap::~PixelBitmap( void )
 
 char PixelBitmap::getBit( int x, int y )
 {
-	int index = ( y * mWidth + x ) / 8;
+	if( x < 0 || y < 0 ) return 1;
+	unsigned int index = ( y * mWidth + x ) / 8;
 	int sift = 7 - ( y * mWidth + x ) % 8;
-	if( index < 0 || index >= mDataLeng ) return -1;
+	if( index >= mDataLeng ) return -1;
 	return ( ( mPixelData[index] & ( 1 << sift ) ) > 0 ) ? 1 : 0;
 
 }
@@ -40,25 +41,44 @@ int PixelBitmap::setData( int index, unsigned char data )
 }
 int PixelBitmap::setBlack( int x, int y )
 {
-	int index = ( y * mWidth + x ) / 8;
+	if( x < 0 || y < 0 ) return 1;
+	unsigned int index = ( y * mWidth + x ) / 8;
 	int sift = 7 - ( y * mWidth + x ) % 8;
-	if( index < 0 || index >= mDataLeng ) return 1;
-	mPixelData[index] &= ~( 1 << sift );
+	if( index >= mDataLeng ) return 1;
+	mPixelData[ index ] &= ~( 1 << sift );
+	return 0;
+}
+int PixelBitmap::setBlack( unsigned int index )
+{
+	unsigned int dataIndex = index / 8;
+	int sift = 7 - index % 8;
+	if( dataIndex >= mDataLeng ) return 1;
+	mPixelData[ dataIndex ] &= ~( 1 << sift );
 	return 0;
 }
 int PixelBitmap::setWhite( int x, int y )
 {
-	int index = ( y * mWidth + x ) / 8;
+	if( x < 0 || y < 0 ) return 1;
+	unsigned int index = ( y * mWidth + x ) / 8;
 	int sift = 7 - ( y * mWidth + x ) % 8;
-	if( index < 0 || index >= mDataLeng ) return 1;
-	mPixelData[index] |= 1 << sift;
+	if( index >= mDataLeng ) return 1;
+	mPixelData[ index ] |= 1 << sift;
+	return 0;
+}
+int PixelBitmap::setWhite( unsigned int index )
+{
+	unsigned int dataIndex = index / 8;
+	int sift = 7 - index % 8;
+	if( dataIndex >= mDataLeng ) return 1;
+	mPixelData[ dataIndex ] |= 1 << sift;
 	return 0;
 }
 int PixelBitmap::setRev( int x, int y )
 {
-	int index = ( y * mWidth + x ) / 8;
+	if( x < 0 || y < 0 ) return 1;
+	unsigned int index = ( y * mWidth + x ) / 8;
 	int sift = 7 - ( y * mWidth + x ) % 8;
-	if( index < 0 || index >= mDataLeng ) return 1;
+	if( index >= mDataLeng ) return 1;
 	mPixelData[index] ^= ( 1 << sift );
 	return 0;
 }

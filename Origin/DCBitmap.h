@@ -1,5 +1,5 @@
-#ifndef INCLUDED_COMMON_DC_BITMAP_H
-#define INCLUDED_COMMON_DC_BITMAP_H
+#ifndef INCLUDED_IMAGE_DC_BITMAP_H
+#define INCLUDED_IMAGE_DC_BITMAP_H
 
 #include <windows.h>
 
@@ -32,4 +32,4 @@ private:
 
 } // namespace Image
 
-#endif // INCLUDED_COMMON_DC_BITMAP_H
+#endif // INCLUDED_IMAGE_DC_BITMAP_H

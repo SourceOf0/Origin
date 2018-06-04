@@ -44,12 +44,10 @@ SoundManager::SoundManager( HWND& hwnd )
 	mTrack2 = new Sound::Track();
 
 	mTrack1->setWave( WAVE_SAWTOOTH );
-//	mTrack1->addEffect( EFFECT_TREMOLO );
-	mTrack1->addEffect( EFFECT_DELAY );
+	mTrack1->addEffect( EFFECT_CHORUS );
 	
 	mTrack2->setWave( WAVE_SAWTOOTH );
-//	mTrack2->addEffect( EFFECT_TREMOLO );
-	mTrack2->addEffect( EFFECT_DELAY );
+	mTrack2->addEffect( EFFECT_CHORUS );
 
 	wfe.wFormatTag = WAVE_FORMAT_PCM;
 	wfe.nChannels = CHANNEL;	//ステレオ
@@ -185,7 +183,8 @@ int SoundManager::makeWave( void )
 //	mTrack2->getEffect(0)->mSetNum1 += 0.0001;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = clipping( ( wave1[i] + wave2[i] ) / 2 );
+//		double s = clipping( ( wave1[i] + wave2[i] ) / 2 );
+		double s = clipping( ( wave1[i] ) / 2 );
 		short data = static_cast<short>( s + 0.5 ) - 32768; /* 四捨五入とオフセットの調節 */
 		// 右
 		mLpWave[mSetBufferIndex][i*4] = static_cast<char>(data & 0 << 8);
