@@ -33,7 +33,7 @@ char PixelBitmap::getBit( int x, int y )
 	unsigned int index = ( y * mWidth + x ) / 8;
 	int sift = 7 - ( y * mWidth + x ) % 8;
 	if( index >= mDataLeng ) return -1;
-	return ( ( mPixelData[index] & ( 1 << sift ) ) > 0 ) ? 1 : 0;
+	return ( ( mPixelData[ index ] & ( 1 << sift ) ) > 0 ) ? 1 : 0;
 
 }
 

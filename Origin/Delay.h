@@ -17,14 +17,9 @@ public:
 	void apply( Track* track );
 
 private:
-	double getPrevData( int prevIndex );
-
 	double mA;			/* Œ¸Š—¦ */
 	double mDelayTime;	/* ’x‰„ŠÔ */
 	int mRepeat;		/* ŒJ‚è•Ô‚µ‰ñ” */
-
-	int mLogIndex;
-	double** mWaveLog;
 };
 
 } // namespace Sound

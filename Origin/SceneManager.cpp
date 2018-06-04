@@ -45,8 +45,8 @@ SceneManager::SceneManager( HWND& hwnd )
 	ImageFactory::create();
 
 	hdc = GetDC(hwnd);
-	mWindowWidth = GetDeviceCaps(hdc, HORZRES);
-	mWindowHeight = GetDeviceCaps(hdc, VERTRES);
+	mWindowWidth = GetDeviceCaps( hdc, HORZRES );
+	mWindowHeight = GetDeviceCaps( hdc, VERTRES );
 
 	mBmpInfo = ( BITMAPINFO * )malloc( sizeof( BITMAPINFOHEADER ) + sizeof( RGBQUAD ) * 2 );
 	mBmpInfo->bmiHeader.biSize = sizeof( BITMAPINFOHEADER );

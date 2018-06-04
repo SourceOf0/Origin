@@ -10,8 +10,8 @@ MainParent::MainParent( HDC& hdc ) :
 mChild(),
 mNext( SEQ_NONE )
 {
-	mChild = new Title( hdc );
-//	mChild = new Debug1( hdc );
+//	mChild = new Title( hdc );
+	mChild = new Debug1( hdc );
 }
 
 MainParent::~MainParent( void )

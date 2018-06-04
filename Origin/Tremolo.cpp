@@ -1,5 +1,4 @@
 #include "Tremolo.h"
-#include "SoundBase.h"
 #include "Track.h"
 
 #define _USE_MATH_DEFINES

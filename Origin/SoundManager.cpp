@@ -44,10 +44,14 @@ SoundManager::SoundManager( HWND& hwnd )
 	mTrack2 = new Sound::Track();
 
 	mTrack1->setWave( WAVE_SAWTOOTH );
-	mTrack1->addEffect( EFFECT_CHORUS );
+	mTrack1->addEffect( EFFECT_DELAY );
+	mTrack1->addEffect( EFFECT_VIBRATO );
+	mTrack1->addEffect( EFFECT_LOW_PASS_FILTER );
 	
 	mTrack2->setWave( WAVE_SAWTOOTH );
-	mTrack2->addEffect( EFFECT_CHORUS );
+	mTrack2->addEffect( EFFECT_DELAY );
+	mTrack2->addEffect( EFFECT_VIBRATO );
+	mTrack2->addEffect( EFFECT_LOW_PASS_FILTER );
 
 	wfe.wFormatTag = WAVE_FORMAT_PCM;
 	wfe.nChannels = CHANNEL;	//ステレオ
@@ -85,11 +89,11 @@ SoundManager::~SoundManager( void )
 
 	waveOutReset( mHWaveOut );
 	for( int i = 0; i < 2; ++i ) {
-		waveOutUnprepareHeader( mHWaveOut, &mWaveHeader[i], sizeof(WAVEHDR) );
+		waveOutUnprepareHeader( mHWaveOut, &mWaveHeader[ i ], sizeof(WAVEHDR) );
 	}
 	waveOutClose( mHWaveOut );
 	for( int i = 0; i < 2; ++i ) {
-		delete[] mLpWave[i];
+		delete[] mLpWave[ i ];
 	}
 
 	delete mTrack1;
@@ -102,8 +106,8 @@ SoundManager::~SoundManager( void )
 int SoundManager::play( void )
 {
 	mIsPlay = TRUE;
-	mTrack1->setF( 300 );
-	mTrack2->setF( 250 );
+	mTrack1->setF( 400 );
+	mTrack2->setF( 350 );
 	
 	++test;
 	switch( test ) {
@@ -176,24 +180,24 @@ int SoundManager::makeWave( void )
 	mTrack1->update();
 	mTrack2->update();
 
-	double* wave1 = mTrack1->getWaveData();
-	double* wave2 = mTrack2->getWaveData();
+	double* wave1 = mTrack1->getPlayData();
+	double* wave2 = mTrack2->getPlayData();
 
 //	mTrack1->getEffect(0)->mSetNum1 += 0.0001;
 //	mTrack2->getEffect(0)->mSetNum1 += 0.0001;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-//		double s = clipping( ( wave1[i] + wave2[i] ) / 2 );
-		double s = clipping( ( wave1[i] ) / 2 );
+		double s = clipping( ( wave1[ i ] + wave2[ i ] ) / 2 );
+//		double s = clipping( wave1[ i ] );
 		short data = static_cast<short>( s + 0.5 ) - 32768; /* 四捨五入とオフセットの調節 */
 		// 右
-		mLpWave[mSetBufferIndex][i*4] = static_cast<char>(data & 0 << 8);
-		mLpWave[mSetBufferIndex][i*4+1] = static_cast<char>(data >> 8);
+		mLpWave[ mSetBufferIndex ][ i*4 ] = static_cast<char>(data & 0 << 8);
+		mLpWave[ mSetBufferIndex ][ i*4+1 ] = static_cast<char>(data >> 8);
 		// 左
-		mLpWave[mSetBufferIndex][i*4+2] = static_cast<char>(data & 0 << 8);
-		mLpWave[mSetBufferIndex][i*4+3] = static_cast<char>(data >> 8);
+		mLpWave[ mSetBufferIndex ][ i*4+2 ] = static_cast<char>(data & 0 << 8);
+		mLpWave[ mSetBufferIndex ][ i*4+3 ] = static_cast<char>(data >> 8);
 	}
-	waveOutWrite( mHWaveOut, &mWaveHeader[mSetBufferIndex], sizeof(WAVEHDR) );
+	waveOutWrite( mHWaveOut, &mWaveHeader[ mSetBufferIndex ], sizeof(WAVEHDR) );
 
 	mSetBufferIndex = ( mSetBufferIndex + 1 ) % 2;
 
@@ -203,7 +207,7 @@ int SoundManager::makeWave( void )
 double SoundManager::clipping( double s )
 {
 	s = ( s + 1.0 ) / 2.0 * 65536.0;
-			
+	
 	if( s > 65535.0 ) {
 		s = 65535.0; /* クリッピング */
 	} else if (s < 0.0) {

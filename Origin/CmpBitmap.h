@@ -15,9 +15,14 @@ public:
 	CmpBitmap( unsigned int width, unsigned int height, char colorNum, unsigned int dataNum );
 	~CmpBitmap( void );
 
-	int setData( unsigned char color, unsigned int count );
-	int drawData( PixelBitmap* target );
-	int drawData( HDC& hdc );
+	static ColorID getColor( unsigned char color );
+	static unsigned int setBlack( PixelBitmap* target, unsigned int count, unsigned int index );
+	static unsigned int setWhite( PixelBitmap* target, unsigned int count, unsigned int index );
+	static unsigned int setTone( PixelBitmap* target, unsigned int count, unsigned int index );
+
+	DCBitmap* getDCBitmap( HDC& hdc );
+	void setData( unsigned char color, unsigned int count );
+	void drawData( HDC& hdc );
 
 	void drawWindow( void );
 	void drawWindow( int x, int y );
@@ -31,7 +36,6 @@ private :
 	} ColorData;
 
 	DCBitmap** mLayer;
-	PixelBitmap* mPixelBitmap;
 
 	unsigned int mMaxDataNum;
 	unsigned int mSetDataNum;

@@ -42,12 +42,14 @@ Image::DCBitmap* ImageFactory::loadDC( HDC& hdc, const char* fileName )
 	unsigned int setData;
 	int bmpWidth, bmpHeight, bmpSize, dataLeng, bitDataLeng;
 	unsigned char ver, colorNum;
-	Image::PixelBitmap* pixelData;
 	Image::DCBitmap* ret;
 
 	ifstream fin( fileName, ios::in | ios::binary );
 
-    if( !fin ) return NULL;
+    if( !fin ) {
+		MessageBox( NULL, TEXT( "ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
 
 	fin.read( ( char* )&bmpWidth, sizeof( int ) );
 	fin.read( ( char* )&bmpHeight, sizeof( int ) );
@@ -58,7 +60,8 @@ Image::DCBitmap* ImageFactory::loadDC( HDC& hdc, const char* fileName )
 
 	bmpSize = bmpWidth * bmpHeight;
 	bitDataLeng = ( bmpSize % 32 == 0) ? bmpSize / 32 : (int)( bmpSize / 32 ) + 1;
-	pixelData = new Image::PixelBitmap( bmpWidth, bmpHeight );
+
+	Image::PixelBitmap* pixelData = new Image::PixelBitmap( bmpWidth, bmpHeight );
 
 	if( ver == 0 ) {
 		for( int i = 0; i < bitDataLeng; ++i ) {
@@ -71,25 +74,30 @@ Image::DCBitmap* ImageFactory::loadDC( HDC& hdc, const char* fileName )
 			fin.read( ( char * )&setData, sizeof( char ) );
 			pixelData->setData( i*4 + 3, setData );
 		}
+		ret = new Image::DCBitmap( hdc, pixelData );
 	} else if( ver == 1 ) {
-		Image::CmpBitmap* loadData = new Image::CmpBitmap( bmpWidth, bmpHeight, colorNum, dataLeng );
-		
+		unsigned int index = 0;
 		for( int i = 0; i < dataLeng; ++i ) {
 			fin.read( ( char * )&setData, sizeof( unsigned int ) );
-			loadData->setData( (ColorID)( setData >> 28 ), setData & 0x0FFFFFFF );
+			switch( Image::CmpBitmap::getColor( setData >> 28 ) ) {
+				case CLR_WHITE:
+					index += Image::CmpBitmap::setWhite( pixelData, setData & 0x0FFFFFFF, index );
+					break;
+				case CLR_BLACK:
+					index += Image::CmpBitmap::setBlack( pixelData, setData & 0x0FFFFFFF, index );
+					break;
+				default:
+					index += Image::CmpBitmap::setTone( pixelData, setData & 0x0FFFFFFF, index );
+					break;
+			}
 		}
-		loadData->drawData( pixelData );
-
-		delete loadData;
-		loadData = 0;
+		ret = new Image::DCBitmap( hdc, pixelData );
 	}
-
-	fin.close();  //ファイルを閉じる
-
-	ret = new Image::DCBitmap( hdc, pixelData );
 
 	delete pixelData;
 	pixelData = 0;
+
+	fin.close();  //ファイルを閉じる
 
 	return ret;
 }
@@ -134,7 +142,7 @@ Image::BitmapBase* ImageFactory::load( HDC& hdc, const char* fileName )
 	unsigned int setData;
 	unsigned int bmpWidth, bmpHeight, dataLeng;
 	unsigned char ver, colorNum;
-	Image::BitmapBase* ret;
+	Image::BitmapBase* ret = 0;
 
 	ifstream fin( fileName, ios::in | ios::binary );
 
@@ -175,13 +183,9 @@ Image::BitmapBase* ImageFactory::load( HDC& hdc, const char* fileName )
 			cmpBitmap->setData( (ColorID)( setData >> 28 ), setData & 0x0FFFFFFF );
 		}
 		if( cmpBitmap->mUseColor == ( CLR_BLACK | CLR_WHITE ) ) {
-			Image::PixelBitmap* pixelData = new Image::PixelBitmap( bmpWidth, bmpHeight );
-			cmpBitmap->drawData( pixelData );
-			ret = new Image::DCBitmap( hdc, pixelData );
+			ret = cmpBitmap->getDCBitmap( hdc );
 			delete cmpBitmap;
 			cmpBitmap = 0;
-			delete pixelData;
-			pixelData = 0;
 		} else {
 			cmpBitmap->drawData( hdc );
 			ret = cmpBitmap;

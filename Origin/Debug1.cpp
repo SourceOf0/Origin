@@ -18,16 +18,7 @@ Debug1::Debug1( HDC& hdc )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 	Main::SceneManager* sceneManager = Main::SceneManager::inst();
-	int windowWidth = sceneManager->mWindowWidth;
-	int windowHeight = sceneManager->mWindowHeight;
-
-	Image::PixelBitmap* tempBmp;
-
-	tempBmp = new Image::PixelBitmap( windowWidth, windowHeight );
-
-	mBackBmp = new Image::DCBitmap( hdc, tempBmp );
-	delete tempBmp;
-
+	mBackBmp = new Image::DCBitmap( hdc, sceneManager->mWindowWidth, sceneManager->mWindowHeight );
 }
 
 Debug1::~Debug1()
@@ -41,8 +32,8 @@ void Debug1::update( MainParent* parent )
 	if( !Main::SceneManager::inst()->mIsAddWave ) return;
 
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
-	double* waveLog1 = soundManager->getTrack(1)->getWaveData();
-	double* waveLog2 = soundManager->getTrack(2)->getWaveData();
+	double* waveLog1 = soundManager->getTrack(1)->getPlayData();
+	double* waveLog2 = soundManager->getTrack(2)->getPlayData();
 
 	HPEN hPen1 = CreatePen( PS_SOLID, 1, RGB(255, 255, 255) );
 	HPEN hPen2 = CreatePen( PS_SOLID, 1, RGB(0, 0, 0) );

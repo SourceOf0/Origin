@@ -16,8 +16,6 @@ mSetDataNum( 0 )
 		mColorData[ i ] = 0;
 	}
 
-	mPixelBitmap = new Image::PixelBitmap( width, height );
-
 	mLayer = new DCBitmap*[ colorNum ];
 	for( int i = 0; i < colorNum; ++i ) {
 		mLayer[ i ] = 0;
@@ -43,17 +41,11 @@ CmpBitmap::~CmpBitmap( void )
 
 	delete[] mColorData;
 	mColorData = 0;
-
-	if( mPixelBitmap != 0 ) {
-		delete mPixelBitmap;
-		mPixelBitmap = 0;
-	}
 }
 
-int CmpBitmap::setData( unsigned char color, unsigned int count )
+ColorID CmpBitmap::getColor( unsigned char color )
 {
 	ColorID setColor = CLR_OTHER;
-	ColorData* setData = new ColorData();
 
 	switch( color ) {
 		case 0:
@@ -84,17 +76,85 @@ int CmpBitmap::setData( unsigned char color, unsigned int count )
 			setColor = CLR_OTHER;
 			break;
 	}
+
+	return setColor;
+}
+
+unsigned int CmpBitmap::setBlack( PixelBitmap* target, unsigned int count, unsigned int index )
+{
+	for( unsigned int i = count - 1; i != 0xFFFFFFFF; --i ) {
+		target->setBlack( index );
+		++index;
+	}
+	return count;
+}
+
+unsigned int CmpBitmap::setWhite( PixelBitmap* target, unsigned int count, unsigned int index )
+{
+	for( unsigned int i = count - 1; i != 0xFFFFFFFF; --i ) {
+		target->setWhite( index );
+		++index;
+	}
+	return count;
+}
+
+unsigned int CmpBitmap::setTone( PixelBitmap* target, unsigned int count, unsigned int index )
+{
+	for( unsigned int i = count - 1; i != 0xFFFFFFFF; --i ) {
+		if( index % 3 != 0 ) {
+			target->setWhite( index );
+		} else {
+			target->setBlack( index );
+		}
+		++index;
+	}
+	return count;
+}
+
+void CmpBitmap::setData( unsigned char color, unsigned int count )
+{
+	ColorData* setData = new ColorData();
+	ColorID setColor = getColor( color );
+
 	mUseColor |= setColor;
 	setData->color = setColor;
 	setData->count = count;
 
 	mColorData[ mSetDataNum++ ] = setData;
-
-	return 0;
 }
 
-int CmpBitmap::drawData( HDC& hdc )
+DCBitmap* CmpBitmap::getDCBitmap( HDC& hdc )
 {
+	PixelBitmap* target = new Image::PixelBitmap( mWidth, mHeight );
+	DCBitmap* ret = 0;
+	ColorData* targetData = 0; 
+	unsigned int index = 0;
+
+	for( unsigned int j = 0; j < mSetDataNum; ++j ) {
+		targetData = mColorData[ j ];
+		if( targetData->color == CLR_BLACK) {
+			index += setBlack( target, targetData->count, index );
+		} else {
+			index += setWhite( target, targetData->count, index );
+		}
+	}
+
+	for( unsigned int i = 0; i < mSetDataNum; ++i ) {
+		delete mColorData[ i ];
+		mColorData[ i ] = 0;
+	}
+
+	ret = new DCBitmap( hdc, target );
+
+	delete target;
+	target = 0;
+
+	return ret;
+}
+
+void CmpBitmap::drawData( HDC& hdc )
+{
+	PixelBitmap* target = new Image::PixelBitmap( mWidth, mHeight );
 	ColorID targetColor = CLR_BLACK;
 	ColorData* targetData = 0; 
 	unsigned int index = 0;
@@ -109,18 +169,12 @@ int CmpBitmap::drawData( HDC& hdc )
 		for( unsigned int j = 0; j < mSetDataNum; ++j ) {
 			targetData = mColorData[ j ];
 			if( targetData->color == targetColor ) {
-				for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
-					mPixelBitmap->setBlack( index );
-					++index;
-				}
+				index += setBlack( target, targetData->count, index );
 			} else {
-				for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
-					mPixelBitmap->setWhite( index );
-					++index;
-				}
+				index += setWhite( target, targetData->count, index );
 			}
 		}
-		mLayer[ setLayerIndex++ ] = new DCBitmap( hdc, mPixelBitmap );
+		mLayer[ setLayerIndex++ ] = new DCBitmap( hdc, target );
 		targetColor = ( ColorID )( targetColor << 1 );
 	}
 
@@ -129,41 +183,8 @@ int CmpBitmap::drawData( HDC& hdc )
 		mColorData[ i ] = 0;
 	}
 
-	delete mPixelBitmap;
-	mPixelBitmap = 0;
-
-	return 0;
-}
-
-int CmpBitmap::drawData( PixelBitmap* target )
-{
-	ColorData* targetData = 0; 
-	unsigned int index = 0;
-
-	for( unsigned int j = 0; j < mSetDataNum; ++j ) {
-		targetData = mColorData[ j ];
-		if( targetData->color == CLR_WHITE ) {
-			for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
-				target->setWhite( index );
-				++index;
-			}
-		} else if( targetData->color != CLR_BLACK ) {
-			for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
-				if( index % 3 != 0 ) {
-					target->setWhite( index );
-				} else {
-					target->setBlack( index );
-				}
-				++index;
-			}
-		} else {
-			for( unsigned int k = targetData->count - 1; k != 0xFFFFFFFF; --k ) {
-				target->setBlack( index );
-				++index;
-			}
-		}
-	}
-	return 0;
+	delete target;
+	target = 0;
 }
 
 void CmpBitmap::drawWindow( void )

@@ -1,5 +1,4 @@
 #include "Distortion2.h"
-#include "SoundBase.h"
 #include "Track.h"
 
 #define _USE_MATH_DEFINES

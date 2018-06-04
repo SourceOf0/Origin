@@ -1,5 +1,4 @@
 #include "Distortion3.h"
-#include "SoundBase.h"
 #include "Track.h"
 
 namespace Sound {

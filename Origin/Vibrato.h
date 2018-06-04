@@ -1,5 +1,5 @@
-#ifndef INCLUDED_SOUND_CHORUS_H
-#define INCLUDED_SOUND_CHORUS_H
+#ifndef INCLUDED_SOUND_VIBRATO_H
+#define INCLUDED_SOUND_VIBRATO_H
 
 #include "EffectBase.h"
 
@@ -7,11 +7,11 @@ namespace Sound {
 
 class Track;
 
-class Chorus : public EffectBase
+class Vibrato : public EffectBase
 {
 public:
-	Chorus( double** setWaveLog );
-	~Chorus( void );
+	Vibrato( double** setWaveLog );
+	~Vibrato( void );
 
 	void reset( void );
 	void apply( Track* track );
@@ -24,4 +24,4 @@ private:
 
 } // namespace Sound
 
-#endif // INCLUDED_SOUND_CHORUS_H
+#endif // INCLUDED_SOUND_VIBRATO_H

@@ -1,4 +1,4 @@
-#include "Chorus.h"
+#include "Vibrato.h"
 #include "Track.h"
 
 #define _USE_MATH_DEFINES
@@ -6,26 +6,26 @@
 
 namespace Sound {
 
-Chorus::Chorus( double** setWaveLog ) :
-mD( 0.025 ),
-mDepth( 0.01 ),
-mRate( 0.1 )
+Vibrato::Vibrato( double** setWaveLog ) : 
+mD( 0.002 ),
+mDepth( 0.002 ),
+mRate( 5.0 )
 {
 	init( setWaveLog, 0, 0, 0 );
 }
 
 
-Chorus::~Chorus( void )
+Vibrato::~Vibrato( void )
 {
 }
 
-void Chorus::reset( void )
+void Vibrato::reset( void )
 {
 	init( mWaveLog, 0, 0, 0 );
 }
 
-// コーラス
-void Chorus::apply( Track* track )
+// ビブラート
+void Vibrato::apply( Track* track )
 {
 	int time = track->getPlayTime();
 	double* waveData = track->getWaveData();
@@ -34,20 +34,17 @@ void Chorus::apply( Track* track )
 	double t, delta, tau;
 	int m;
 
-	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		mWaveLog[ mLogIndex ][ i ] = waveData[ i ];
-	}
-
-	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
+	for(int i = 0; i < WAVE_DATA_LENGTH; ++i) {
 		double s = waveData[ i ];
+		mWaveLog[ mLogIndex ][ i ] = s;
 
 		tau = d + depth * sin( 2.0 * M_PI * mRate * ( time + i ) / SAMPLES_PER_SEC );
-		t = ( double )i - tau;
-		m = ( int )t;
-		delta = t - ( double )m;
-		s += delta * getPrevData( m + 1 ) + ( 1.0 - delta ) * getPrevData( m ); 
+		t = (double)i - tau;
+		m = (int)t;
+		delta = t - (double)m;
+		s = delta * getPrevData( m + 1 ) + ( 1.0 - delta ) * getPrevData( m );
 
-		waveData[ i ] = s;
+		waveData[i] = s;
 	}
 
 	mLogIndex = ( mLogIndex + 1 ) % LOG_MAX_DATA_NUM;

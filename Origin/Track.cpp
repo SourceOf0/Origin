@@ -1,21 +1,32 @@
+#include <memory.h>
+
 #include "Track.h"
 #include "SoundBase.h"
 #include "Wave.h"
 #include "EffectBase.h"
 
+#include "NoiseGate.h"
 #include "Distortion1.h"
 #include "Distortion2.h"
 #include "Distortion3.h"
 #include "Compressor.h"
 #include "Tremolo.h"
+
 #include "Delay.h"
 #include "Chorus.h"
+#include "Vibrato.h"
+
+#include "LowPassFilter.h"
+#include "HighPassFilter.h"
+#include "BandPassFilter.h"
+#include "BandEliminateFilter.h"
 
 namespace Sound {
 
 Track::Track( void ) :
 mPlayTime( 0 ),
-mWaveID( WAVE_SAWTOOTH )
+mWaveID( WAVE_SAWTOOTH ),
+mUseLog( 0 )
 {
 	mWave = new Wave();
 
@@ -24,15 +35,19 @@ mWaveID( WAVE_SAWTOOTH )
 		mWaveData[i] = 0;
 	}
 
-	for( int i = 0; i < LOG_MAX_NUM; ++i ) {
-		mWaveLog[i] = new double[ WAVE_DATA_LENGTH ];
-		for( int j = 0; j < WAVE_DATA_LENGTH; ++j ) {
-			mWaveLog[i][j] = 0;
+	mPlayData = new double[ WAVE_DATA_LENGTH ];
+	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
+		mPlayData[i] = 0;
+	}
+
+	for( int i = 0; i < LOG_MAX_INDEX_NUM; ++i ) {
+		for( int j = 0; j < LOG_MAX_DATA_NUM; ++j ) {
+			mWaveLog[ i ][ j ] = new double[ WAVE_DATA_LENGTH ];
 		}
 	}
 
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
-		mEffectList[i] = 0;
+		mEffectList[ i ] = 0;
 	}
 }
 
@@ -44,14 +59,19 @@ Track::~Track( void )
 	delete[] mWaveData;
 	mWaveData = 0;
 
-	for( int i = 0; i < LOG_MAX_NUM; ++i ) {
-		delete[] mWaveLog[i];
-		mWaveLog[i] = 0;
+	delete[] mPlayData;
+	mPlayData = 0;
+
+	for( int i = 0; i < LOG_MAX_INDEX_NUM; ++i ) {
+		for( int j = 0; j < LOG_MAX_DATA_NUM; ++j ) {
+			delete[] mWaveLog[ i ][ j ];
+			mWaveLog[ i ][ j ] = 0;
+		}
 	}
 
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
-		delete mEffectList[i];
-		mEffectList[i] = 0;
+		delete mEffectList[ i ];
+		mEffectList[ i ] = 0;
 	}
 }
 
@@ -61,30 +81,30 @@ void Track::reset( void )
 	mPlayTime = 0;
 	
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		mWaveData[i] = 0;
+		mWaveData[ i ] = 0;
 	}
 
-	for( int i = 0; i < LOG_MAX_NUM; ++i ) {
-		for( int j = 0; j < WAVE_DATA_LENGTH; ++j ) {
-			mWaveLog[i][j] = 0;
-		}
+	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
+		mPlayData[ i ] = 0;
 	}
 
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
-		if( mEffectList[i] != 0 ) mEffectList[i]->reset();
+		if( mEffectList[ i ] != 0 ) mEffectList[ i ]->reset();
 	}
 }
 
 int Track::update( void )
 {
-	mWave->setData( this , mWaveID );
+	mWave->setData( this, mWaveID );
 
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
-		if( mEffectList[i] != 0 ) mEffectList[i]->apply( this );
+		if( mEffectList[ i ] != 0 ) mEffectList[ i ]->apply( this );
 	}
 
+	memcpy( mPlayData, mWaveData, WAVE_DATA_LENGTH * sizeof( double ) );
+	
 	mPlayTime += WAVE_DATA_LENGTH;
-	if( mPlayTime >= SAMPLES_PER_SEC ) mPlayTime -= SAMPLES_PER_SEC; 
+	if( mPlayTime >= SAMPLES_PER_SEC ) mPlayTime -= SAMPLES_PER_SEC;
 
 	return 0;
 }
@@ -104,17 +124,32 @@ double* Track::getWaveData( void )
 	return mWaveData;
 }
 
+double* Track::getPlayData( void )
+{
+	return mPlayData;
+}
+
 int Track::addEffect( EffectID id )
 {
 	int setIndex = 0;
+	char useLogIndex = 0;
+	char count = 0;
 	Sound::EffectBase* newEffect;
 
 	for( setIndex = 0; setIndex < EFFECT_MAX_NUM; ++setIndex ) {
-		if( mEffectList[setIndex] == 0 ) break;
+		if( mEffectList[ setIndex ] == 0 ) break;
 	}
 	if( setIndex == EFFECT_MAX_NUM ) return 1;
 
+	while( ( ( mUseLog >> count ) & 1 ) == 1 ) {
+		++count;
+		if( count == LOG_MAX_INDEX_NUM ) return 1; 
+	}
+
 	switch( id ) {
+		case EFFECT_NOISE_GATE:
+			newEffect = new Sound::NoiseGate();
+			break;
 		case EFFECT_DISTORTION1:
 			newEffect = new Sound::Distortion1();
 			break;
@@ -131,16 +166,38 @@ int Track::addEffect( EffectID id )
 			newEffect = new Sound::Tremolo();
 			break;
 		case EFFECT_DELAY:
-			newEffect = new Sound::Delay( mWaveLog );
+			mUseLog &= 1 << count;
+			newEffect = new Sound::Delay( mWaveLog[ count ] );
 			break;
 		case EFFECT_CHORUS:
-			newEffect = new Sound::Chorus( mWaveLog );
+			mUseLog &= 1 << count;
+			newEffect = new Sound::Chorus( mWaveLog[ count ] );
+			break;
+		case EFFECT_VIBRATO:
+			mUseLog &= 1 << count;
+			newEffect = new Sound::Vibrato( mWaveLog[ count ] );
+			break;
+		case EFFECT_LOW_PASS_FILTER:
+			mUseLog &= 1 << count;
+			newEffect = new Sound::LowPassFilter( mWaveLog[ count ] );
+			break;
+		case EFFECT_HIGH_PASS_FILTER:
+			mUseLog &= 1 << count;
+			newEffect = new Sound::HighPassFilter( mWaveLog[ count ] );
+			break;
+		case EFFECT_BAND_PASS_FILTER:
+			mUseLog &= 1 << count;
+			newEffect = new Sound::BandPassFilter( mWaveLog[ count ] );
+			break;
+		case EFFECT_BAND_ELIMINATE_FILTER:
+			mUseLog &= 1 << count;
+			newEffect = new Sound::BandEliminateFilter( mWaveLog[ count ] );
 			break;
 		default:
 			return 1;
 			break;
 	}
-	mEffectList[setIndex] = newEffect;
+	mEffectList[ setIndex ] = newEffect;
 
 	return 0;
 }

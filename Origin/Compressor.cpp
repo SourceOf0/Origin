@@ -1,5 +1,4 @@
 #include "Compressor.h"
-#include "SoundBase.h"
 #include "Track.h"
 
 namespace Sound {

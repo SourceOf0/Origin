@@ -3,9 +3,6 @@
 
 #include "SoundBase.h"
 
-#define EFFECT_MAX_NUM	3	// 追加できるエフェクトの最大数
-#define LOG_MAX_NUM		30	// バッファのログを取る最大数
-
 namespace Sound {
 
 class EffectBase;
@@ -23,6 +20,7 @@ public:
 	void setF( double f );
 	int getPlayTime( void );
 	double* getWaveData( void );
+	double* getPlayData( void );
 
 	int addEffect( EffectID id );
 	EffectBase* getEffect( int index );
@@ -31,8 +29,11 @@ public:
 
 private:
 	double* mWaveData;
+	double* mWaveLog[ LOG_MAX_INDEX_NUM ][ LOG_MAX_DATA_NUM ];
+
+	double* mPlayData;
 	int mPlayTime;
-	double* mWaveLog[ LOG_MAX_NUM ];
+	char mUseLog;
 
 	WaveID mWaveID;
 	Wave* mWave;
