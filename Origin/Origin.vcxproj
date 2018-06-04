@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6DD54078-8946-4078-9597-C6E6F5763431}</ProjectGuid>
+    <ProjectGuid>{BDAF6EAA-AD2A-419D-B523-565F824569FC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -74,12 +74,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimeData.cpp" />
+    <ClCompile Include="AutoPan.cpp" />
     <ClCompile Include="BandEliminateFilter.cpp" />
     <ClCompile Include="BandPassFilter.cpp" />
     <ClCompile Include="BitmapBase.cpp" />
     <ClCompile Include="Book2.cpp" />
     <ClCompile Include="Chorus.cpp" />
-    <ClCompile Include="CmpBitmap.cpp" />
     <ClCompile Include="Compressor.cpp" />
     <ClCompile Include="DCBitmap.cpp" />
     <ClCompile Include="Debug1.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="Equalizer.cpp" />
     <ClCompile Include="HighPassFilter.cpp" />
     <ClCompile Include="ImageFactory.cpp" />
+    <ClCompile Include="LayerData.cpp" />
     <ClCompile Include="LowPassFilter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainParent.cpp" />
@@ -108,12 +110,13 @@
     <ClCompile Include="Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimeData.h" />
+    <ClInclude Include="AutoPan.h" />
     <ClInclude Include="BandEliminateFilter.h" />
     <ClInclude Include="BandPassFilter.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="Book2.h" />
     <ClInclude Include="Chorus.h" />
-    <ClInclude Include="CmpBitmap.h" />
     <ClInclude Include="Compressor.h" />
     <ClInclude Include="DCBitmap.h" />
     <ClInclude Include="Debug1.h" />
@@ -127,6 +130,7 @@
     <ClInclude Include="Equalizer.h" />
     <ClInclude Include="HighPassFilter.h" />
     <ClInclude Include="ImageFactory.h" />
+    <ClInclude Include="LayerData.h" />
     <ClInclude Include="LowPassFilter.h" />
     <ClInclude Include="MainChild.h" />
     <ClInclude Include="MainParent.h" />

@@ -3,6 +3,8 @@
 
 #include <windows.h>
 
+#define PIXEL_CHAR_DATA_MAX 1000000
+
 namespace Image {
 
 class PixelBitmap
@@ -11,7 +13,7 @@ public:
 	PixelBitmap( int width, int height, unsigned char setColor = 0 );
 	~PixelBitmap( void );
 
-	int drawWindow( void );
+	void reset( int width, int height, unsigned char setColor = 0 );
 
 	char getBit( int x, int y );
 	int setData( unsigned int index, unsigned char data );
@@ -25,7 +27,7 @@ public:
 	float mY;
 	int mWidth;
 	int mHeight;
-	unsigned char* mPixelData;
+	unsigned char mPixelData[ PIXEL_CHAR_DATA_MAX ];
 
 private:
 	int mWidthIndex;

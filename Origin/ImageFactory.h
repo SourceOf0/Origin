@@ -2,11 +2,11 @@
 #define INCLUDED_MAIN_IMAGE_FACTORY_H
 
 #include <windows.h>
+#include "BitmapBase.h"
 
 namespace Image {
 	class DCBitmap;
 	class PixelBitmap;
-	class CmpBitmap;
 	class BitmapBase;
 }
 
@@ -19,8 +19,8 @@ public:
 	static void create( HDC& hdc );
 	static void destroy( void );
 
+	Image::BitmapBase* loadAnime( HDC& hdc, int animeNum, const char* fileName[], BOOL isDC );
 	Image::DCBitmap* loadDC( HDC& hdc, const char* fileName );
-	Image::CmpBitmap* loadCmp( HDC& hdc, const char* fileName );
 	Image::BitmapBase* load( HDC& hdc, const char* fileName );
 
 private:
@@ -28,7 +28,13 @@ private:
 	ImageFactory( ImageFactory& );
 	~ImageFactory( void );
 
+	ColorID getColor( unsigned char color );
+	unsigned int setBlack( Image::PixelBitmap* target, unsigned int count, unsigned int index );
+	unsigned int setWhite( Image::PixelBitmap* target, unsigned int count, unsigned int index );
+	unsigned int setTone( Image::PixelBitmap* target, unsigned int count, unsigned int index );
+
 	static ImageFactory* mInst;
+	Image::PixelBitmap* mLayerData[ COLOR_KIND_NUM ];
 };
 
 } // namespace Main

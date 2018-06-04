@@ -16,15 +16,27 @@ public:
 	~DCBitmap( void );
 
 	int setData( int index, unsigned char data );
+	
+	void setBlack( void );
+	void setWhite( void );
+
 	void drawWindow( void );
 	void drawWindow( int x, int y );
 	void drawWindowAnd( void );
 	void drawWindowAnd( int x, int y );
 	void drawWindowOr( void );
 	void drawWindowOr( int x, int y );
+	void drawWindowInv( void );
+	void drawWindowInv( int x, int y );
 	void drawBlock( HDC& targetHdc, int x, int y, int width, int index );
 	void drawBlockAnd( HDC& targetHdc, int x, int y, int width, int index );
 	void drawBlockOr( HDC& targetHdc, int x, int y, int width, int index );
+	void drawBlockInv( HDC& targetHdc, int x, int y, int width, int index );
+
+	static HDC mHdcBlackBmp;
+	static HBITMAP mHBmpBlackPrev;
+	static HDC mHdcWhiteBmp;
+	static HBITMAP mHBmpWhitePrev;
 
 	HDC mHdcBmp;
 

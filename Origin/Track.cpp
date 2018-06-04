@@ -22,13 +22,16 @@
 #include "BandEliminateFilter.h"
 
 #include "Equalizer.h"
+#include "AutoPan.h"
 
 namespace Sound {
 
 Track::Track( void ) :
 mPlayTime( 0 ),
 mWaveID( WAVE_SAWTOOTH ),
-mUseLog( 0 )
+mUseLog( 0 ),
+mVolL( 1.0 ),
+mVolR( 1.0 )
 {
 	mWave = new Wave();
 
@@ -51,6 +54,9 @@ mUseLog( 0 )
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
 		mEffectList[ i ] = 0;
 	}
+
+	mAutoPan = new AutoPan();
+	mAutoPan->mIsUse = true;
 }
 
 Track::~Track( void )
@@ -128,6 +134,14 @@ double* Track::getWaveData( void )
 double* Track::getPlayData( void )
 {
 	return mPlayData;
+}
+double Track::getPlayDataL( int index )
+{
+	return mAutoPan->applyL( mPlayData[ index ] * mVolL, mPlayTime );
+}
+double Track::getPlayDataR( int index )
+{
+	return mAutoPan->applyR( mPlayData[ index ] * mVolR, mPlayTime );
 }
 
 int Track::addEffect( EffectID id )

@@ -8,6 +8,8 @@
 #include "Debug1.h"
 #include "Debug2.h"
 
+#include "BitmapBase.h"
+
 namespace Sequence {
 
 MainParent* MainParent::mInst = 0;
@@ -15,22 +17,18 @@ MainParent* MainParent::mInst = 0;
 MainParent::MainParent(	HWND& hwnd, HDC& hdc, int windowWidth, int windowHeight ) : 
 mHWnd( hwnd ),
 mChild( 0 ),
-mThreadState( 1 ),
+mThreadState( 3 ),
 mNext( SEQ_NONE ),
 mWindowWidth( windowWidth ),
 mWindowHeight( windowHeight ),
 mIsMouseDown( FALSE ),
 mIsAddWave( FALSE )
 {
-	DWORD id;
-
 	mInst = this;
 
 	mDebugLoading = new DebugLoading( hdc, this );
 
 	mNext = SEQ_DEBUG2;
-
-	mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
 }
 
 MainParent::~MainParent( void )
@@ -87,6 +85,11 @@ void MainParent::update( void )
 		return;
 	} else if( mThreadState == 2 ) {
 		mThreadState = 0;
+	} else if( mThreadState == 3 ) {
+		mDebugLoading->update( this );
+		mThreadState = 1;
+		mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
+		return;
 	}
 	mChild->update( this );
 

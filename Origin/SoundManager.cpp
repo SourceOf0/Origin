@@ -41,32 +41,25 @@ test( 0 )
 
 	mTrack1 = new Sound::Track();
 	mTrack2 = new Sound::Track();
+	mTrack3 = new Sound::Track();
 
 	mTrack1->setWave( WAVE_SAWTOOTH );
-	
 	mTrack1->addEffect( EFFECT_CHORUS );
 	mTrack1->addEffect( EFFECT_VIBRATO );
 	mTrack1->addEffect( EFFECT_LOW_PASS_FILTER );
 	mTrack1->addEffect( EFFECT_EQUALIZER );
 
-/*	mTrack1->getEffect( 3 )->mSetNum1 = 500;
-	mTrack1->getEffect( 3 )->mSetNum2 = -1;
-	mTrack1->getEffect( 3 )->mSetNum3 = 1;
-
-	mTrack1->addEffect( EFFECT_EQUALIZER );
-	mTrack1->getEffect( 4 )->mSetNum1 = 1000;
-	mTrack1->getEffect( 4 )->mSetNum2 = 1;
-	mTrack1->getEffect( 4 )->mSetNum3 = 2;
-
-	mTrack1->addEffect( EFFECT_EQUALIZER );
-	mTrack1->getEffect( 5 )->mSetNum1 = 2000;
-	mTrack1->getEffect( 5 )->mSetNum2 = -1;
-	mTrack1->getEffect( 5 )->mSetNum3 = 3;*/
-	
 	mTrack2->setWave( WAVE_SAWTOOTH );
 	mTrack2->addEffect( EFFECT_CHORUS );
 	mTrack2->addEffect( EFFECT_VIBRATO );
 	mTrack2->addEffect( EFFECT_LOW_PASS_FILTER );
+	mTrack2->addEffect( EFFECT_EQUALIZER );
+
+	mTrack3->setWave( WAVE_SAWTOOTH );
+	mTrack3->addEffect( EFFECT_CHORUS );
+	mTrack3->addEffect( EFFECT_VIBRATO );
+	mTrack3->addEffect( EFFECT_LOW_PASS_FILTER );
+	mTrack3->addEffect( EFFECT_EQUALIZER );
 
 	wfe.wFormatTag = WAVE_FORMAT_PCM;
 	wfe.nChannels = CHANNEL;	//ステレオ
@@ -116,6 +109,9 @@ SoundManager::~SoundManager( void )
 
 	delete mTrack2;
 	mTrack2 = 0;
+
+	delete mTrack3;
+	mTrack3 = 0;
 }
 
 int SoundManager::play( void )
@@ -124,6 +120,7 @@ int SoundManager::play( void )
 	mWasReset = FALSE;
 	mTrack1->setF( 400 );
 	mTrack2->setF( 300 );
+	mTrack3->setF( 200 );
 	
 	++test;
 	switch( test ) {
@@ -132,14 +129,17 @@ int SoundManager::play( void )
 		case 0:
 			mTrack1->setWave( WAVE_SAWTOOTH );
 			mTrack2->setWave( WAVE_SAWTOOTH );
+			mTrack3->setWave( WAVE_SAWTOOTH );
 			break;
 		case 1:
 			mTrack1->setWave( WAVE_SQUARE );
 			mTrack2->setWave( WAVE_SQUARE );
+			mTrack3->setWave( WAVE_SQUARE );
 			break;
 		case 2:
 			mTrack1->setWave( WAVE_TRIANGLE );
 			mTrack2->setWave( WAVE_TRIANGLE );
+			mTrack3->setWave( WAVE_TRIANGLE );
 			break;
 	}
 	return 0;
@@ -152,6 +152,7 @@ int SoundManager::stop( void )
 //	mTrack2->setF( 300 );
 	mTrack1->setWave( WAVE_NONE );
 	mTrack2->setWave( WAVE_NONE );
+	mTrack3->setWave( WAVE_NONE );
 	return 0;
 }
 
@@ -176,6 +177,9 @@ Sound::Track* SoundManager::getTrack( int index )
 		case 2:
 			return mTrack2;
 			break;
+		case 3:
+			return mTrack3;
+			break;
 	}
 	return NULL;
 }
@@ -196,21 +200,29 @@ int SoundManager::makeWave( void )
 	++mSetBufferNum;
 
 	mTrack1->update();
-//	mTrack2->update();
-
-	double* wave1 = mTrack1->getPlayData();
-	double* wave2 = mTrack2->getPlayData();
+	mTrack2->update();
+	mTrack3->update();
 
 //	mTrack1->getEffect(0)->mSetNum1 += 0.0001;
 //	mTrack2->getEffect(0)->mSetNum1 += 0.0001;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-//		double s = clipping( ( wave1[ i ] + wave2[ i ] ) / 2 );
-		double s = clipping( wave1[ i ] );
+		double s = 0;
+		s += mTrack1->getPlayDataR( i );
+		s += mTrack2->getPlayDataR( i );
+		s += mTrack3->getPlayDataR( i );
+		s = clipping( s / 3 );
 		short data = static_cast<short>( s + 0.5 ) - 32768; /* 四捨五入とオフセットの調節 */
 		// 右
 		mLpWave[ mSetBufferIndex ][ i*4 ] = static_cast<char>(data & 0 << 8);
 		mLpWave[ mSetBufferIndex ][ i*4+1 ] = static_cast<char>(data >> 8);
+		
+		s = 0;
+		s += mTrack1->getPlayDataL( i );
+		s += mTrack2->getPlayDataL( i );
+		s += mTrack3->getPlayDataL( i );
+		s = clipping( s / 3 );
+		data = static_cast<short>( s + 0.5 ) - 32768; /* 四捨五入とオフセットの調節 */
 		// 左
 		mLpWave[ mSetBufferIndex ][ i*4+2 ] = static_cast<char>(data & 0 << 8);
 		mLpWave[ mSetBufferIndex ][ i*4+3 ] = static_cast<char>(data >> 8);

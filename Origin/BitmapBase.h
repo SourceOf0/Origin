@@ -4,6 +4,8 @@
 #include <windows.h>
 
 typedef enum _COLOR_ID {
+	CLR_OTHER = 0,
+
 	CLR_BLACK = 1 << 0,
 	CLR_WHITE = 1 << 1,
 	CLR_RED = 1 << 2,
@@ -12,9 +14,9 @@ typedef enum _COLOR_ID {
 	CLR_GREEN_BLUE = 1 << 5,
 	CLR_BLUE = 1 << 6,
 	CLR_BLUE_RED = 1 << 7,
-	
-	CLR_OTHER = 0,
 } ColorID;
+
+#define COLOR_KIND_NUM 8
 
 enum ToneID {
 	TONE_001,
@@ -36,21 +38,24 @@ enum ToneID {
 	TONE_NONE
 };
 
-
 namespace Image {
+
+class DCBitmap;
 
 class BitmapBase
 {
 public:
 	virtual ~BitmapBase( void ) {};
 
+	static DCBitmap** mTone;
+
 	void init( unsigned int width, unsigned int height );
 
 	virtual void drawWindow( void ) = 0;
 	virtual void drawWindow( int x, int y ) = 0;
 
-	float mX;
-	float mY;
+	double mX;
+	double mY;
 	unsigned int mWidth;
 	unsigned int mHeight;
 	unsigned char mUseColor;

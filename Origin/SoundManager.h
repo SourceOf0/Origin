@@ -37,6 +37,7 @@ private:
 
 	Sound::Track* mTrack1;
 	Sound::Track* mTrack2;
+	Sound::Track* mTrack3;
 
 	int test;
 	int mSetBufferIndex;

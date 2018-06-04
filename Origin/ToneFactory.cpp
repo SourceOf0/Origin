@@ -6,7 +6,6 @@ using namespace Image;
 
 #include "DCBitmap.h"
 #include "PixelBitmap.h"
-#include "CmpBitmap.h"
 
 namespace Main {
 
@@ -56,7 +55,8 @@ ToneFactory::ToneFactory( HDC& hdc )
 		}
 		setTone[ i ] = newData;
 	}
-	CmpBitmap::mTone = setTone;
+
+	BitmapBase::mTone = setTone;
 
 	delete filter;
 	filter = 0;
@@ -64,17 +64,12 @@ ToneFactory::ToneFactory( HDC& hdc )
 
 ToneFactory::~ToneFactory()
 {
-	DCBitmap** target = CmpBitmap::mTone;
-
-	for( int i = TONE_NONE - 1; i >= 0; --i ) {
-		delete target[ i ];
-		target[ i ] = 0;
+	for( int i = 0; i < TONE_NONE; ++i ) {
+		delete BitmapBase::mTone[ i ];
+		BitmapBase::mTone[ i ] = 0;
 	}
-
-	delete[] target;
-	target = 0;
-
-	CmpBitmap::mTone = 0;
+	delete[] BitmapBase::mTone;
+	BitmapBase::mTone = 0;
 }
 
 

@@ -21,10 +21,16 @@ Debug2::Debug2( HDC& hdc, MainParent* parent )
 	mBackBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
 //	mBackBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight, 0xFF );
 
+	const char* loadFile[ 10 ];
+	for( int i = 0; i < 10; ++i ) {
+		loadFile[ i ] = "resource\\test.dad";
+	}
+
 	for( int i = 0; i < DEBUG2_BMP_NUM; ++i ) {
-		mTempBmp[ i ] = imageFactory->load( hdc, "resource\\test.dad" );
-		mTempBmp[ i ]->mX = static_cast< float >( windowWidth - mTempBmp[ i ]->mWidth - i * 10 );
-		mTempBmp[ i ]->mY = static_cast< float >( windowHeight - mTempBmp[ i ]->mHeight - i * 10 );
+		mTempBmp[ i ] = imageFactory->loadAnime( hdc, 10, loadFile, FALSE );
+//		mTempBmp[ i ] = imageFactory->load( hdc, "resource\\test.dad" );
+		mTempBmp[ i ]->mX = static_cast< int >( windowWidth ) - static_cast< int >( mTempBmp[ i ]->mWidth ) - ( i % 10 ) * 10 - ( i / 10 ) * 100;
+		mTempBmp[ i ]->mY = static_cast< int >( windowHeight ) - static_cast< int >( mTempBmp[ i ]->mHeight ) - ( i % 10 ) * 10;
 	}
 }
 

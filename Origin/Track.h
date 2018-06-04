@@ -6,6 +6,7 @@
 namespace Sound {
 
 class EffectBase;
+class AutoPan;
 class Wave;
 
 class Track {
@@ -21,6 +22,8 @@ public:
 	int getPlayTime( void );
 	double* getWaveData( void );
 	double* getPlayData( void );
+	double getPlayDataL( int index );
+	double getPlayDataR( int index );
 
 	int addEffect( EffectID id );
 	EffectBase* getEffect( int index );
@@ -31,6 +34,9 @@ private:
 	double* mWaveData;
 	double* mWaveLog[ LOG_MAX_INDEX_NUM ][ LOG_MAX_DATA_NUM ];
 
+	double mVolL;
+	double mVolR;
+
 	double* mPlayData;
 	int mPlayTime;
 	char mUseLog;
@@ -38,6 +44,7 @@ private:
 	WaveID mWaveID;
 	Wave* mWave;
 	EffectBase* mEffectList[ EFFECT_MAX_NUM ];
+	AutoPan* mAutoPan;
 };
 
 } //namespace Sound

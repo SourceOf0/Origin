@@ -15,16 +15,29 @@ mY( 0 )
 	unsigned int bitDataLeng = ( bmpSize % 32 == 0) ? bmpSize / 32 : (int)( bmpSize / 32 ) + 1;
 	mDataLeng = bitDataLeng * 4;
 
-	mPixelData = new unsigned char[ mDataLeng ];
 	for( unsigned int i = 0; i < mDataLeng; ++i ) {
-		mPixelData[i] = setColor;
+		mPixelData[ i ] = setColor;
 	}
 }
 
 PixelBitmap::~PixelBitmap( void )
 {
-	delete[] mPixelData;
-	mPixelData = 0;
+}
+
+void PixelBitmap::reset( int width, int height, unsigned char setColor )
+{
+	unsigned int bmpSize = width * height;
+	unsigned int bitDataLeng = ( bmpSize % 32 == 0) ? bmpSize / 32 : (int)( bmpSize / 32 ) + 1;
+	mDataLeng = bitDataLeng * 4;
+
+	mWidth = width;
+	mHeight = height;
+	mWidthIndex = width / 32;
+	mHeightIndex = height / 32;
+
+	for( unsigned int i = 0; i < mDataLeng; ++i ) {
+		mPixelData[ i ] = setColor;
+	}
 }
 
 char PixelBitmap::getBit( int x, int y )
@@ -90,7 +103,7 @@ int PixelBitmap::setRev( int x, int y )
 	return 0;
 }
 
-
+/*
 int PixelBitmap::drawWindow( void )
 {
 	Main::SceneManager* sceneManager = Main::SceneManager::inst();
@@ -200,7 +213,7 @@ int PixelBitmap::drawWindow( void )
 	windowPixelData[ k ] = setData4 | setData3 << 8 | setData2 << 16 | setData1 << 24;
 	return 0;
 }
-
+*/
 
 } // namespace Image
 

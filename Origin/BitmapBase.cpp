@@ -1,6 +1,9 @@
 #include "BitmapBase.h"
+#include "DCBitmap.h"
 
 namespace Image {
+
+DCBitmap** BitmapBase::mTone = 0;
 
 void BitmapBase::init( unsigned int width, unsigned int height )
 {
@@ -12,4 +15,4 @@ void BitmapBase::init( unsigned int width, unsigned int height )
 }
 
 
-} // Image
+} // namespace Image

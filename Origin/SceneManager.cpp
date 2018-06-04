@@ -71,6 +71,22 @@ SceneManager::SceneManager( HWND& hwnd )
 
 	ImageFactory::create( hdc );
 
+	HBITMAP setHBmp = 0;
+	Image::PixelBitmap* pixelData = new Image::PixelBitmap( mWindowWidth, mWindowHeight );
+	
+	Image::DCBitmap::mHdcBlackBmp = CreateCompatibleDC( hdc );
+	setHBmp = CreateBitmap( mWindowWidth, mWindowHeight, 1, 1, pixelData->mPixelData );
+	Image::DCBitmap::mHBmpBlackPrev = (HBITMAP)SelectObject( Image::DCBitmap::mHdcBlackBmp, setHBmp );
+
+	pixelData->reset( mWindowWidth, mWindowHeight, 0xFF );
+
+	Image::DCBitmap::mHdcWhiteBmp = CreateCompatibleDC( hdc );
+	setHBmp = CreateBitmap( mWindowWidth, mWindowHeight, 1, 1, pixelData->mPixelData );
+	Image::DCBitmap::mHBmpWhitePrev = (HBITMAP)SelectObject( Image::DCBitmap::mHdcWhiteBmp, setHBmp );
+
+	delete pixelData;
+	pixelData = 0;
+
 	ReleaseDC( hwnd, hdc );
 }
 
@@ -87,6 +103,15 @@ SceneManager::~SceneManager( void )
 	free( mBmpInfo );
 
 	ImageFactory::destroy();
+
+	HBITMAP hbmp = 0;
+	hbmp = (HBITMAP)SelectObject( Image::DCBitmap::mHdcBlackBmp, Image::DCBitmap::mHBmpBlackPrev );
+	DeleteObject( hbmp );
+	DeleteObject( Image::DCBitmap::mHdcBlackBmp );
+
+	hbmp = (HBITMAP)SelectObject( Image::DCBitmap::mHdcWhiteBmp, Image::DCBitmap::mHBmpWhitePrev );
+	DeleteObject( hbmp );
+	DeleteObject( Image::DCBitmap::mHdcWhiteBmp );
 }
 
 void SceneManager::mouseDown( void )
