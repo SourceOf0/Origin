@@ -21,20 +21,17 @@ public:
 	int update( void );
 
 	void setF( double f );
-	double getPlayTime( void );
-	double getPrevData( int prevIndex );
+	int getPlayTime( void );
+	double* getWaveData( void );
 
-	double* getAdjWave( void );
-	double* getPlayWave( void );
+	int addEffect( EffectID id );
+	EffectBase* getEffect( int index );
 
-	int addEffect( EffectBase* newEffect );
 	int setWave( WaveID id );
 
 private:
-	double* mAdjWave;
-	double mPlayTime;
-
-	int mLogIndex;
+	double* mWaveData;
+	int mPlayTime;
 	double* mWaveLog[ LOG_MAX_NUM ];
 
 	WaveID mWaveID;

@@ -101,7 +101,7 @@ Title::~Title()
 	mPointBmp = 0;
 }
 
-void Title::update( HDC& hdc, MainParent* parent )
+void Title::update( MainParent* parent )
 {
 	Main::SceneManager* sceneManager = Main::SceneManager::inst();
 	int windowWidth = sceneManager->mWindowWidth;
@@ -127,6 +127,10 @@ void Title::update( HDC& hdc, MainParent* parent )
 		mOldMousePos.y = -1;
 //		Main::SoundManager::inst()->stop();
 	}
+}
+
+void Title::draw( HDC& hdc, MainParent* parent )
+{
 	int setCount = POINT_MASK_ANIME_NUM * POINT_MASK_FRAME_COUNT;
 	int pointWidth = mPointBmp->mWidth / POINT_MASK_ANIME_NUM;
 	for( int i = 0; i < POINT_TRACK_NUM; ++i ) {

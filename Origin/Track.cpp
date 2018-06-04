@@ -3,18 +3,24 @@
 #include "Wave.h"
 #include "EffectBase.h"
 
+#include "Distortion1.h"
+#include "Distortion2.h"
+#include "Distortion3.h"
+#include "Compressor.h"
+#include "Tremolo.h"
+#include "Delay.h"
+
 namespace Sound {
 
 Track::Track( void ) :
 mPlayTime( 0 ),
-mWaveID( WAVE_SAWTOOTH ),
-mLogIndex( 0 )
+mWaveID( WAVE_SAWTOOTH )
 {
 	mWave = new Wave();
 
-	mAdjWave = new double[ WAVE_DATA_LENGTH ];
+	mWaveData = new double[ WAVE_DATA_LENGTH ];
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		mAdjWave[i] = 0;
+		mWaveData[i] = 0;
 	}
 
 	for( int i = 0; i < LOG_MAX_NUM; ++i ) {
@@ -31,20 +37,20 @@ mLogIndex( 0 )
 
 Track::~Track( void )
 {
-	delete[] mAdjWave;
-	mAdjWave = 0;
-
 	delete mWave;
 	mWave = 0;
 
-	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
-		delete mEffectList[i];
-		mEffectList[i] = 0;
-	}
+	delete[] mWaveData;
+	mWaveData = 0;
 
 	for( int i = 0; i < LOG_MAX_NUM; ++i ) {
 		delete[] mWaveLog[i];
 		mWaveLog[i] = 0;
+	}
+
+	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
+		delete mEffectList[i];
+		mEffectList[i] = 0;
 	}
 }
 
@@ -54,7 +60,7 @@ void Track::reset( void )
 	mPlayTime = 0;
 	
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		mAdjWave[i] = 0;
+		mWaveData[i] = 0;
 	}
 
 	for( int i = 0; i < LOG_MAX_NUM; ++i ) {
@@ -87,47 +93,58 @@ void Track::setF( double f )
 	mWave->setF( f );
 }
 
-double Track::getPlayTime( void )
+int Track::getPlayTime( void )
 {
 	return mPlayTime;
 }
 
-double Track::getPrevData( int prevIndex )
+double* Track::getWaveData( void )
 {
-	int dataIndex = ( ( prevIndex < 0 )? -prevIndex : prevIndex ) % WAVE_DATA_LENGTH;
-	int blockIndex = mLogIndex + static_cast<int>( prevIndex / WAVE_DATA_LENGTH );
-	if( blockIndex < 0 ) blockIndex = LOG_MAX_NUM + blockIndex;
-	return mWaveLog[ blockIndex ][ dataIndex ];
+	return mWaveData;
 }
 
-double* Track::getAdjWave( void )
+int Track::addEffect( EffectID id )
 {
-	return mAdjWave;
-}
+	int setIndex = 0;
+	Sound::EffectBase* newEffect;
 
-double* Track::getPlayWave( void )
-{
-	double* ret = mAdjWave;
-	mAdjWave = mWaveLog[ mLogIndex ];
-	mWaveLog[ mLogIndex ] = ret;
-	mLogIndex = ( mLogIndex + 1 ) % LOG_MAX_NUM;
-	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		mAdjWave[i] = 0;
+	for( setIndex = 0; setIndex < EFFECT_MAX_NUM; ++setIndex ) {
+		if( mEffectList[setIndex] == 0 ) break;
 	}
-	return ret;
+	if( setIndex == EFFECT_MAX_NUM ) return 1;
+
+	switch( id ) {
+		case EFFECT_DISTORTION1:
+			newEffect = new Sound::Distortion1();
+			break;
+		case EFFECT_DISTORTION2:
+			newEffect = new Sound::Distortion2();
+			break;
+		case EFFECT_DISTORTION3:
+			newEffect = new Sound::Distortion3();
+			break;
+		case EFFECT_COMPRESSOR:
+			newEffect = new Sound::Compressor();
+			break;
+		case EFFECT_TREMOLO:
+			newEffect = new Sound::Tremolo();
+			break;
+		case EFFECT_DELAY:
+			newEffect = new Sound::Delay( mWaveLog );
+			break;
+		default:
+			return 1;
+			break;
+	}
+	mEffectList[setIndex] = newEffect;
+
+	return 0;
 }
 
-int Track::addEffect( EffectBase* newEffect )
+EffectBase* Track::getEffect( int index )
 {
-	if( newEffect == 0 ) return 1;
-
-	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
-		if( mEffectList[i] != 0 ) continue;
-		mEffectList[i] = newEffect;
-		return 0;
-	}
-
-	return 1;
+	if( index < 0 && index >= EFFECT_MAX_NUM ) return 0;
+	return mEffectList[ index ];
 }
 
 int Track::setWave( WaveID id )

@@ -23,10 +23,10 @@ void Compressor::reset( void )
 // ƒRƒ“ƒvƒŒƒbƒT
 void Compressor::apply( Track* track )
 {
-	double* wave = track->getAdjWave();
+	double* waveData = track->getWaveData();
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = wave[i];
+		double s = waveData[i];
 
 		if( s > mThreshold ) {
 			s = mThreshold + (s - mThreshold) * mRatio; /* U•‚Ìˆ³k */
@@ -35,7 +35,7 @@ void Compressor::apply( Track* track )
 		}
 		s *= mGain; /* U•‚Ì‘• */
 		
-		wave[i] = s;
+		waveData[i] = s;
 	}
 }
 

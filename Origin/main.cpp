@@ -12,7 +12,7 @@
 BOOL gIsSoundThreadEnd = FALSE;
 HANDLE gHThread;
 
-DWORD WINAPI ThreadFunc(LPVOID hWnd)
+DWORD WINAPI SoundThread(LPVOID hWnd)
 {
 	while (TRUE) {
 		if( gIsSoundThreadEnd ) break;
@@ -45,14 +45,14 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		Main::SoundManager::create( hwnd );
 		Main::SceneManager::create( hwnd );
 
-		gHThread = CreateThread( NULL, 0, ThreadFunc, hwnd , 0, &dwParam );
+		gHThread = CreateThread( NULL, 0, SoundThread, hwnd , 0, &dwParam );
 
-//		SetTimer(hwnd, 1, 10, NULL);	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
-		SetTimer(hwnd, 1, 20, NULL);	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
-
+//		SetTimer( hwnd, 1, 10, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
+		SetTimer( hwnd, 1, 20, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
 		return 0;
 
 	case WM_TIMER:	//Ä•`‰æ‚³‚¹‚é
+		Main::SceneManager::inst()->update();
 		InvalidateRect( hwnd, NULL, FALSE );	//”wŒi‚ðÁ‹Ž‚µ‚È‚¢
 		return 0;
 
@@ -72,6 +72,7 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 	case MM_WOM_DONE:
 		Main::SoundManager::inst()->setBuffer();
+		Main::SceneManager::inst()->mIsAddWave = TRUE;
 		return 0;
 
 	case WM_PAINT:

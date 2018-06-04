@@ -2,6 +2,7 @@
 #include "MainChild.h"
 
 #include "Title.h"
+#include "Debug1.h"
 
 namespace Sequence {
 
@@ -10,6 +11,7 @@ mChild(),
 mNext( SEQ_NONE )
 {
 	mChild = new Title( hdc );
+//	mChild = new Debug1( hdc );
 }
 
 MainParent::~MainParent( void )
@@ -18,9 +20,9 @@ MainParent::~MainParent( void )
 	mChild = 0;
 }
 
-void MainParent::update( HDC& hdc )
+void MainParent::update( void )
 {
-	mChild->update( hdc, this );
+	mChild->update( this );
 
 	switch( mNext ) {
 		case SEQ_TITLE:
@@ -33,7 +35,13 @@ void MainParent::update( HDC& hdc )
 //			mChild = new Game::Parent( mStageID );
 			break;
 	}
+
 	mNext = SEQ_NONE;
+}
+
+void MainParent::draw( HDC& hdc )
+{
+	mChild->draw( hdc, this );
 }
 
 void MainParent::moveTo( SeqID next )

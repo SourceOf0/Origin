@@ -15,23 +15,15 @@ namespace Main {
 class SoundManager
 {
 public:
-	enum EffectID {
-		EFFECT_DISTORTION1,
-		EFFECT_DISTORTION2,
-		EFFECT_DISTORTION3,
-		EFFECT_COMPRESSOR,
-		EFFECT_TREMOLO,
-		EFFECT_NONE
-	};
-
 	static SoundManager* inst( void );
 	static void create( HWND& hwnd );
 	static void destroy( void );
 
 	int play( void );
 	int stop( void );
-	int setBuffer();
+	int setBuffer( void );
 	int setSound( int index );
+	Sound::Track* getTrack( int index );
 	int makeWave( void );
 
 private:

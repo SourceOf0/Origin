@@ -25,10 +25,10 @@ void Distortion2::reset( void )
 // ディストーション（非対称ソフトクリッピング）
 void Distortion2::apply( Track* track )
 {
-	double* wave = track->getAdjWave();
+	double* waveData = track->getWaveData();
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = wave[i];
+		double s = waveData[i];
 
 		s = s * mGain; /* 音データの増幅 */
 		if( s >= 0.0 ) {
@@ -38,7 +38,7 @@ void Distortion2::apply( Track* track )
 		}
 		s *= mLevel; /* 音の大きさを調節する */
 		
-		wave[i] = s;
+		waveData[i] = s;
 	}
 }
 

@@ -15,10 +15,12 @@ namespace Sequence {
 class MainParent;
 
 class Title : public MainChild {
-	public:
-		Title( HDC& hdc );
-		~Title( void );
-		void update( HDC& hdc, MainParent* parent );
+public:
+	Title( HDC& hdc );
+	~Title( void );
+	void update( MainParent* parent );
+	void draw( HDC& hdc, MainParent* parent );
+
 private:
 
 	typedef struct _POINT_TRACK {

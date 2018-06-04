@@ -1,11 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{4072ad08-c313-4fa3-a1d2-41ccf4e58352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Image">
+      <UniqueIdentifier>{ac228645-aa1d-469f-966f-e2beb1f34a0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{4e451616-1f14-44f3-95d4-4749f00d71f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence">
+      <UniqueIdentifier>{0069316c-164a-4d9c-9430-e75604080154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound\Effect">
+      <UniqueIdentifier>{1808f72f-08fc-484c-8cd6-f7525148b577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Title">
+      <UniqueIdentifier>{6e26fc17-7fcb-490f-987b-47e4e68d87f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Debug1">
+      <UniqueIdentifier>{c1ea1ef4-34eb-461c-9d09-7dcb6ce105f7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DCBitmap.cpp">
-      <Filter>Image</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelBitmap.cpp">
       <Filter>Image</Filter>
     </ClCompile>
     <ClCompile Include="ImageFactory.cpp">
@@ -14,25 +34,34 @@
     <ClCompile Include="ImageManager.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="MainParent.cpp">
+      <Filter>Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelBitmap.cpp">
+      <Filter>Image</Filter>
+    </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="MainParent.cpp">
-      <Filter>Sequence</Filter>
+    <ClCompile Include="Track.cpp">
+      <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Title.cpp">
-      <Filter>Sequence\Title</Filter>
+    <ClCompile Include="Wave.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Compressor.cpp">
+      <Filter>Sound\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Delay.cpp">
+      <Filter>Sound\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Distortion1.cpp">
       <Filter>Sound\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Distortion2.cpp">
-      <Filter>Sound\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Compressor.cpp">
       <Filter>Sound\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Distortion3.cpp">
@@ -41,33 +70,24 @@
     <ClCompile Include="Tremolo.cpp">
       <Filter>Sound\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Track.cpp">
-      <Filter>Sound</Filter>
+    <ClCompile Include="Title.cpp">
+      <Filter>Sequence\Title</Filter>
     </ClCompile>
-    <ClCompile Include="Wave.cpp">
-      <Filter>Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="Delay.cpp">
-      <Filter>Sound\Effect</Filter>
+    <ClCompile Include="Debug1.cpp">
+      <Filter>Sequence\Debug1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DCBitmap.h">
       <Filter>Image</Filter>
     </ClInclude>
-    <ClInclude Include="PixelBitmap.h">
-      <Filter>Image</Filter>
+    <ClInclude Include="EffectBase.h">
+      <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="ImageManager.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="ImageFactory.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="MainChild.h">
@@ -76,28 +96,16 @@
     <ClInclude Include="MainParent.h">
       <Filter>Sequence</Filter>
     </ClInclude>
-    <ClInclude Include="Title.h">
-      <Filter>Sequence\Title</Filter>
+    <ClInclude Include="PixelBitmap.h">
+      <Filter>Image</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="SoundBase.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="Distortion1.h">
-      <Filter>Sound\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Distortion2.h">
-      <Filter>Sound\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Compressor.h">
-      <Filter>Sound\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Distortion3.h">
-      <Filter>Sound\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Tremolo.h">
-      <Filter>Sound\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="EffectBase.h">
       <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="Track.h">
@@ -106,28 +114,29 @@
     <ClInclude Include="Wave.h">
       <Filter>Sound</Filter>
     </ClInclude>
+    <ClInclude Include="Distortion3.h">
+      <Filter>Sound\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Compressor.h">
+      <Filter>Sound\Effect</Filter>
+    </ClInclude>
     <ClInclude Include="Delay.h">
       <Filter>Sound\Effect</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Sequence">
-      <UniqueIdentifier>{8f7027c9-5273-4d0d-b8e6-a4e53c08138c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{01cdc62d-86e4-401d-adeb-e0818b79ccf7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Title">
-      <UniqueIdentifier>{684c7af4-7436-4e36-b0b9-6e1db10b4f22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sound">
-      <UniqueIdentifier>{fcd2d708-9b1b-449d-98d8-3f798df2a0b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Image">
-      <UniqueIdentifier>{989dd903-94fa-4ece-8aed-0279dc6e7e86}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sound\Effect">
-      <UniqueIdentifier>{8acd55ff-8253-4442-a5f4-b2ffe16172e7}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="Distortion1.h">
+      <Filter>Sound\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Distortion2.h">
+      <Filter>Sound\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Tremolo.h">
+      <Filter>Sound\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>Sequence\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug1.h">
+      <Filter>Sequence\Debug1</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

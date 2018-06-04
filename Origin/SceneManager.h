@@ -16,11 +16,15 @@ public:
 	static void create( HWND& hwnd );
 	static void destroy( void );
 
+	int update( void );
 	int draw( HDC& hdc );
 
 	static int mWindowWidth;
 	static int mWindowHeight;
+
 	static BOOL mIsMouseDown;
+	static BOOL mIsAddWave;
+
 	LPDWORD mWindowPixel;
 
 	HDC mHdcBmp;
@@ -35,8 +39,7 @@ private:
 
 	HBITMAP mHBmp;
 	HBITMAP mHBmpOld;
-	BITMAPINFO mBmpInfo;
-
+	BITMAPINFO* mBmpInfo;
 };
 
 } // namespace Main

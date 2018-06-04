@@ -10,8 +10,50 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Compressor.cpp" />
+    <ClCompile Include="DCBitmap.cpp" />
+    <ClCompile Include="Debug1.cpp" />
+    <ClCompile Include="Delay.cpp" />
+    <ClCompile Include="Distortion1.cpp" />
+    <ClCompile Include="Distortion2.cpp" />
+    <ClCompile Include="Distortion3.cpp" />
+    <ClCompile Include="ImageFactory.cpp" />
+    <ClCompile Include="ImageManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainParent.cpp" />
+    <ClCompile Include="PixelBitmap.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Track.cpp" />
+    <ClCompile Include="Tremolo.cpp" />
+    <ClCompile Include="Wave.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Compressor.h" />
+    <ClInclude Include="DCBitmap.h" />
+    <ClInclude Include="Debug1.h" />
+    <ClInclude Include="Delay.h" />
+    <ClInclude Include="Distortion1.h" />
+    <ClInclude Include="Distortion2.h" />
+    <ClInclude Include="Distortion3.h" />
+    <ClInclude Include="EffectBase.h" />
+    <ClInclude Include="ImageFactory.h" />
+    <ClInclude Include="ImageManager.h" />
+    <ClInclude Include="MainChild.h" />
+    <ClInclude Include="MainParent.h" />
+    <ClInclude Include="PixelBitmap.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SoundBase.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Title.h" />
+    <ClInclude Include="Track.h" />
+    <ClInclude Include="Tremolo.h" />
+    <ClInclude Include="Wave.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8E6DB69F-22DC-47CA-9EDE-8DA9DF477D93}</ProjectGuid>
+    <ProjectGuid>{1E76AA81-BC4B-4704-BD70-29702D5DC58A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -73,46 +115,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Compressor.cpp" />
-    <ClCompile Include="DCBitmap.cpp" />
-    <ClCompile Include="Delay.cpp" />
-    <ClCompile Include="Distortion1.cpp" />
-    <ClCompile Include="Distortion2.cpp" />
-    <ClCompile Include="Distortion3.cpp" />
-    <ClCompile Include="ImageFactory.cpp" />
-    <ClCompile Include="ImageManager.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainParent.cpp" />
-    <ClCompile Include="PixelBitmap.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="Title.cpp" />
-    <ClCompile Include="Track.cpp" />
-    <ClCompile Include="Tremolo.cpp" />
-    <ClCompile Include="Wave.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Compressor.h" />
-    <ClInclude Include="DCBitmap.h" />
-    <ClInclude Include="Delay.h" />
-    <ClInclude Include="Distortion1.h" />
-    <ClInclude Include="Distortion2.h" />
-    <ClInclude Include="Distortion3.h" />
-    <ClInclude Include="EffectBase.h" />
-    <ClInclude Include="ImageFactory.h" />
-    <ClInclude Include="ImageManager.h" />
-    <ClInclude Include="MainChild.h" />
-    <ClInclude Include="MainParent.h" />
-    <ClInclude Include="PixelBitmap.h" />
-    <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="SoundBase.h" />
-    <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="Title.h" />
-    <ClInclude Include="Track.h" />
-    <ClInclude Include="Tremolo.h" />
-    <ClInclude Include="Wave.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

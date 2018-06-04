@@ -12,6 +12,8 @@ class EffectBase {
 		// 中身なし（派生クラスで定義されてないとエラー）
 		virtual void reset( void ) = 0;
 		virtual void apply( Track* track ) = 0;
+
+		double mSetNum1;
 };
 
 } // namespace Sound

@@ -21,6 +21,7 @@ private:
 	void setSawtooth( Track* track );
 	void setSquare( Track* track );
 	void setTriangle( Track* track );
+	void setSilent( Track* track );
 
 	double mA;
 	double mF;

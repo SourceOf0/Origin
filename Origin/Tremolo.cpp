@@ -8,8 +8,8 @@
 namespace Sound {
 
 Tremolo::Tremolo( void ) : 
-mDepth( 0.5 ),
-mRate( 5.0 )
+mDepth( 1 ),
+mRate( 1.0 )
 {
 }
 
@@ -25,18 +25,17 @@ void Tremolo::reset( void )
 // ƒgƒŒƒ‚ƒ
 void Tremolo::apply( Track* track )
 {
-	double* wave = track->getAdjWave();
+	double* waveData = track->getWaveData();
 	double time = track->getPlayTime();
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = wave[i];
+		double s = waveData[i];
 
 		s *= 1.0 + mDepth * sin(2.0 * M_PI * mRate * time / SAMPLES_PER_SEC);
-		
-		wave[i] = s;
-
 		time += 1;
 		if( time > SAMPLES_PER_SEC ) time -= SAMPLES_PER_SEC;
+
+		waveData[i] = s;
 	}
 }
 

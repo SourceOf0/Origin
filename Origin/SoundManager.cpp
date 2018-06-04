@@ -1,15 +1,9 @@
 #include "SoundManager.h"
 
+#include "EffectBase.h"
 #include "SoundBase.h"
 #include "Track.h"
 #include "Wave.h"
-
-#include "Distortion1.h"
-#include "Distortion2.h"
-#include "Distortion3.h"
-#include "Compressor.h"
-#include "Tremolo.h"
-#include "Delay.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -50,9 +44,12 @@ SoundManager::SoundManager( HWND& hwnd )
 	mTrack2 = new Sound::Track();
 
 	mTrack1->setWave( WAVE_SAWTOOTH );
-	mTrack1->addEffect( new Sound::Delay() );
+//	mTrack1->addEffect( EFFECT_TREMOLO );
+	mTrack1->addEffect( EFFECT_DELAY );
 	
-	mTrack2->setWave( WAVE_SQUARE );
+	mTrack2->setWave( WAVE_SAWTOOTH );
+//	mTrack2->addEffect( EFFECT_TREMOLO );
+	mTrack2->addEffect( EFFECT_DELAY );
 
 	wfe.wFormatTag = WAVE_FORMAT_PCM;
 	wfe.nChannels = CHANNEL;	//ƒXƒeƒŒƒI
@@ -78,8 +75,8 @@ SoundManager::SoundManager( HWND& hwnd )
 		waveOutPrepareHeader( mHWaveOut, &mWaveHeader[k], sizeof(WAVEHDR) );
 	}
 //	waveOutSetVolume( mHWaveOut, (DWORD)( 0xFFFFFFFF ) );
-//	waveOutSetVolume( mHWaveOut, (DWORD)( 0x1FFF1FFF ) );
-	waveOutSetVolume( mHWaveOut, (DWORD)( 0x2FFF2FFF ) );
+	waveOutSetVolume( mHWaveOut, (DWORD)( 0x05FF05FF ) );
+//	waveOutSetVolume( mHWaveOut, (DWORD)( 0x2FFF2FFF ) );
 	setSound( 0 );
 }
 
@@ -108,7 +105,7 @@ int SoundManager::play( void )
 {
 	mIsPlay = TRUE;
 	mTrack1->setF( 300 );
-	mTrack2->setF( 100 );
+	mTrack2->setF( 250 );
 	
 	++test;
 	switch( test ) {
@@ -116,12 +113,15 @@ int SoundManager::play( void )
 			test = 0;
 		case 0:
 			mTrack1->setWave( WAVE_SAWTOOTH );
+			mTrack2->setWave( WAVE_SAWTOOTH );
 			break;
 		case 1:
 			mTrack1->setWave( WAVE_SQUARE );
+			mTrack2->setWave( WAVE_SQUARE );
 			break;
 		case 2:
 			mTrack1->setWave( WAVE_TRIANGLE );
+			mTrack2->setWave( WAVE_TRIANGLE );
 			break;
 	}
 	return 0;
@@ -131,8 +131,9 @@ int SoundManager::stop( void )
 {
 //	mIsPlay = FALSE;
 //	mTrack1->setF( 400 );
-//	mTrack2->setF( 200 );
+//	mTrack2->setF( 300 );
 	mTrack1->setWave( WAVE_NONE );
+	mTrack2->setWave( WAVE_NONE );
 	return 0;
 }
 
@@ -146,6 +147,19 @@ int SoundManager::setSound( int index )
 {
 //	mPlayingIndex = index;
 	return 0;
+}
+
+Sound::Track* SoundManager::getTrack( int index )
+{
+	switch( index ) {
+		case 1:
+			return mTrack1;
+			break;
+		case 2:
+			return mTrack2;
+			break;
+	}
+	return NULL;
 }
 
 int SoundManager::makeWave( void )
@@ -162,10 +176,13 @@ int SoundManager::makeWave( void )
 	++mSetBufferNum;
 
 	mTrack1->update();
-//	mTrack2->update();
+	mTrack2->update();
 
-	double* wave1 = mTrack1->getPlayWave();
-	double* wave2 = mTrack2->getPlayWave();
+	double* wave1 = mTrack1->getWaveData();
+	double* wave2 = mTrack2->getWaveData();
+
+//	mTrack1->getEffect(0)->mSetNum1 += 0.0001;
+//	mTrack2->getEffect(0)->mSetNum1 += 0.0001;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = clipping( ( wave1[i] + wave2[i] ) / 2 );

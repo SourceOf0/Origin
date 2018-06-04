@@ -16,7 +16,8 @@ public:
 	};
 	MainParent( HDC& hdc );
 	~MainParent( void );
-	void update( HDC& hdc );
+	void update( void );
+	void draw( HDC& hdc );
 	void moveTo( SeqID );
 private:
 	MainChild* mChild;
