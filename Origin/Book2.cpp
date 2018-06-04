@@ -28,15 +28,15 @@ Book2::Book2( HDC& hdc, MainParent* parent )
 		mPointTrack[i].count = 0;
 	}
 
-	mBackBmp1 = imageFactory->load( hdc, "resource\\pic03.dad" );
+	mBackBmp1 = imageFactory->loadDC( hdc, "resource\\pic03.dad" );
 	mBackBmp1->mX = ( float )( windowWidth - mBackBmp1->mWidth ) / 2;
 	mBackBmp1->mY = ( float )( windowHeight - mBackBmp1->mHeight ) / 2;
 
-	mBackBmp2 = imageFactory->load( hdc, "resource\\pic02.dad" );
+	mBackBmp2 = imageFactory->loadDC( hdc, "resource\\pic02.dad" );
 	mBackBmp2->mX = ( float )( windowWidth - mBackBmp2->mWidth ) / 2;
 	mBackBmp2->mY = ( float )( windowHeight - mBackBmp2->mHeight ) / 2;
 
-	mBackBmp3 = imageFactory->load( hdc, "resource\\pic01.dad" );
+	mBackBmp3 = imageFactory->loadDC( hdc, "resource\\pic01.dad" );
 	mBackBmp3->mX = ( float )( windowWidth - mBackBmp3->mWidth ) / 2;
 	mBackBmp3->mY = ( float )( windowHeight - mBackBmp3->mHeight ) / 2;
 
@@ -112,7 +112,7 @@ void Book2::update( MainParent* parent )
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {
-			Main::HandManager::inst()->setState( Main::HandManager::HAND_BACK );
+			Main::HandManager::inst()->setState( Main::HandManager::HAND_CLOSE );
 		}
 	}
 }

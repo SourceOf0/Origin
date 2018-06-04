@@ -41,6 +41,8 @@ public:
 		HAND_IMAGE_LEFT,
 		HAND_IMAGE_UP,
 
+		HAND_IMAGE_CHECK,
+
 		HAND_IMAGE_NONE
 	};
 
@@ -85,6 +87,7 @@ private:
 	int mAnimeCount;
 
 	Image::LayerData* mHandBmp;
+	Image::LayerData* mCheckHandBmp;
 };
 
 } // namespace Main

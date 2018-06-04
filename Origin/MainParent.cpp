@@ -2,6 +2,7 @@
 #include "MainChild.h"
 
 #include "RoomParent.h"
+#include "Book1.h"
 #include "Book2.h"
 #include "Book3.h"
 #include "Book4.h"
@@ -13,8 +14,12 @@
 #include "Debug1.h"
 #include "Debug2.h"
 
+#include "DCBitmap.h"
+
 #include "HandManager.h"
 #include "BitmapBase.h"
+#include "ImageFactory.h"
+#include "SceneManager.h"
 
 namespace Sequence {
 
@@ -26,7 +31,8 @@ mRoom( 0 ),
 mChild( 0 ),
 mDebugLoading( 0 ),
 mThreadState( 3 ),
-mNext( SEQ_NONE )
+mNext( SEQ_NONE ),
+mBookCornerBmp( 0 )
 {
 	mInst = this;
 
@@ -53,6 +59,9 @@ MainParent::~MainParent( void )
 		delete mChild;
 		mChild = 0;
 	}
+
+	delete mBookCornerBmp;
+	mBookCornerBmp = 0;
 }
 
 DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
@@ -64,6 +73,13 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 	}
 
 	HDC hdc = GetDC( inst->mHWnd );
+	if( inst->mBookCornerBmp == 0 ) {
+		inst->mBookCornerBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\bookCorner.dad" );
+		Image::DCBitmap* target = inst->mBookCornerBmp;
+		target->mX = Main::SceneManager::windowWidth - 64;
+		target->mY = Main::SceneManager::windowHeight - 64;
+	}
+
 	switch( inst->mNext ) {
 		case SEQ_DEBUG1:
 			inst->mChild = new Debug1( hdc, inst );
@@ -75,6 +91,9 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 			if( inst->mRoom == 0 ) {
 				inst->mRoom = new RoomParent( hdc, inst );
 			}
+			break;
+		case SEQ_BOOK1:
+			inst->mChild = new Book1( hdc, inst );
 			break;
 		case SEQ_BOOK2:
 			inst->mChild = new Book2( hdc, inst );
@@ -141,6 +160,7 @@ void MainParent::draw( HDC& hdc )
 			mRoom->draw( hdc, this );
 		} else {
 			mChild->draw( hdc, this );
+			mBookCornerBmp->drawWindowOr();
 		}
 	} else {
 		mDebugLoading->draw( hdc, this );

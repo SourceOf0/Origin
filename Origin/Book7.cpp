@@ -141,7 +141,7 @@ void Book7::update( MainParent* parent )
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {
-			Main::HandManager::inst()->setState( Main::HandManager::HAND_BACK );
+			Main::HandManager::inst()->setState( Main::HandManager::HAND_CLOSE );
 		}
 	}
 }

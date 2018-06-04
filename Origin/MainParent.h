@@ -3,6 +3,10 @@
 
 #include <windows.h>
 
+namespace Image {
+	class DCBitmap;
+}
+
 namespace Sequence {
 	
 class MainChild;
@@ -43,6 +47,8 @@ private:
 	MainChild* mChild;
 	RoomParent* mRoom;
 	MainChild* mDebugLoading;
+
+	Image::DCBitmap* mBookCornerBmp;
 
 	SeqID mNext;
 };

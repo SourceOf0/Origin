@@ -48,6 +48,7 @@ mAnimeCount( 0 )
 	unsigned int windowHeight = Main::SceneManager::windowHeight;
 
 	mHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\hands.dad" ) );
+	mCheckHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\checkHand.dad" ) );
 
 	POINT mousePos;
 	GetCursorPos( &mousePos );
@@ -59,6 +60,9 @@ HandManager::~HandManager( void )
 {
 	delete mHandBmp;
 	mHandBmp = 0;
+
+	delete mCheckHandBmp;
+	mCheckHandBmp = 0;
 }
 
 void HandManager::update( void )
@@ -108,14 +112,17 @@ void HandManager::update( void )
 	mouseX -= mX;
 	mouseY -= mY;
 
-	mHandBmp->mX = mouseX - 32;
-	mHandBmp->mY = mouseY - 32;
-
+	int fixX = 32;
+	int fixY = 32;
 	switch( mState ) {
 		case HAND_NORMAL:
 			mImageState = HAND_IMAGE_NORMAL;
 			break;
 		case HAND_CHECK:
+			mImageState = HAND_IMAGE_CHECK;
+			fixX = 48;
+			fixY = 48;
+			break;
 		case HAND_PUSH_AFTER:
 		case HAND_PUSH_BEFORE:
 			mImageState = HAND_IMAGE_PUSH;
@@ -145,16 +152,24 @@ void HandManager::update( void )
 //		case HAND_DOWN:
 //			break;
 	}
+
+	mHandBmp->mX = mouseX - fixX;
+	mHandBmp->mY = mouseY - fixY;
 }
 
 void HandManager::draw( void )
 {
 //	mHandBmp->drawWindow( mHandBmp->mX, mHandBmp->mY, size.startX, size.startY, size.width, size.height, isTransparent );
 //	if( mImageState != HAND_IMAGE_NORMAL && mImageState != HAND_IMAGE_PUSH ) {
-		mHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 ), static_cast< int >( mHandBmp->mY + 0.5 ), 0, mImageState * 64, 64, 64 );
+//		mHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 ), static_cast< int >( mHandBmp->mY + 0.5 ), 0, mImageState * 64, 64, 64 );
 //	} else {
 //		mHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 8 + 0.5 ), static_cast< int >( mHandBmp->mY + 16 + 0.5 ), 0, mImageState * 64, 64, 64 );
 //	}
+	if( mImageState == HAND_IMAGE_CHECK ) {
+		mCheckHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 ), static_cast< int >( mHandBmp->mY + 0.5 ), 0, 0, 96, 96 );
+	} else {
+		mHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 ), static_cast< int >( mHandBmp->mY + 0.5 ), 0, mImageState * 64, 64, 64 );
+	}
 }
 
 int HandManager::getX( void )

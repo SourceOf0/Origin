@@ -116,11 +116,17 @@ void Synthesizer::draw( HDC& hdc, Sequence::RoomParent* parent )
 	}
 	viewSign( mScaleSign );
 	
-	for( int i = 0 ; i < TRACK_NUM; ++i ) {
+	int selectTrack = getSelectTrack();
+	for( int i = 0; i < TRACK_NUM; ++i ) {
+		if( selectTrack == i ) continue;
 		for( int j = 0 ; j < NOTE_SET_MAX_NUM; ++j ) {
 			if( mNoteLamp[ i ][ j ].defX == 100 ) continue;
 			viewParts( mNoteLamp[ i ][ j ] );
 		}
+	}
+	for( int j = 0 ; j < NOTE_SET_MAX_NUM; ++j ) {
+		if( mNoteLamp[ selectTrack ][ j ].defX == 100 ) continue;
+		viewParts( mNoteLamp[ selectTrack ][ j ] );
 	}
 	for( int i = 0 ; i < NOTE_SET_MAX_NUM; ++i ) {
 		if( mTimeLampX[ i ].defX == 100 ) continue;

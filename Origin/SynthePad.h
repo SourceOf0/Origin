@@ -114,7 +114,7 @@ BOOL Synthesizer::updatePad( BOOL isHit, BOOL isClick, int mouseX, int mouseY )
 				target.defX = 100;
 			} else {
 				target.defX = 0;
-				target.partsID = ( getSelectTrack() == i )? PARTS_LAMP_NOTE_1 : PARTS_LAMP_NOTE_2;
+				target.partsID = ( mTrackButton[ i ].partsID == PARTS_BUTTON_TRACK_ON )? PARTS_LAMP_NOTE_1 : PARTS_LAMP_NOTE_2;
 				if( ( noteIndex + 1 ) < NOTE_HEIGHT_NUM ) {
 					target.x = static_cast< int >( mNotePosX[ noteIndex ][ j ] + ( mNotePosX[ noteIndex + 1 ][ j ] - mNotePosX[ noteIndex ][ j ] ) * nodeRatio + 0.5 );
 					target.y = static_cast< int >( mNotePosY[ noteIndex ][ j ] + ( mNotePosY[ noteIndex + 1 ][ j ] - mNotePosY[ noteIndex ][ j ] ) * nodeRatio + 0.5 );

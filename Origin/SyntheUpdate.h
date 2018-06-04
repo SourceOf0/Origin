@@ -360,7 +360,7 @@ BOOL Synthesizer::checkHit( PartsData& target, int x, int y )
 
 int Synthesizer::getSelectTrack( void )
 {
-	for( int i = 0 ; i < TRACK_NUM; ++i ) {
+	for( int i = 0; i < TRACK_NUM; ++i ) {
 		if( mTrackButton[ i ].partsID == PARTS_BUTTON_TRACK_ON ) return i;
 	}
 	return -1;
