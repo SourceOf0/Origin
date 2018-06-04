@@ -6,14 +6,14 @@
 
 namespace Sound {
 
-void EffectBase::init( double** setWaveLog, double set1, double set2, double set3 )
+void EffectBase::init( double** setWaveLog )
 {
 	mLogIndex = 0;
-	mSetNum1 = set1;
-	mSetNum2 = set2;
-	mSetNum3 = set3;
+	mSetNum1 = 0;
+	mSetNum2 = 0;
 
 	mWaveLog = setWaveLog;
+	if( mWaveLog == 0 ) return;
 	for( int i = 0; i < LOG_MAX_DATA_NUM; ++i ) {
 		for( int j = 0; j < WAVE_DATA_LENGTH; ++j ) {
 			mWaveLog[ i ][ j ] = 0;
@@ -38,6 +38,27 @@ double EffectBase::getPrevData( int prevIndex )
 	}
 
 	return mWaveLog[ blockIndex ][ dataIndex ];
+}
+
+void EffectBase::setNum1( double val )
+{
+	if( val < -0.0 ) val = 0.0;
+	if( val > 1.0 ) val = 1.0;
+	mSetNum1 = val;
+}
+void EffectBase::setNum2( double val )
+{
+	if( val < -0.0 ) val = 0.0;
+	if( val > 1.0 ) val = 1.0;
+	mSetNum2 = val;
+}
+double EffectBase::getNum1( void )
+{
+	return mSetNum1;
+}
+double EffectBase::getNum2( void )
+{
+	return mSetNum2;
 }
 
 double EffectBase::sinc( double x )

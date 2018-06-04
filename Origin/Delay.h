@@ -17,9 +17,6 @@ public:
 	void apply( Track* track );
 
 private:
-	double mA;			/* Œ¸Š—¦ */
-	double mDelayTime;	/* ’x‰„ŠÔ */
-	int mRepeat;		/* ŒJ‚è•Ô‚µ‰ñ” */
 };
 
 } // namespace Sound

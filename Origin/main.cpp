@@ -36,10 +36,12 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 		Main::SceneManager::destroy();
 
-		while( gStateSoundThread < 2 ) {
-			Sleep( 100 );
+		if( Main::SoundManager::inst() != 0 ) {
+			while( gStateSoundThread < 2 ) {
+				Sleep( 100 );
+			}
+			Main::SoundManager::destroy();
 		}
-		Main::SoundManager::destroy();
 
 		PostQuitMessage( 0 );
 
@@ -72,13 +74,11 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 	case WM_LBUTTONDOWN:
 		if( gStateSoundThread > 0 ) return 0;
-		Main::SoundManager::inst()->play();
 		Main::SceneManager::inst()->mouseDown();
 		return 0;
 
 	case WM_LBUTTONUP:
 		if( gStateSoundThread > 0 ) return 0;
-		Main::SoundManager::inst()->stop();
 		Main::SceneManager::inst()->mouseUp();
 		return 0;
 

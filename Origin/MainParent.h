@@ -12,7 +12,7 @@ public:
 	enum SeqID {
 		SEQ_DEBUG1,
 		SEQ_DEBUG2,
-		SEQ_TITLE,
+		SEQ_ROOM,
 		SEQ_BOOK2,
 	
 		SEQ_NONE
@@ -22,12 +22,6 @@ public:
 	void update( void );
 	void draw( HDC& hdc );
 	void moveTo( SeqID );
-
-	int mWindowWidth;
-	int mWindowHeight;
-
-	BOOL mIsMouseDown;
-	BOOL mIsAddWave;
 
 private:
 	static DWORD WINAPI LoadThread( LPVOID hWnd );

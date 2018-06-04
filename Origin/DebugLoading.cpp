@@ -5,14 +5,12 @@
 #include "SceneManager.h"
 #include "DCBitmap.h"
 
-#include <stdlib.h>
-
 namespace Sequence {
 
 DebugLoading::DebugLoading( HDC& hdc, MainParent* parent )
 {
-	int windowWidth = parent->mWindowWidth;
-	int windowHeight = parent->mWindowHeight;
+	int windowWidth = Main::SceneManager::windowWidth;
+	int windowHeight = Main::SceneManager::windowHeight;
 
 	mBackBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
 
@@ -37,8 +35,8 @@ DebugLoading::~DebugLoading()
 
 void DebugLoading::update( MainParent* parent )
 {
-	int windowWidth = parent->mWindowWidth;
-	int windowHeight = parent->mWindowHeight;
+	int windowWidth = Main::SceneManager::windowWidth;
+	int windowHeight = Main::SceneManager::windowHeight;
 	
 	HPEN hPen1 = CreatePen( PS_SOLID, 1, RGB( 0, 0, 0 ) );
 	HPEN hPen2 = CreatePen( PS_SOLID, 1, RGB( 255, 255, 255 ) );

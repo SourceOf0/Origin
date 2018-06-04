@@ -29,9 +29,9 @@ namespace Sound {
 Track::Track( void ) :
 mPlayTime( 0 ),
 mWaveID( WAVE_SAWTOOTH ),
-mUseLog( 0 ),
 mVolL( 1.0 ),
-mVolR( 1.0 )
+mVolR( 1.0 ),
+mIsUpdate( FALSE )
 {
 	mWave = new Wave();
 
@@ -56,7 +56,7 @@ mVolR( 1.0 )
 	}
 
 	mAutoPan = new AutoPan();
-	mAutoPan->mIsUse = true;
+	mEQ = new Equalizer();
 }
 
 Track::~Track( void )
@@ -81,6 +81,12 @@ Track::~Track( void )
 		delete mEffectList[ i ];
 		mEffectList[ i ] = 0;
 	}
+
+	delete mAutoPan;
+	mAutoPan = 0;
+
+	delete mEQ;
+	mEQ = 0;
 }
 
 void Track::reset( void )
@@ -99,29 +105,74 @@ void Track::reset( void )
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
 		if( mEffectList[ i ] != 0 ) mEffectList[ i ]->reset();
 	}
+
+	mAutoPan->reset();
+	mEQ->reset();
 }
 
 int Track::update( void )
 {
+	mIsUpdate = TRUE;
+
 	mWave->setData( this, mWaveID );
 
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
 		if( mEffectList[ i ] != 0 ) mEffectList[ i ]->apply( this );
 	}
+	mEQ->apply( this );
 
 	memcpy( mPlayData, mWaveData, WAVE_DATA_LENGTH * sizeof( double ) );
 	
-	mPlayTime = ( mPlayTime + WAVE_DATA_LENGTH ) % ( SAMPLES_PER_SEC * 10 );
+	mPlayTime = ( static_cast< int >( mPlayTime ) + WAVE_DATA_LENGTH ) % ( SAMPLES_PER_SEC * 10 );
 
+	mIsUpdate = FALSE;
 	return 0;
 }
 
 void Track::setF( double f )
 {
+	if( f > 3000 ) return;
 	mWave->setF( f );
 }
 
-int Track::getPlayTime( void )
+void Track::setVol( double vol )
+{
+	if( vol < -0.0 || vol > 1.0 ) return;
+	mWave->setVol( vol );
+}
+void Track::setPan( double vol )
+{
+	if( vol < -0.0 || vol > 1.0 ) return;
+	if( mAutoPan->mIsUse ) {
+		mAutoPan->setRate( vol + 0.5 );
+		mVolL = 0.5;
+		mVolR = 0.5;
+	} else {
+		mAutoPan->setRate( 0.5 );
+		mVolL = vol;
+		mVolR = 1.0 - vol;
+	}
+}
+void Track::setEQKind( int index, EQID kind )
+{
+	mEQ->setKind( index, kind );
+}
+void Track::setEQState( int index, double fc, double g )
+{
+	if( g < -1.0 || g > 1.0 ) return;
+	if( fc < -0.0 || fc > 3000 ) return;
+	mEQ->setState( index, fc, g );
+}
+
+void Track::setAutoPan( BOOL isUse )
+{
+	mAutoPan->mIsUse = isUse;
+	mAutoPan->setRate( 0.5 );
+	mVolL = 0.5;
+	mVolR = 0.5;
+}
+
+double Track::getPlayTime( void )
 {
 	return mPlayTime;
 }
@@ -144,23 +195,20 @@ double Track::getPlayDataR( int index )
 	return mAutoPan->applyR( mPlayData[ index ] * mVolR, mPlayTime );
 }
 
-int Track::addEffect( EffectID id )
+int Track::addEffect( int index, EffectID id )
 {
-	int setIndex = 0;
-	char useLogIndex = 0;
-	char count = 0;
-	Sound::EffectBase* newEffect;
-
-	for( setIndex = 0; setIndex < EFFECT_MAX_NUM; ++setIndex ) {
-		if( mEffectList[ setIndex ] == 0 ) break;
+	while( mIsUpdate ) {
+		Sleep( 1 );
 	}
-	if( setIndex == EFFECT_MAX_NUM ) return 1;
 
-	while( ( ( mUseLog >> count ) & 1 ) == 1 ) {
-		++count;
-		if( count == LOG_MAX_INDEX_NUM ) {
-			count = -1;
-		}
+	double setNum1 = 0;
+	double setNum2 = 0;
+	Sound::EffectBase* newEffect = 0;
+	if( mEffectList[ index ] != 0 ) {
+		setNum1 = mEffectList[ index ]->getNum1();
+		setNum2 = mEffectList[ index ]->getNum2();
+		delete mEffectList[ index ];
+		mEffectList[ index ] = 0;
 	}
 
 	switch( id ) {
@@ -183,39 +231,25 @@ int Track::addEffect( EffectID id )
 			newEffect = new Sound::Tremolo();
 			break;
 		case EFFECT_DELAY:
-			if( count == -1 ) return 1;
-			mUseLog |= 1 << count;
-			newEffect = new Sound::Delay( mWaveLog[ count ] );
+			newEffect = new Sound::Delay( mWaveLog[ index ] );
 			break;
 		case EFFECT_CHORUS:
-			if( count == -1 ) return 1;
-			mUseLog |= 1 << count;
-			newEffect = new Sound::Chorus( mWaveLog[ count ] );
+			newEffect = new Sound::Chorus( mWaveLog[ index ] );
 			break;
 		case EFFECT_VIBRATO:
-			if( count == -1 ) return 1;
-			mUseLog |= 1 << count;
-			newEffect = new Sound::Vibrato( mWaveLog[ count ] );
+			newEffect = new Sound::Vibrato( mWaveLog[ index ] );
 			break;
 		case EFFECT_LOW_PASS_FILTER:
-			if( count == -1 ) return 1;
-			mUseLog |= 1 << count;
-			newEffect = new Sound::LowPassFilter( mWaveLog[ count ] );
+			newEffect = new Sound::LowPassFilter( mWaveLog[ index ] );
 			break;
 		case EFFECT_HIGH_PASS_FILTER:
-			if( count == -1 ) return 1;
-			mUseLog |= 1 << count;
-			newEffect = new Sound::HighPassFilter( mWaveLog[ count ] );
+			newEffect = new Sound::HighPassFilter( mWaveLog[ index ] );
 			break;
 		case EFFECT_BAND_PASS_FILTER:
-			if( count == -1 ) return 1;
-			mUseLog |= 1 << count;
-			newEffect = new Sound::BandPassFilter( mWaveLog[ count ] );
+			newEffect = new Sound::BandPassFilter( mWaveLog[ index ] );
 			break;
 		case EFFECT_BAND_ELIMINATE_FILTER:
-			if( count == -1 ) return 1;
-			mUseLog |= 1 << count;
-			newEffect = new Sound::BandEliminateFilter( mWaveLog[ count ] );
+			newEffect = new Sound::BandEliminateFilter( mWaveLog[ index ] );
 			break;
 		case EFFECT_EQUALIZER:
 			newEffect = new Sound::Equalizer();
@@ -224,7 +258,9 @@ int Track::addEffect( EffectID id )
 			return 1;
 			break;
 	}
-	mEffectList[ setIndex ] = newEffect;
+	newEffect->setNum1( setNum1 );
+	newEffect->setNum2( setNum2 );
+	mEffectList[ index ] = newEffect;
 
 	return 0;
 }

@@ -1,7 +1,7 @@
 #include "MainParent.h"
 #include "MainChild.h"
 
-#include "Title.h"
+#include "RoomParent.h"
 #include "Book2.h"
 
 #include "DebugLoading.h"
@@ -18,17 +18,13 @@ MainParent::MainParent(	HWND& hwnd, HDC& hdc, int windowWidth, int windowHeight 
 mHWnd( hwnd ),
 mChild( 0 ),
 mThreadState( 3 ),
-mNext( SEQ_NONE ),
-mWindowWidth( windowWidth ),
-mWindowHeight( windowHeight ),
-mIsMouseDown( FALSE ),
-mIsAddWave( FALSE )
+mNext( SEQ_NONE )
 {
 	mInst = this;
 
 	mDebugLoading = new DebugLoading( hdc, this );
 
-	mNext = SEQ_DEBUG2;
+	mNext = SEQ_ROOM;
 }
 
 MainParent::~MainParent( void )
@@ -62,8 +58,8 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 		case SEQ_DEBUG2:
 			inst->mChild = new Debug2( hdc, inst );
 			break;
-		case SEQ_TITLE:
-			inst->mChild = new Title( hdc, inst );
+		case SEQ_ROOM:
+			inst->mChild = new RoomParent( hdc, inst );
 			break;
 		case SEQ_BOOK2:
 			inst->mChild = new Book2( hdc, inst );
@@ -97,8 +93,6 @@ void MainParent::update( void )
 		mThreadState = 1;
 		mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
 	}
-
-	mIsAddWave = FALSE;
 }
 
 void MainParent::draw( HDC& hdc )

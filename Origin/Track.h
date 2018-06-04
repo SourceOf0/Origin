@@ -1,12 +1,14 @@
 #ifndef INCLUDED_SOUND_TRACK_H
 #define INCLUDED_SOUND_TRACK_H
 
+#include <windows.h>
 #include "SoundBase.h"
 
 namespace Sound {
 
 class EffectBase;
 class AutoPan;
+class Equalizer;
 class Wave;
 
 class Track {
@@ -19,13 +21,18 @@ public:
 	int update( void );
 
 	void setF( double f );
-	int getPlayTime( void );
+	void setVol( double vol );
+	void setPan( double vol );
+	void setAutoPan( BOOL isUse );
+	void setEQKind( int index, EQID kind );
+	void setEQState( int index, double fc, double g );
+	double getPlayTime( void );
 	double* getWaveData( void );
 	double* getPlayData( void );
 	double getPlayDataL( int index );
 	double getPlayDataR( int index );
 
-	int addEffect( EffectID id );
+	int addEffect( int index, EffectID id );
 	EffectBase* getEffect( int index );
 
 	int setWave( WaveID id );
@@ -38,13 +45,15 @@ private:
 	double mVolR;
 
 	double* mPlayData;
-	int mPlayTime;
-	char mUseLog;
+	double mPlayTime;
+	AutoPan* mAutoPan;
+	Equalizer* mEQ;
+
+	BOOL mIsUpdate;
 
 	WaveID mWaveID;
 	Wave* mWave;
 	EffectBase* mEffectList[ EFFECT_MAX_NUM ];
-	AutoPan* mAutoPan;
 };
 
 } //namespace Sound

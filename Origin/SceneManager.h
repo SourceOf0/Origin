@@ -23,8 +23,12 @@ public:
 	void mouseUp( void );
 	void endSetWave( void );
 
-	static int mWindowWidth;
-	static int mWindowHeight;
+	static int windowWidth;
+	static int windowHeight;
+
+	static BOOL isMouseDown;
+	static BOOL isClick;
+	static BOOL isAddWave;
 
 	LPDWORD mWindowPixel;
 	HDC mHdcBmp;

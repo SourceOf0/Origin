@@ -17,9 +17,6 @@ public:
 	void apply( Track* track );
 
 private:
-	double mD;
-	double mDepth;
-	double mRate;
 };
 
 } // namespace Sound

@@ -16,26 +16,12 @@ mJ( 0 ),
 mX( 0 ),
 mY( 0 )
 {
-	init( setWaveLog, 0, 0, 0 );
-
-	double fe = mFe / SAMPLES_PER_SEC; /* エッジ周波数 */
-	double delta = mDelta / SAMPLES_PER_SEC; /* 遷移帯域幅 */
-	mJ = (int)( 3.1 / delta + 0.5 ) - 1; /* 遅延器の数 */
-	if( mJ % 2 == 1 ) ++mJ; /* J+1が奇数になるように調整する */
-
-	double* w = new double[ mJ + 1 ];
-	mB = new double[ mJ + 1 ];
+	init( setWaveLog );
 
 	mL = WAVE_DATA_LENGTH / 10; /* フレームの長さ */
-	mX = new double[ mL + mJ ];
 	mY = new double[ mL ];
 
-	getHanningWindow( w, mJ + 1 ); /* ハニング窓 */
-
-	setLPF( fe, w ); /* FIRフィルタの設計 */
-
-	delete w;
-	w = 0;
+	setState();
 }
 
 LowPassFilter::~LowPassFilter( void )
@@ -52,7 +38,7 @@ LowPassFilter::~LowPassFilter( void )
 
 void LowPassFilter::reset( void )
 {
-	init( mWaveLog, 0, 0, 0 );
+	init( mWaveLog );
 }
 
 // Low-Pass（低域通過）フィルタ
@@ -60,6 +46,8 @@ void LowPassFilter::apply( Track* track )
 {
 	double* waveData = track->getWaveData();
 	int numberOfFrame = WAVE_DATA_LENGTH / mL; /* フレームの数 */
+
+	setState();
 
 	memcpy( mWaveLog[ mLogIndex ], waveData, WAVE_DATA_LENGTH * sizeof( double ) );
 
@@ -86,6 +74,40 @@ void LowPassFilter::apply( Track* track )
 	}
 
 	mLogIndex = ( mLogIndex + 1 ) % LOG_MAX_DATA_NUM;
+}
+
+void LowPassFilter::setState( void )
+{
+	if( mFe == mSetNum1 && mDelta == mSetNum2 ) return;
+
+	mFe = mSetNum1;
+	mDelta = mSetNum2;
+
+	double fe = ( 3000.0 - mFe * 3000.0 + 100.0 ) / SAMPLES_PER_SEC; /* エッジ周波数 */
+	double delta = ( 3000.0 - mDelta * 3000.0 + 100.0 ) / SAMPLES_PER_SEC; /* 遷移帯域幅 */
+	int setJ = static_cast< int >( 3.1 / delta + 0.5 ) - 1; /* 遅延器の数 */
+	if( setJ % 2 == 1 ) ++setJ; /* J+1が奇数になるように調整する */
+
+	double* w = new double[ setJ + 1 ];
+
+	if( setJ != mJ ) {
+		mJ = setJ;
+		if( mB != 0 ) {
+			delete mB;
+		}
+		mB = new double[ setJ + 1 ];
+		if( mX != 0 ) {
+			delete mX;
+		}
+		mX = new double[ mL + setJ ];
+	}
+
+	getHanningWindow( w, setJ + 1 ); /* ハニング窓 */
+
+	setLPF( fe, w ); /* FIRフィルタの設計 */
+
+	delete w;
+	w = 0;
 }
 
 /* Finite Impulse Response（有限インパルス応答） フィルタ */

@@ -19,6 +19,7 @@ public:
 private:
 	/* Low-Pass（低域通過）フィルタ */
 	void setLPF( double fe, double* w );
+	void setState( void );
 
 	double* mB;
 	double* mX;

@@ -60,7 +60,6 @@ int PixelBitmap::setData( unsigned int index, unsigned char data )
 }
 int PixelBitmap::setBlack( int x, int y )
 {
-	return 0;
 	if( x < 0 || y < 0 ) return 1;
 	unsigned int index = ( y * mWidth + x ) / 8;
 	int sift = 7 - ( y * mWidth + x ) % 8;

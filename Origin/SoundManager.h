@@ -9,7 +9,6 @@ namespace Sound {
 	class EffectBase;
 }
 
-
 namespace Main {
 
 class SoundManager
@@ -22,7 +21,8 @@ public:
 	int play( void );
 	int stop( void );
 	int setBuffer( void );
-	int setSound( int index );
+	void setVol( double vol );
+	void setPan( double vol );
 	Sound::Track* getTrack( int index );
 	int makeWave( void );
 
@@ -39,15 +39,19 @@ private:
 	Sound::Track* mTrack2;
 	Sound::Track* mTrack3;
 
-	int test;
 	int mSetBufferIndex;
 	int mSetBufferNum;
 	BOOL mIsPlay;
 	BOOL mWasReset;
 
+	double mMainVol;
+	double mMainVolL;
+	double mMainVolR;
+
 	HWAVEOUT mHWaveOut;
-	WAVEHDR mWaveHeader[2];
-	LPBYTE mLpWave[2];
+	WAVEHDR mWaveHeader[ 2 ];
+	LPBYTE mLpWave[ 2 ];
+//	short* mLpWave[ 2 ];
 };
 
 } // namespace Main

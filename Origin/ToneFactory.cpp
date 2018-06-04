@@ -32,9 +32,8 @@ void ToneFactory::destroy( void )
 ToneFactory::ToneFactory( HDC& hdc )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	Main::SceneManager* sceneManager = Main::SceneManager::inst();
-	unsigned int windowWidth = sceneManager->mWindowWidth;
-	unsigned int windowHeight = sceneManager->mWindowHeight;
+	unsigned int windowWidth = Main::SceneManager::windowWidth;
+	unsigned int windowHeight = Main::SceneManager::windowHeight;
 
 	int toneNum = TONE_NONE;
 	DCBitmap** setTone = new DCBitmap*[ toneNum ];

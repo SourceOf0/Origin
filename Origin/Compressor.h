@@ -17,9 +17,6 @@ public:
 	void apply( Track* track );
 
 private:
-	double mThreshold;	 /* ‚µ‚«‚¢’l */
-	double mRatio;
-	double mGain;		 /* ‘•—¦ */
 };
 
 } // namespace Sound

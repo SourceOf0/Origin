@@ -8,8 +8,6 @@
 
 #include "DCBitmap.h"
 
-#include <stdlib.h>
-
 #define POINT_MASK_ANIME_NUM 11
 #define POINT_MASK_FRAME_COUNT 2
 #define POINT_TRACK_DIS 20
@@ -21,8 +19,8 @@ namespace Sequence {
 Book2::Book2( HDC& hdc, MainParent* parent )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = parent->mWindowWidth;
-	int windowHeight = parent->mWindowHeight;
+	int windowWidth = Main::SceneManager::windowWidth;
+	int windowHeight = Main::SceneManager::windowHeight;
 
 	for( int i = 0; i < POINT_TRACK_NUM; ++i ) {
 		mPointTrack[i].x = -1;
@@ -85,8 +83,8 @@ Book2::~Book2()
 
 void Book2::update( MainParent* parent )
 {
-	int windowWidth = parent->mWindowWidth;
-	int windowHeight = parent->mWindowHeight;
+	int windowWidth = Main::SceneManager::windowWidth;
+	int windowHeight = Main::SceneManager::windowHeight;
 	
 	if( mCount < 0 ) {
 		( rand() * 1.0 / RAND_MAX > 0.05 ) ? mCount = FILTER_FRAME_COUNT : mCount = FILTER_FRAME_COUNT * 5 ;
@@ -99,7 +97,7 @@ void Book2::update( MainParent* parent )
 		}
 	}
 
-	if( parent->mIsMouseDown ) {
+	if( Main::SceneManager::isMouseDown ) {
 //		Main::SoundManager::inst()->play();
 		setPointMask();
 		mChangeCount = CHANGE_COUNT_MAX;

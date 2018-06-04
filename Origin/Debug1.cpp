@@ -8,14 +8,12 @@
 #include "DCBitmap.h"
 #include "Track.h"
 
-#include <stdlib.h>
-
 namespace Sequence {
 
 Debug1::Debug1( HDC& hdc, MainParent* parent )
 {
 	Main::SceneManager* sceneManager = Main::SceneManager::inst();
-	mBackBmp = new Image::DCBitmap( hdc, parent->mWindowWidth, parent->mWindowHeight );
+	mBackBmp = new Image::DCBitmap( hdc, Main::SceneManager::windowWidth, Main::SceneManager::windowHeight );
 }
 
 Debug1::~Debug1()
@@ -26,15 +24,26 @@ Debug1::~Debug1()
 
 void Debug1::update( MainParent* parent )
 {
-	if( !parent->mIsAddWave ) return;
-
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
-	double* waveLog1 = soundManager->getTrack(1)->getPlayData();
-	double* waveLog2 = soundManager->getTrack(2)->getPlayData();
+	if( Main::SceneManager::isMouseDown ) {
+		soundManager->play();
+		soundManager->getTrack( 0 )->setWave( WAVE_SQUARE );
+		soundManager->getTrack( 1 )->setWave( WAVE_SQUARE );
+		soundManager->getTrack( 2 )->setWave( WAVE_SQUARE );
+	} else {
+		soundManager->getTrack( 0 )->setWave( WAVE_NONE );
+		soundManager->getTrack( 1 )->setWave( WAVE_NONE );
+		soundManager->getTrack( 2 )->setWave( WAVE_NONE );
+	}
 
-	HPEN hPen1 = CreatePen( PS_SOLID, 1, RGB(255, 255, 255) );
-	HPEN hPen2 = CreatePen( PS_SOLID, 1, RGB(0, 0, 0) );
-	HBRUSH hBrush = CreateSolidBrush( RGB(0, 0, 0) );
+	if( !Main::SceneManager::isAddWave ) return;
+
+	double* waveLog1 = soundManager->getTrack( 0 )->getPlayData();
+	double* waveLog2 = soundManager->getTrack( 1 )->getPlayData();
+
+	HPEN hPen1 = CreatePen( PS_SOLID, 1, RGB( 255, 255, 255 ) );
+	HPEN hPen2 = CreatePen( PS_SOLID, 1, RGB( 0, 0, 0 ) );
+	HBRUSH hBrush = CreateSolidBrush( RGB( 0, 0, 0 ) );
 
 	SelectObject( mBackBmp->mHdcBmp, hBrush );
 	SelectObject( mBackBmp->mHdcBmp, hPen2 );
@@ -42,14 +51,14 @@ void Debug1::update( MainParent* parent )
 	Rectangle( mBackBmp->mHdcBmp, 20, 400, WAVE_DATA_LENGTH / 3 + 20, 600 );
 
 	SelectObject( mBackBmp->mHdcBmp, hPen1 );
-	MoveToEx( mBackBmp->mHdcBmp , 20, static_cast<int>( waveLog1[0] * 50 + 300 ), NULL );
+	MoveToEx( mBackBmp->mHdcBmp , 20, static_cast<int>( waveLog1[ 0 ] * 50 + 300 ), NULL );
 	for( int i = 1; i < WAVE_DATA_LENGTH; ++i ) {
-		LineTo( mBackBmp->mHdcBmp , static_cast<int>(i / 3) + 20, static_cast<int>( waveLog1[i] * 50 + 300 ) );
+		LineTo( mBackBmp->mHdcBmp , static_cast<int>( i / 3 ) + 20, static_cast<int>( waveLog1[i] * 50 + 300 ) );
 	}
 
-	MoveToEx( mBackBmp->mHdcBmp , 20, static_cast<int>( waveLog2[0] * 50 + 500 ), NULL );
+	MoveToEx( mBackBmp->mHdcBmp , 20, static_cast<int>( waveLog2[ 0 ] * 50 + 500 ), NULL );
 	for( int i = 1; i < WAVE_DATA_LENGTH; ++i ) {
-		LineTo( mBackBmp->mHdcBmp , static_cast<int>(i / 3) + 20, static_cast<int>( waveLog2[i] * 50 + 500 ) );
+		LineTo( mBackBmp->mHdcBmp , static_cast<int>( i / 3 ) + 20, static_cast<int>( waveLog2[i] * 50 + 500 ) );
 	}
 
 	DeleteObject( hPen1 );

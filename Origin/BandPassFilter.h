@@ -19,6 +19,7 @@ public:
 private:
 	/* Band-Pass（帯域通過）フィルタ 　※特定の帯域を通過させる */
 	void setBPF( double fe1, double fe2, double* w );
+	void setState( void );
 
 	double* mB;
 	double* mX;

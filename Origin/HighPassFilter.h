@@ -19,6 +19,7 @@ public:
 private:
 	/* High-Pass（高域通過）フィルタ */
 	void setHPF( double fe, double* w );
+	void setState( void );
 
 	double* mB;
 	double* mX;

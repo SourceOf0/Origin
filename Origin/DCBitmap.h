@@ -18,16 +18,32 @@ public:
 	int setData( int index, unsigned char data );
 	
 	void setBlack( void );
+	void setBlack( int x, int y, unsigned int width, unsigned int height );
 	void setWhite( void );
+	void setWhite( int x, int y, unsigned int width, unsigned int height );
 
 	void drawWindow( void );
 	void drawWindow( int x, int y );
+	void drawWindow( int x, int y, int startX, int startY, int width, int height );
 	void drawWindowAnd( void );
 	void drawWindowAnd( int x, int y );
+	void drawWindowAnd( int x, int y, int startX, int startY, int width, int height );
 	void drawWindowOr( void );
 	void drawWindowOr( int x, int y );
+	void drawWindowOr( int x, int y, int startX, int startY, int width, int height );
 	void drawWindowInv( void );
 	void drawWindowInv( int x, int y );
+	void drawWindowInv( int x, int y, int startX, int startY, int width, int height );
+
+	void drawImage( HDC& targetHdc, int x, int y );
+	void drawImage( HDC& targetHdc, int x, int y, int startX, int startY, int width, int height );
+	void drawImageAnd( HDC& targetHdc, int x, int y );
+	void drawImageAnd( HDC& targetHdc, int x, int y, int startX, int startY, int width, int height );
+	void drawImageOr( HDC& targetHdc, int x, int y );
+	void drawImageOr( HDC& targetHdc, int x, int y, int startX, int startY, int width, int height );
+	void drawImageInv( HDC& targetHdc, int x, int y );
+	void drawImageInv( HDC& targetHdc, int x, int y, int startX, int startY, int width, int height );
+
 	void drawBlock( HDC& targetHdc, int x, int y, int width, int index );
 	void drawBlockAnd( HDC& targetHdc, int x, int y, int width, int index );
 	void drawBlockOr( HDC& targetHdc, int x, int y, int width, int index );

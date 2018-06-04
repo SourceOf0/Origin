@@ -19,6 +19,7 @@ public:
 private:
 	/* Band-Eliminate（帯域阻止）フィルタ 　※特定の帯域を阻止する */
 	void setBEF( double fe1, double fe2, double* w );
+	void setState( void );
 
 	double* mB;
 	double* mX;

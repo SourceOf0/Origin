@@ -17,8 +17,6 @@ public:
 	void apply( Track* track );
 
 private:
-	double mGain;	/* ‘•—¦ */
-	double mLevel;
 
 };
 

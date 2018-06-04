@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{BDAF6EAA-AD2A-419D-B523-565F824569FC}</ProjectGuid>
+    <ProjectGuid>{750D1DEF-220A-45C1-B57B-0ABFDE2C5F7C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -102,7 +102,8 @@
     <ClCompile Include="PixelBitmap.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="RoomParent.cpp" />
+    <ClCompile Include="Synthesizer.cpp" />
     <ClCompile Include="ToneFactory.cpp" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="Tremolo.cpp" />
@@ -136,10 +137,14 @@
     <ClInclude Include="MainParent.h" />
     <ClInclude Include="NoiseGate.h" />
     <ClInclude Include="PixelBitmap.h" />
+    <ClInclude Include="RoomChild.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SoundBase.h" />
     <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="Title.h" />
+    <ClInclude Include="RoomParent.h" />
+    <ClInclude Include="SynthePartsInit.h" />
+    <ClInclude Include="Synthesizer.h" />
+    <ClInclude Include="SyntheUpdate.h" />
     <ClInclude Include="ToneFactory.h" />
     <ClInclude Include="Track.h" />
     <ClInclude Include="Tremolo.h" />

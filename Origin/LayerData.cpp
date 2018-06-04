@@ -4,7 +4,8 @@
 
 namespace Image {
 
-LayerData::LayerData( HDC& hdc, unsigned int width, unsigned int height )
+LayerData::LayerData( HDC& hdc, unsigned int width, unsigned int height ) : 
+mUseAlpha( TRUE )
 {
 	init( width, height );
 
@@ -27,104 +28,75 @@ LayerData::~LayerData( void )
 
 void LayerData::drawWindow( void )
 {
-	ToneID setTone = TONE_NONE;
-	mLayer[ 1 ]->drawWindowOr( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ) );
-
-	for( int i = 2; i < COLOR_KIND_NUM; ++ i ) {
-		if( mLayer[ i ] == 0 ) continue;
-		mViewTone->setBlack();
-		mLayer[ i ]->drawBlock( mViewTone->mHdcBmp, 0, 0, mWidth, 0 );
-		switch( 1 << i ) {
-			case CLR_RED:
-			case CLR_RED_GREEN:
-				setTone = TONE_001;
-				break;
-			case CLR_GREEN:
-				setTone = TONE_003;
-				break;
-			case CLR_GREEN_BLUE:
-				setTone = TONE_008;
-				break;
-			case CLR_BLUE:
-				setTone = TONE_013;
-				break;
-			case CLR_BLUE_RED:
-				setTone = TONE_015;
-				break;
-		}
-		mTone[ setTone ]->drawBlockOr( mViewTone->mHdcBmp, 0, 0, mWidth, 0 );
-		mViewTone->drawWindowAnd( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ) );
-	}
-
-	mLayer[ 0 ]->drawWindowAnd( static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ) );
+	drawWindow( static_cast< int >( mX ), static_cast< int >( mY ) );
 }
 
 void LayerData::drawWindow( int x, int y )
 {
-	ToneID setTone = TONE_NONE;
-	mLayer[ 1 ]->drawWindowOr( x, y );
+	drawWindow( x, y, 0, 0, mWidth, mHeight );
+}
 
+void LayerData::drawWindow( int x, int y, int startX, int startY, int width, int height )
+{
+	if( mUseAlpha && mLayer[ 1 ] != 0 ) {
+		mViewTone->setWhite( x, y, width, height );
+		mLayer[ 1 ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+		mLayer[ 3 ]->drawImageAnd( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+		mViewTone->drawWindowOr( x, y, 0, 0, width, height );
+	} else {
+		mViewTone->setWhite( x, y, width, height );
+		mViewTone->drawWindow( x, y, startX, startY, width, height );
+	}
+	
 	for( int i = 2; i < COLOR_KIND_NUM; ++ i ) {
 		if( mLayer[ i ] == 0 ) continue;
-		mViewTone->setBlack();
-		mLayer[ i ]->drawBlock( mViewTone->mHdcBmp, 0, 0, mWidth, 0 );
-		switch( 1 << i ) {
-			case CLR_RED:
-			case CLR_RED_GREEN:
-				setTone = TONE_001;
-				break;
-			case CLR_GREEN:
-				setTone = TONE_003;
-				break;
-			case CLR_GREEN_BLUE:
-				setTone = TONE_008;
-				break;
-			case CLR_BLUE:
-				setTone = TONE_013;
-				break;
-			case CLR_BLUE_RED:
-				setTone = TONE_015;
-				break;
-		}
-		mTone[ setTone ]->drawBlockOr( mViewTone->mHdcBmp, 0, 0, mWidth, 0 );
-		mViewTone->drawWindowAnd( x, y );
+		mViewTone->setBlack( x, y, width, height );
+		mLayer[ i ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+		mTone[ getToneID( i ) ]->drawImageOr( mViewTone->mHdcBmp, 0, 0, x, y, width, height );
+		mViewTone->drawWindowAnd( x, y, 0, 0, width, height );
 	}
-
-	mLayer[ 0 ]->drawWindowAnd( x, y );
+	mLayer[ 0 ]->drawWindowAnd( x, y, startX, startY, width, height );
 }
 
 void LayerData::drawDCBitmap( DCBitmap* target, int x, int y, int width, int index )
 {
-	ToneID setTone = TONE_NONE;
-	mLayer[ 1 ]->drawBlockOr( target->mHdcBmp, x, y, width, index );
+	mLayer[ 0 ]->drawBlock( target->mHdcBmp, x, y, width, index );
+}
 
-	for( int i = 2; i < COLOR_KIND_NUM; ++ i ) {
-		if( mLayer[ i ] == 0 ) continue;
-		mViewTone->setBlack();
-		mLayer[ i ]->drawBlock( mViewTone->mHdcBmp, 0, 0, mWidth, 0 );
-		switch( 1 << i ) {
-			case CLR_RED:
-			case CLR_RED_GREEN:
-				setTone = TONE_001;
-				break;
-			case CLR_GREEN:
-				setTone = TONE_003;
-				break;
-			case CLR_GREEN_BLUE:
-				setTone = TONE_008;
-				break;
-			case CLR_BLUE:
-				setTone = TONE_013;
-				break;
-			case CLR_BLUE_RED:
-				setTone = TONE_015;
-				break;
-		}
-		mTone[ setTone ]->drawBlockOr( mViewTone->mHdcBmp, 0, 0, mWidth, 0 );
-		mViewTone->drawBlockAnd( target->mHdcBmp, x, y, width, index );
+ToneID LayerData::getToneID( int index )
+{
+	double value = 0;
+
+	switch( 1 << index ) {
+		case CLR_WHITE:
+			value = ( mUseAlpha )? -1 : 1.0;
+			break;
+		case CLR_RED_GREEN:
+			value = ( mUseAlpha )? 0.5 : 0.9;
+			break;
+		case CLR_GREEN_BLUE:
+			value = ( mUseAlpha )? 1.0 : 0.8;
+			break;
+		case CLR_BLUE_RED:
+			value = ( mUseAlpha )? 0.9 : 0.7;
+			break;
+		case CLR_GREEN:
+			value = ( mUseAlpha )? 0.8 : 0.5;
+			break;
+		case CLR_RED:
+			value = ( mUseAlpha )? 0.7 : 0.3;
+			break;
+		case CLR_BLUE:
+			value = ( mUseAlpha )? 0.5 : 0.2;
+			break;
+		case CLR_BLACK:
+			value = 0.0;
+			break;
 	}
-
-//	mLayer[ 0 ]->drawBlockAnd( target->mHdcBmp, x, y, width, index );
+	if( value < 0 ) {
+		return TONE_015;
+	}
+	return ( ToneID )( static_cast< int >( ( 1.0 - value ) * ( TONE_NONE - 1 ) ) );
 }
 
 

@@ -6,12 +6,9 @@
 
 namespace Sound {
 
-Chorus::Chorus( double** setWaveLog ) :
-mD( 0.025 ),
-mDepth( 0.01 ),
-mRate( 0.1 )
+Chorus::Chorus( double** setWaveLog )
 {
-	init( setWaveLog, 0, 0, 0 );
+	init( setWaveLog );
 }
 
 
@@ -21,16 +18,18 @@ Chorus::~Chorus( void )
 
 void Chorus::reset( void )
 {
-	init( mWaveLog, 0, 0, 0 );
+	init( mWaveLog );
 }
 
 // ƒR[ƒ‰ƒX
 void Chorus::apply( Track* track )
 {
-	int time = track->getPlayTime();
+	int time = static_cast< int >( track->getPlayTime() );
 	double* waveData = track->getWaveData();
-	double d = SAMPLES_PER_SEC * mD;
-	double depth = SAMPLES_PER_SEC * mDepth;
+
+	double rate = 0.1;
+	double d = SAMPLES_PER_SEC * mSetNum1 * 0.1;
+	double depth = SAMPLES_PER_SEC * mSetNum2 * 0.05;
 	double t, delta, tau;
 	int m;
 
@@ -41,7 +40,7 @@ void Chorus::apply( Track* track )
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[ i ];
 
-		tau = d + depth * sin( 2.0 * M_PI * mRate * ( time + i ) / SAMPLES_PER_SEC );
+		tau = d + depth * sin( 2.0 * M_PI * rate * ( time + i ) / SAMPLES_PER_SEC );
 		t = ( double )i - tau;
 		m = ( int )t;
 		delta = t - ( double )m;

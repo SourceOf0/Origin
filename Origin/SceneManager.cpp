@@ -12,8 +12,11 @@
 namespace Main {
 
 SceneManager* SceneManager::mInst = 0;
-int SceneManager::mWindowWidth = 0;
-int SceneManager::mWindowHeight = 0;
+int SceneManager::windowWidth = 0;
+int SceneManager::windowHeight = 0;
+BOOL SceneManager::isMouseDown = FALSE;
+BOOL SceneManager::isClick = FALSE;
+BOOL SceneManager::isAddWave = FALSE;
 
 SceneManager* SceneManager::inst( void )
 {
@@ -41,8 +44,8 @@ SceneManager::SceneManager( HWND& hwnd )
 	long white = RGB( 255, 255, 255 );
 
 	hdc = GetDC( hwnd );
-	mWindowWidth = GetDeviceCaps( hdc, HORZRES );
-	mWindowHeight = GetDeviceCaps( hdc, VERTRES );
+	windowWidth = GetDeviceCaps( hdc, HORZRES );
+	windowHeight = GetDeviceCaps( hdc, VERTRES );
 
 	mBmpInfo = ( BITMAPINFO * )malloc( sizeof( BITMAPINFOHEADER ) + sizeof( RGBQUAD ) * 2 );
 	mBmpInfo->bmiHeader.biSize = sizeof( BITMAPINFOHEADER );
@@ -52,10 +55,10 @@ SceneManager::SceneManager( HWND& hwnd )
 	mBmpInfo->bmiHeader.biClrImportant = 0;
 	mBmpInfo->bmiHeader.biCompression = BI_RGB;
 	mBmpInfo->bmiHeader.biSizeImage = 0;
-	mBmpInfo->bmiHeader.biXPelsPerMeter = mWindowWidth;
-	mBmpInfo->bmiHeader.biYPelsPerMeter = mWindowHeight;
-	mBmpInfo->bmiHeader.biWidth = mWindowWidth;
-	mBmpInfo->bmiHeader.biHeight = -mWindowHeight;
+	mBmpInfo->bmiHeader.biXPelsPerMeter = windowWidth;
+	mBmpInfo->bmiHeader.biYPelsPerMeter = windowHeight;
+	mBmpInfo->bmiHeader.biWidth = windowWidth;
+	mBmpInfo->bmiHeader.biHeight = -windowHeight;
 	CopyMemory( &mBmpInfo->bmiColors[0], &black, sizeof( RGBQUAD ) );
 	CopyMemory( &mBmpInfo->bmiColors[1], &white, sizeof( RGBQUAD ) );
 
@@ -63,25 +66,25 @@ SceneManager::SceneManager( HWND& hwnd )
 	mHdcBmp = CreateCompatibleDC( hdc );
 	mHBmpOld = ( HBITMAP )SelectObject( mHdcBmp, mHBmp );
 
-	mParent = new Sequence::MainParent( hwnd, hdc, mWindowWidth, mWindowHeight );
+	mParent = new Sequence::MainParent( hwnd, hdc, windowWidth, windowHeight );
 
-	for ( int i = 0; i < mWindowWidth * mWindowHeight / 32; ++i ) {
+	for ( int i = 0; i < windowWidth * windowHeight / 32; ++i ) {
 		mWindowPixel[i] = 0;
 	}
 
 	ImageFactory::create( hdc );
 
 	HBITMAP setHBmp = 0;
-	Image::PixelBitmap* pixelData = new Image::PixelBitmap( mWindowWidth, mWindowHeight );
+	Image::PixelBitmap* pixelData = new Image::PixelBitmap( windowWidth, windowHeight );
 	
 	Image::DCBitmap::mHdcBlackBmp = CreateCompatibleDC( hdc );
-	setHBmp = CreateBitmap( mWindowWidth, mWindowHeight, 1, 1, pixelData->mPixelData );
+	setHBmp = CreateBitmap( windowWidth, windowHeight, 1, 1, pixelData->mPixelData );
 	Image::DCBitmap::mHBmpBlackPrev = (HBITMAP)SelectObject( Image::DCBitmap::mHdcBlackBmp, setHBmp );
 
-	pixelData->reset( mWindowWidth, mWindowHeight, 0xFF );
+	pixelData->reset( windowWidth, windowHeight, 0xFF );
 
 	Image::DCBitmap::mHdcWhiteBmp = CreateCompatibleDC( hdc );
-	setHBmp = CreateBitmap( mWindowWidth, mWindowHeight, 1, 1, pixelData->mPixelData );
+	setHBmp = CreateBitmap( windowWidth, windowHeight, 1, 1, pixelData->mPixelData );
 	Image::DCBitmap::mHBmpWhitePrev = (HBITMAP)SelectObject( Image::DCBitmap::mHdcWhiteBmp, setHBmp );
 
 	delete pixelData;
@@ -116,29 +119,32 @@ SceneManager::~SceneManager( void )
 
 void SceneManager::mouseDown( void )
 {
-	mParent->mIsMouseDown = TRUE;
+	isClick = TRUE;
+	isMouseDown = TRUE;
 }
 
 void SceneManager::mouseUp( void )
 {
-	mParent->mIsMouseDown = FALSE;
+	isMouseDown = FALSE;
 }
 
 void SceneManager::endSetWave( void )
 {
-	mParent->mIsAddWave = TRUE;
+	isAddWave = TRUE;
 }
 
 int SceneManager::update()
 {
 	mParent->update();
+	isClick = FALSE;
+	isAddWave = FALSE;
 	return 0;
 }
 
 int SceneManager::draw( HDC& hdc )
 {
-	BitBlt(hdc, 0, 0, mWindowWidth, mWindowHeight, mHdcBmp, 0, 0, SRCCOPY);
-	for ( int i = 0; i < mWindowWidth * mWindowHeight / 32; ++i ) {
+	BitBlt(hdc, 0, 0, windowWidth, windowHeight, mHdcBmp, 0, 0, SRCCOPY);
+	for ( int i = 0; i < windowWidth * windowHeight / 32; ++i ) {
 		mWindowPixel[i] = 0;
 	}
 	mParent->draw( hdc );

@@ -10,55 +10,58 @@ namespace Sound {
 
 Equalizer::Equalizer( void )
 {
-	EQData* newData;
+	reset();
+}
 
-	newData = new EQData();
-	newData->isSetEnd = false;
-	newData->fc = 500;
-	newData->g = -1;
-	newData->kind = 1;
-	mEQData[ 0 ] = newData;
 
-	newData = new EQData();
-	newData->isSetEnd = false;
-	newData->fc = 1000;
-	newData->g = 1;
-	newData->kind = 2;
-	mEQData[ 1 ] = newData;
+Equalizer::~Equalizer( void )
+{
+}
 
-	newData = new EQData();
-	newData->isSetEnd = false;
-	newData->fc = 2000;
-	newData->g = -1;
-	newData->kind = 3;
-	mEQData[ 2 ] = newData;
+void Equalizer::reset( void )
+{
+	EQData* newData = &mEQData[ 0 ];
+
+	newData->isSetEnd = FALSE;
+	newData->fc = 500.0;
+	newData->g = -1.0;
+	newData->kind = EQ_NONE;
+
+	newData = &mEQData[ 1 ];
+	newData->isSetEnd = FALSE;
+	newData->fc = 1000.0;
+	newData->g = 1.0;
+	newData->kind = EQ_NONE;
+
+	newData = &mEQData[ 2 ];
+	newData->isSetEnd = FALSE;
+	newData->fc = 1500.0;
+	newData->g = -1.0;
+	newData->kind = EQ_NONE;
 
 	for( int n = 0; n < EQDATA_MAX_NUM; ++n ) {
-//		mEQData[ i ] = new EQData();
-//		mEQData[ i ]->fc = 1000;
-//		mEQData[ i ]->g = 1;
-//		mEQData[ i ]->kind = 0;
 		for( int i = 0; i < 2; ++i ) {
 			for( int j = 0; j < 2; ++j ) {
 				for( int k = 0; k < 2; ++k ) {
-					mEQData[ n ]->prevData[ i ][ j ][ k ] = 0.0;
+					mEQData[ n ].prevData[ i ][ j ][ k ] = 0.0;
 				}
 			}
 		}
 	}
 }
 
-
-Equalizer::~Equalizer( void )
+void Equalizer::setKind( int index, EQID kind )
 {
-	for( int i = 0; i < EQDATA_MAX_NUM; ++i ) {
-		delete mEQData[ i ];
-		mEQData[ i ] = 0;
-	}
+	EQData* target = &mEQData[ index ];
+	target->kind = kind;
+	target->isSetEnd = FALSE;
 }
-
-void Equalizer::reset( void )
+void Equalizer::setState( int index, double fc, double g )
 {
+	EQData* target = &mEQData[ index ];
+	target->fc = fc;
+	target->g = g;
+	target->isSetEnd = FALSE;
 }
 
 // イコライザー
@@ -67,26 +70,26 @@ void Equalizer::apply( Track* track )
 	double* waveData = track->getWaveData();
 	double orgData[ WAVE_DATA_LENGTH ];
 	double useData[ EQDATA_MAX_NUM ][ 2 ][ 2 ][ 2 ];
-	bool isEnd = true;
+	BOOL isEnd = TRUE;
 	int J = 2;
 	int I = 2;
 
 	for( int i = 0; i < EQDATA_MAX_NUM; ++i ) {
-		if( mEQData[ i ]->kind == 0 ) continue;
-		isEnd = false;
-		if( mEQData[ i ]->isSetEnd ) continue; 
-		mEQData[ i ]->isSetEnd = true;
+		if( mEQData[ i ].kind == EQ_NONE ) continue;
+		isEnd = FALSE;
+		if( mEQData[ i ].isSetEnd ) continue; 
+		mEQData[ i ].isSetEnd = TRUE;
 
 		/* IIRフィルタの設計 */
-		switch( mEQData[ i ]->kind ) {
-			case 1:
-				setLowShelving( mEQData[ i ] );
+		switch( mEQData[ i ].kind ) {
+			case EQ_LOW_SHELVING:
+				setLowShelving( &mEQData[ i ] );
 				break;
-			case 2:
-				setPeaking( mEQData[ i ] );
+			case EQ_PEAKING:
+				setPeaking( &mEQData[ i ] );
 				break;
-			case 3:
-				setHighShelving( mEQData[ i ] );
+			case EQ_HIGH_SHELVING:
+				setHighShelving( &mEQData[ i ] );
 				break;
 		}
 	}
@@ -96,7 +99,7 @@ void Equalizer::apply( Track* track )
 		for( int i = 0; i < 2; ++i ) {
 			for( int j = 0; j < 2; ++j ) {
 				for( int k = 0; k < 2; ++k ) {
-					useData[ n ][ i ][ j ][ k ] = mEQData[ n ]->prevData[ i ][ j ][ k ];
+					useData[ n ][ i ][ j ][ k ] = mEQData[ n ].prevData[ i ][ j ][ k ];
 				}
 			}
 		}
@@ -105,19 +108,19 @@ void Equalizer::apply( Track* track )
 	memcpy( orgData, waveData, WAVE_DATA_LENGTH * sizeof( double ) );
 
 	for( int i = 0; i < EQDATA_MAX_NUM; ++i ) {
-		if( mEQData[ i ]->kind == 0 ) continue;
-		double* a = mEQData[ i ]->a;
-		double* b = mEQData[ i ]->b;
+		if( mEQData[ i ].kind == EQ_NONE ) continue;
+		double* a = mEQData[ i ].a;
+		double* b = mEQData[ i ].b;
 		for( int n = 0; n < WAVE_DATA_LENGTH; ++n ) {
 			waveData[ n ] = 0;
 		}
 		for( int n = 0; n < WAVE_DATA_LENGTH; ++n ) {
 			if( n == WAVE_DATA_LENGTH - 2 ) {
-				mEQData[ i ]->prevData[ 0 ][ 0 ][ 0 ] = orgData[ n - 0 ];
-				mEQData[ i ]->prevData[ 0 ][ 0 ][ 1 ] = orgData[ n - 1 ];
+				mEQData[ i ].prevData[ 0 ][ 0 ][ 0 ] = orgData[ n - 0 ];
+				mEQData[ i ].prevData[ 0 ][ 0 ][ 1 ] = orgData[ n - 1 ];
 			} else if( n == WAVE_DATA_LENGTH - 1 ) {
-				mEQData[ i ]->prevData[ 0 ][ 1 ][ 0 ] = orgData[ n - 0 ];
-				mEQData[ i ]->prevData[ 0 ][ 1 ][ 1 ] = orgData[ n - 1 ];
+				mEQData[ i ].prevData[ 0 ][ 1 ][ 0 ] = orgData[ n - 0 ];
+				mEQData[ i ].prevData[ 0 ][ 1 ][ 1 ] = orgData[ n - 1 ];
 			}
 			for( int m = 0; m <= J; ++m ) {
 				if( n - m >= 0 ) {
@@ -134,11 +137,11 @@ void Equalizer::apply( Track* track )
 				}
 			}
 			if( n == WAVE_DATA_LENGTH - 2 ) {
-				mEQData[ i ]->prevData[ 1 ][ 0 ][ 0 ] = waveData[ n - 0 ];
-				mEQData[ i ]->prevData[ 1 ][ 0 ][ 1 ] = waveData[ n - 1 ];
+				mEQData[ i ].prevData[ 1 ][ 0 ][ 0 ] = waveData[ n - 0 ];
+				mEQData[ i ].prevData[ 1 ][ 0 ][ 1 ] = waveData[ n - 1 ];
 			} else if( n == WAVE_DATA_LENGTH - 1 ) {
-				mEQData[ i ]->prevData[ 1 ][ 1 ][ 0 ] = waveData[ n - 0 ];
-				mEQData[ i ]->prevData[ 1 ][ 1 ][ 1 ] = waveData[ n - 1 ];
+				mEQData[ i ].prevData[ 1 ][ 1 ][ 0 ] = waveData[ n - 0 ];
+				mEQData[ i ].prevData[ 1 ][ 1 ][ 1 ] = waveData[ n - 1 ];
 			}
 		}
 		memcpy( orgData, waveData, WAVE_DATA_LENGTH * sizeof( double ) );

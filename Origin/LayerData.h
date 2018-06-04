@@ -16,12 +16,15 @@ public:
 
 	void drawWindow( void );
 	void drawWindow( int x, int y );
+	void drawWindow( int x, int y, int startX, int startY, int width, int height );
 	void drawDCBitmap( DCBitmap* target, int x, int y, int width, int index );
 
+	BOOL mUseAlpha;
 	DCBitmap* mLayer[ COLOR_KIND_NUM ];
 	DCBitmap* mViewTone;
 
 private :
+	ToneID getToneID( int index );
 };
 
 } // namespace Image

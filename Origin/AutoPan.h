@@ -1,6 +1,8 @@
 #ifndef INCLUDED_SOUND_AUTO_PAN_H
 #define INCLUDED_SOUND_AUTO_PAN_H
 
+#include <windows.h>
+
 namespace Sound {
 
 class Track;
@@ -12,10 +14,11 @@ public:
 	~AutoPan( void );
 
 	void reset( void );
-	double applyL( double target, int time );
-	double applyR( double target, int time );
+	void setRate( double rate );
+	double applyL( double target, double time );
+	double applyR( double target, double time );
 
-	bool mIsUse;
+	BOOL mIsUse;
 
 private:
 	double mDepth;

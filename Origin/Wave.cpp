@@ -8,8 +8,8 @@
 namespace Sound {
 
 Wave::Wave( void ) :
-mA( 0.3 ),
-mF( 300 )
+mA( 0.0 ),
+mF( 0.0 )
 {
 }
 
@@ -25,11 +25,21 @@ void Wave::setF( double f )
 {
 	mF = f;
 }
-
+double Wave::getF( void )
+{
+	return mF;
+}
+void Wave::setVol( double vol )
+{
+	mA = vol;
+}
 
 void Wave::setData( Track* track, WaveID id )
 {
 	switch( id ) {
+		case WAVE_CURVE:
+			setCurve( track );
+			break;
 		case WAVE_SAWTOOTH:
 			setSawtooth( track );
 			break;
@@ -49,7 +59,19 @@ void Wave::setSilent( Track* track )
 {
 	double* waveData = track->getWaveData();
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		waveData[i] = 0;
+		waveData[i] = 0.0;
+	}
+}
+
+// ƒTƒCƒ“”g
+void Wave::setCurve( Track* track )
+{
+	double* waveData = track->getWaveData();
+	double time = track->getPlayTime();
+
+	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
+		waveData[i] = mA * sin( 2.0 * M_PI * mF * time / SAMPLES_PER_SEC );
+		time += 1.0;
 	}
 }
 

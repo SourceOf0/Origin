@@ -17,7 +17,6 @@ public:
 	void apply( Track* track );
 
 private:
-	double mThreshold;
 };
 
 } // namespace Sound

@@ -15,9 +15,12 @@ public:
 	void reset( void );
 
 	void setF( double f );
+	double getF( void );
+	void setVol( double vol );
 	void setData( Track* track, WaveID id );
 
 private:
+	void setCurve( Track* track );
 	void setSawtooth( Track* track );
 	void setSquare( Track* track );
 	void setTriangle( Track* track );

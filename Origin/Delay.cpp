@@ -6,12 +6,9 @@
 
 namespace Sound {
 
-Delay::Delay( double** setWaveLog ) :
-mA( 0.3 ),
-mDelayTime( 0.05 ),
-mRepeat( 10 )
+Delay::Delay( double** setWaveLog )
 {
-	init( setWaveLog, mDelayTime, 0, 0 );
+	init( setWaveLog );
 }
 
 
@@ -21,24 +18,27 @@ Delay::~Delay( void )
 
 void Delay::reset( void )
 {
-	init( mWaveLog, mDelayTime, 0, 0 );
+	init( mWaveLog );
 }
 
 // ディレイ
 void Delay::apply( Track* track )
 {
 	double* waveData = track->getWaveData();
-	double delayTime = mSetNum1 * SAMPLES_PER_SEC;
+
+	double a = mSetNum1;			/* 減衰率 */
+	double delayTime = SAMPLES_PER_SEC * mSetNum2 * 0.2;	/* 遅延時間 */
+	int repeat = 10;		/* 繰り返し回数 */
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[ i ];
 		mWaveLog[ mLogIndex ][ i ] = s;
 		
-		for( int j = 1; j <= mRepeat; ++j ) {
-			int m = static_cast<int>( static_cast<double>( i ) - static_cast<double>( j ) * delayTime );
+		for( int j = 1; j <= repeat; ++j ) {
+			int m = static_cast< int >( static_cast< double >( i ) - static_cast< double >( j ) * delayTime );
 
 			/* 過去の音データをミックスする */
-			s += pow( mA, static_cast<double>( j ) ) * getPrevData( m );
+			s += pow( a, static_cast< double >( j ) ) * getPrevData( m );
 		}
 
 		waveData[ i ] = s;

@@ -196,13 +196,13 @@ DCBitmap* ImageFactory::loadDC( HDC& hdc, const char* fileName )
 			for( int k = 0; k < COLOR_KIND_NUM; ++k ) {
 				if( ( ( useColor >> k ) & 1 ) == 0 ) continue;
 				if( targetColor == k ) {
-					setWhite( mLayerData[ k ], count, index );
-				} else {
 					setBlack( mLayerData[ k ], count, index );
+				} else {
+					setWhite( mLayerData[ k ], count, index );
 				}
 			}
 			index += count;
-	
+			
 			targetColor = ( ColorID )( targetColor << 1 );
 		}
 
@@ -215,7 +215,7 @@ DCBitmap* ImageFactory::loadDC( HDC& hdc, const char* fileName )
 			useColor >>= 1;
 			layerData->mLayer[ i ] = new DCBitmap( hdc, mLayerData[ i ] );
 		}
-		ret = new Image::DCBitmap( hdc, bmpWidth, bmpHeight );
+		ret = new DCBitmap( hdc, bmpWidth, bmpHeight );
 		layerData->drawDCBitmap( ret, 0, 0, bmpWidth, 0 );
 		delete layerData;
 		layerData = 0;
@@ -280,10 +280,16 @@ BitmapBase* ImageFactory::load( HDC& hdc, const char* fileName )
 			}
 			index += count;
 	
+/*			for( int n = 0; n < bmpHeight; ++n ) {
+				for( int k = 0; k < 16; ++k ) {
+					mLayerData[ n ]->setBlack( k, n );
+				}
+			}*/
+
 			targetColor = ( ColorID )( targetColor << 1 );
 		}
 
-		LayerData* layerData = new Image::LayerData( hdc, bmpWidth, bmpHeight );
+		LayerData* layerData = new LayerData( hdc, bmpWidth, bmpHeight );
 		for( int i = 0; i < COLOR_KIND_NUM; ++i ) {
 			if( ( useColor & 1 ) == 0 ) {
 				useColor >>= 1;

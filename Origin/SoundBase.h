@@ -18,6 +18,7 @@
 #define LOG_MAX_INDEX_NUM	3	// バッファのログを取るインデックスの最大数
 
 typedef enum {
+	WAVE_CURVE,
 	WAVE_SAWTOOTH,
 	WAVE_SQUARE,
 	WAVE_TRIANGLE,
@@ -46,5 +47,11 @@ typedef enum {
 	EFFECT_NONE
 } EffectID;
 
+typedef enum {
+	EQ_LOW_SHELVING,
+	EQ_PEAKING,
+	EQ_HIGH_SHELVING,
+	EQ_NONE
+} EQID;
 
 #endif // INCLUDED_SOUND_BASE_H
