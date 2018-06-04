@@ -14,11 +14,11 @@ class HandManager
 public:
 	enum HandState {
 		HAND_NORMAL,
+		HAND_CHECK,
 		HAND_PUSH_BEFORE,
 		HAND_PUSH_AFTER,
 		HAND_HOLD_BEFORE,
 		HAND_HOLD_AFTER,
-		HAND_POINT,
 		HAND_CLOSE,
 
 		HAND_BACK,

@@ -35,8 +35,17 @@ DCBitmap::DCBitmap( HDC& hdc, int width, int height, unsigned char setColor )
 	Image::PixelBitmap* setBmp = new Image::PixelBitmap( width, height, setColor );
 
 	mHdcBmp = CreateCompatibleDC( hdc );
+	if( mHdcBmp == NULL ) {
+		MessageBox( NULL, TEXT( "mHdcbmp‚ªì‚ê‚Ä‚È‚¢‚Á‚·B" ), TEXT( "Origin" ), MB_OK );
+	}
 	HBITMAP hbmp = CreateBitmap( mWidth, mHeight, 1, 1, setBmp->mPixelData );
-	mHBmpPrev = (HBITMAP)SelectObject( mHdcBmp, hbmp );
+	if( hbmp == NULL ) {
+		MessageBox( NULL, TEXT( "hbmp‚ªì‚ê‚Ä‚È‚¢‚Á‚·B" ), TEXT( "Origin" ), MB_OK );
+	}
+	mHBmpPrev = ( HBITMAP )SelectObject( mHdcBmp, hbmp );
+	if( mHBmpPrev == NULL ) {
+		MessageBox( NULL, TEXT( "mHBmpPrev‚ªì‚ê‚Ä‚È‚¢‚Á‚·B" ), TEXT( "Origin" ), MB_OK );
+	}
 
 	delete setBmp;
 	setBmp = 0;

@@ -5,6 +5,8 @@
 #include "Book2.h"
 #include "Book3.h"
 #include "Book4.h"
+#include "Book5.h"
+#include "Book6.h"
 #include "Book7.h"
 
 #include "DebugLoading.h"
@@ -20,6 +22,7 @@ MainParent* MainParent::mInst = 0;
 
 MainParent::MainParent(	HWND& hwnd, HDC& hdc, int windowWidth, int windowHeight ) : 
 mHWnd( hwnd ),
+mRoom( 0 ),
 mChild( 0 ),
 mDebugLoading( 0 ),
 mThreadState( 3 ),
@@ -29,7 +32,7 @@ mNext( SEQ_NONE )
 
 	mDebugLoading = new DebugLoading( hdc, this );
 
-	mNext = SEQ_BOOK7;
+	mNext = SEQ_ROOM;
 }
 
 MainParent::~MainParent( void )
@@ -40,6 +43,11 @@ MainParent::~MainParent( void )
 
 	delete mDebugLoading;
 	mDebugLoading = 0;
+
+	if( mRoom != 0 ) {
+		delete mRoom;
+		mRoom = 0;
+	}
 
 	if( mChild != 0 ) {
 		delete mChild;
@@ -64,7 +72,9 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 			inst->mChild = new Debug2( hdc, inst );
 			break;
 		case SEQ_ROOM:
-			inst->mChild = new RoomParent( hdc, inst );
+			if( inst->mRoom == 0 ) {
+				inst->mRoom = new RoomParent( hdc, inst );
+			}
 			break;
 		case SEQ_BOOK2:
 			inst->mChild = new Book2( hdc, inst );
@@ -74,6 +84,12 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 			break;
 		case SEQ_BOOK4:
 			inst->mChild = new Book4( hdc, inst );
+			break;
+		case SEQ_BOOK5:
+			inst->mChild = new Book5( hdc, inst );
+			break;
+		case SEQ_BOOK6:
+			inst->mChild = new Book6( hdc, inst );
 			break;
 		case SEQ_BOOK7:
 			inst->mChild = new Book7( hdc, inst );
@@ -94,8 +110,13 @@ void MainParent::update( void )
 		case 2:
 			mThreadState = 0;
 		case 0:
-			mChild->update( this );
+			if( mChild == 0 ) {
+				mRoom->update( this );
+			} else {
+				mChild->update( this );
+			}
 			if( mNext != SEQ_NONE ) {
+				mRoom->setParentSeq( mNext );
 				mThreadState = 1;
 				mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd, 0, &id );
 			}
@@ -116,7 +137,11 @@ void MainParent::update( void )
 void MainParent::draw( HDC& hdc )
 {
 	if( mThreadState == 0 ) {
-		mChild->draw( hdc, this );
+		if( mChild == 0 ) {
+			mRoom->draw( hdc, this );
+		} else {
+			mChild->draw( hdc, this );
+		}
 	} else {
 		mDebugLoading->draw( hdc, this );
 	}

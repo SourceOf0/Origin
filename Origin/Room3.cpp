@@ -40,7 +40,39 @@ void Room3::update( RoomParent* parent )
 
 	handManager->setState( handManager->HAND_NORMAL );
 
-	if( mouseX < 100 ){
+	if( mouseX > 210 && mouseX < 680 ) {
+		if( mouseY > 150 && mouseY < 250 ) {
+			if( isClick ) {
+				parent->moveTo( parent->SEQ_BOOK2 );
+			} else {
+				handManager->setState( handManager->HAND_CHECK );
+			}
+		} else if( mouseY > 280 && mouseY < 350 ) {
+			if( isClick ) {
+				parent->moveTo( parent->SEQ_BOOK3 );
+			} else {
+				handManager->setState( handManager->HAND_CHECK );
+			}
+		} else if( mouseY > 370 && mouseY < 450 ) {
+			if( isClick ) {
+				parent->moveTo( parent->SEQ_BOOK4 );
+			} else {
+				handManager->setState( handManager->HAND_CHECK );
+			}
+		} else if( mouseY > 465 && mouseY < 550 ) {
+			if( isClick ) {
+				parent->moveTo( parent->SEQ_BOOK5 );
+			} else {
+				handManager->setState( handManager->HAND_CHECK );
+			}
+		} else if( mouseY > 570 && mouseY < 650 ) {
+			if( isClick ) {
+				parent->moveTo( parent->SEQ_BOOK7 );
+			} else {
+				handManager->setState( handManager->HAND_CHECK );
+			}
+		}
+	} else if( mouseX < 100 ){
 		if( isClick ) {
 			parent->moveTo( parent->SEQ_ROOM1 );
 		} else {

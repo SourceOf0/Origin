@@ -40,7 +40,13 @@ void Room1::update( RoomParent* parent )
 
 	handManager->setState( handManager->HAND_NORMAL );
 
-	if( mouseX < 100 ){
+	if( mouseX > 380 && mouseX < 560 && mouseY > 380 && mouseY < 450 ) {
+		if( isClick ) {
+			parent->moveTo( parent->SEQ_ROOM1_SYNTHE );
+		} else {
+			handManager->setState( handManager->HAND_CHECK );
+		}
+	} else if( mouseX < 100 ){
 		if( isClick ) {
 			parent->moveTo( parent->SEQ_ROOM2 );
 		} else {
@@ -51,12 +57,6 @@ void Room1::update( RoomParent* parent )
 			parent->moveTo( parent->SEQ_ROOM3 );
 		} else {
 			handManager->setState( handManager->HAND_RIGHT );
-		}
-	} else if( mouseX > 380 && mouseX < 560 && mouseY > 380 && mouseY < 450 ) {
-		if( isClick ) {
-			parent->moveTo( parent->SEQ_ROOM1_SYNTHE );
-		} else {
-			handManager->setState( handManager->HAND_PUSH_BEFORE );
 		}
 	}
 }

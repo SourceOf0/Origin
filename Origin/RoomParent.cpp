@@ -8,6 +8,8 @@
 #include "Room4.h"
 #include "Synthesizer.h"
 
+#include "SoundManager.h"
+
 namespace Sequence {
 
 RoomParent::RoomParent( HDC& hdc, MainParent* parent ) :
@@ -62,6 +64,15 @@ void RoomParent::update( MainParent* parent )
 		case SEQ_ROOM2:
 			mRoom2->update( this );
 			break;
+		case SEQ_BOOK1:
+		case SEQ_BOOK2:
+		case SEQ_BOOK3:
+		case SEQ_BOOK4:
+		case SEQ_BOOK5:
+		case SEQ_BOOK6:
+		case SEQ_BOOK7:
+			Main::SoundManager::inst()->play();
+			mNow = SEQ_ROOM3;
 		case SEQ_ROOM3:
 			mRoom3->update( this );
 			break;
@@ -72,7 +83,39 @@ void RoomParent::update( MainParent* parent )
 			mSynthe->update( this );
 			break;
 	}
-	mSynthe->playTrack();
+	switch( mNow ) {
+		case SEQ_BOOK1:
+			Main::SoundManager::inst()->stop();
+			parent->moveTo( parent->SEQ_BOOK1 );
+			break;
+		case SEQ_BOOK2:
+			Main::SoundManager::inst()->stop();
+			parent->moveTo( parent->SEQ_BOOK2 );
+			break;
+		case SEQ_BOOK3:
+			Main::SoundManager::inst()->stop();
+			parent->moveTo( parent->SEQ_BOOK3 );
+			break;
+		case SEQ_BOOK4:
+			Main::SoundManager::inst()->stop();
+			parent->moveTo( parent->SEQ_BOOK4 );
+			break;
+		case SEQ_BOOK5:
+			Main::SoundManager::inst()->stop();
+			parent->moveTo( parent->SEQ_BOOK5 );
+			break;
+		case SEQ_BOOK6:
+			Main::SoundManager::inst()->stop();
+			parent->moveTo( parent->SEQ_BOOK6 );
+			break;
+		case SEQ_BOOK7:
+			Main::SoundManager::inst()->stop();
+			parent->moveTo( parent->SEQ_BOOK7 );
+			break;
+		default:
+			mSynthe->playTrack();
+			break;
+	}
 }
 
 void RoomParent::draw( HDC& hdc, MainParent* parent )
@@ -99,6 +142,33 @@ void RoomParent::draw( HDC& hdc, MainParent* parent )
 void RoomParent::moveTo( SeqID next )
 {
 	mNow = next;
+}
+
+void RoomParent::setParentSeq( MainParent::SeqID setSeq )
+{
+	switch( setSeq ) {
+		case MainParent::SEQ_BOOK1:
+			mNow = SEQ_BOOK1;
+			break;
+		case MainParent::SEQ_BOOK2:
+			mNow = SEQ_BOOK2;
+			break;
+		case MainParent::SEQ_BOOK3:
+			mNow = SEQ_BOOK3;
+			break;
+		case MainParent::SEQ_BOOK4:
+			mNow = SEQ_BOOK4;
+			break;
+		case MainParent::SEQ_BOOK5:
+			mNow = SEQ_BOOK5;
+			break;
+		case MainParent::SEQ_BOOK6:
+			mNow = SEQ_BOOK6;
+			break;
+		case MainParent::SEQ_BOOK7:
+			mNow = SEQ_BOOK7;
+			break;
+	}
 }
 
 

@@ -107,12 +107,14 @@ int SoundManager::play( void )
 {
 	mIsPlay = TRUE;
 	mWasReset = FALSE;
+	waveOutSetVolume( mHWaveOut, ( DWORD )( 0x2FFF2FFF ) );
 	return 0;
 }
 
 int SoundManager::stop( void )
 {
-	mIsPlay = FALSE;
+//	mIsPlay = FALSE;
+	waveOutSetVolume( mHWaveOut, ( DWORD )( 0x00FF00FF ) );
 	return 0;
 }
 

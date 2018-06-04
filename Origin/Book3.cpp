@@ -75,10 +75,8 @@ Book3::~Book3()
 
 void Book3::update( MainParent* parent )
 {
-	POINT mousePos;
-	GetCursorPos( &mousePos );
-	int mouseX = mousePos.x;
-	int mouseY = mousePos.y;
+	int mouseX = Main::HandManager::inst()->getX();
+	int mouseY = Main::HandManager::inst()->getY();
 	BOOL isClick = Main::SceneManager::isClick;
 	BOOL isMouseDown = Main::SceneManager::isMouseDown;
 	BOOL wasHit = FALSE;
@@ -134,6 +132,15 @@ void Book3::update( MainParent* parent )
 				break;
 		}
 		target = target->next;
+	}
+
+	if( mouseX > Main::SceneManager::windowWidth - 64 && mouseY > Main::SceneManager::windowHeight - 64 ) {
+		if( Main::SceneManager::isClick ) {
+			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
+			parent->moveTo( parent->SEQ_ROOM );
+		} else {
+			Main::HandManager::inst()->setState( Main::HandManager::HAND_BACK );
+		}
 	}
 }
 

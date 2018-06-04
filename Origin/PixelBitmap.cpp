@@ -12,7 +12,7 @@ mX( 0 ),
 mY( 0 )
 {
 	unsigned int bmpSize = width * height;
-	unsigned int bitDataLeng = ( bmpSize % 32 == 0) ? bmpSize / 32 : (int)( bmpSize / 32 ) + 1;
+	unsigned int bitDataLeng = ( bmpSize % 32 == 0 ) ? bmpSize / 32 : static_cast< int >( bmpSize / 32 ) + 1;
 	mDataLeng = bitDataLeng * 4;
 
 	for( unsigned int i = 0; i < mDataLeng; ++i ) {
@@ -27,7 +27,7 @@ PixelBitmap::~PixelBitmap( void )
 void PixelBitmap::reset( int width, int height, unsigned char setColor )
 {
 	unsigned int bmpSize = width * height;
-	unsigned int bitDataLeng = ( bmpSize % 32 == 0) ? bmpSize / 32 : (int)( bmpSize / 32 ) + 1;
+	unsigned int bitDataLeng = ( bmpSize % 32 == 0 ) ? bmpSize / 32 : static_cast< int >( bmpSize / 32 ) + 1;
 	mDataLeng = bitDataLeng * 4;
 
 	mWidth = width;

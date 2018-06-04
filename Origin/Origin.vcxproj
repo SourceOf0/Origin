@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E392AE65-7037-4C5C-A550-FB0BE67DAD78}</ProjectGuid>
+    <ProjectGuid>{C12D447D-A8D4-455B-B5C6-FC30ABAECC53}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -82,6 +82,8 @@
     <ClCompile Include="Book2.cpp" />
     <ClCompile Include="Book3.cpp" />
     <ClCompile Include="Book4.cpp" />
+    <ClCompile Include="Book5.cpp" />
+    <ClCompile Include="Book6.cpp" />
     <ClCompile Include="Book7.cpp" />
     <ClCompile Include="Chorus.cpp" />
     <ClCompile Include="Compressor.cpp" />
@@ -129,6 +131,8 @@
     <ClInclude Include="Book3Objs.h" />
     <ClInclude Include="Book4.h" />
     <ClInclude Include="Book4Ball.h" />
+    <ClInclude Include="Book5.h" />
+    <ClInclude Include="Book6.h" />
     <ClInclude Include="Book7.h" />
     <ClInclude Include="Book7Man.h" />
     <ClInclude Include="Chorus.h" />

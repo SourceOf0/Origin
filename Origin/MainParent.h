@@ -6,6 +6,7 @@
 namespace Sequence {
 	
 class MainChild;
+class RoomParent;
 
 class MainParent {
 public:
@@ -13,9 +14,12 @@ public:
 		SEQ_DEBUG1,
 		SEQ_DEBUG2,
 		SEQ_ROOM,
+		SEQ_BOOK1,
 		SEQ_BOOK2,
 		SEQ_BOOK3,
 		SEQ_BOOK4,
+		SEQ_BOOK5,
+		SEQ_BOOK6,
 		SEQ_BOOK7,
 	
 		SEQ_NONE
@@ -37,6 +41,7 @@ private:
 	BYTE mThreadState;
 
 	MainChild* mChild;
+	RoomParent* mRoom;
 	MainChild* mDebugLoading;
 
 	SeqID mNext;

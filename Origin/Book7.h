@@ -5,8 +5,8 @@
 
 #define OBJ_X_NUM 32
 #define OBJ_Y_NUM 12
-#define MAN_NUM 2
-#define ENTRANCE_NUM 2
+#define MAN_NUM 20
+#define ENTRANCE_PAIR_NUM 5
 
 namespace Image {
 	class DCBitmap;
@@ -40,47 +40,73 @@ private:
 		IMAGE_OBJ_NONE
 	};
 
+	enum ManStateID {
+		MAN_WALK,
+		MAN_ENTER_START,
+		MAN_ENTER_END,
+		MAN_STAY_TURN,
+		MAN_STAY_REST,
+		MAN_LADDER_UP,
+		MAN_LADDER_DOWN,
+
+		MAN_NONE
+	};
+
 	typedef struct _OBJ_STATE {
-		int x;
-		int y;
+		int holdX;
+		int holdY;
+		int indexX;
+		int indexY;
 		int useNum;
 		BOOL isHold;
 		ObjImageID image;
 	} ObjState;
 
-	typedef struct _ENTRANCE_STATE {
-		int indexX;
-		int indexY;
-		ObjState* target;
-	} EntranceState;
-
 	typedef struct _MAN_STATE {
 		int x;
 		int line;
 		int count;
-		int state;
+		int animeState;
 		ObjState* target;
 		BOOL isLeft;
-		BOOL isEnter;
 		ManImageID image;
+		ManStateID state;
 	} ManState;
 
 	void drawMan( ManState* target );
 	void moveMan( ManState* target );
-	void moveManStay( ManState* target );
 	void moveManWalk( ManState* target );
-	void moveManLadder( ManState* target );
+	void moveManEnterStart( ManState* target );
+	void moveManEnterEnd( ManState* target );
+	void moveManRest( ManState* target );
+	void moveManTurn( ManState* target );
+	void moveManLadderUp( ManState* target );
+	void moveManLadderDown( ManState* target );
 
 	BOOL checkEntrance( ManState* target );
-	BOOL checkLadder( ManState* target );
 	BOOL checkWall( ManState* target );
+	BOOL checkLadder( ManState* target );
+
+	int getCount( int count );
+	int getMaxCount( ManImageID image );
+	void setManState( ManState* target, ManStateID state );
+	void addTarget( ManState* targetMan, ObjState* targetObj );
+	void removeTarget( ManState* targetMan );
+
+	void checkHitObj( int mouseX, int mouseY );
+	void takeObj( int mouseX, int mouseY );
+	void moveObj( int mouseX, int mouseY );
+	void putObj( int targetX, int targetY );
+	void putEntrance( int targetX, int targetY );
+	void putLadder( int targetX, int targetY );
+	void putWall( int targetX, int targetY );
 
 	Image::DCBitmap* mManImageArr[ IMAGE_MAN_NONE ];
 	Image::DCBitmap* mObjImage;
 
 	ObjState mObjState[ OBJ_Y_NUM ][ OBJ_X_NUM ];
 	ObjState* mMoveTarget;
-	EntranceState mEntranceState[ ENTRANCE_NUM ];
+	ObjState* mEntranceState[ ENTRANCE_PAIR_NUM ][ 2 ];
 
 	ManState mManState[ MAN_NUM ];
 };

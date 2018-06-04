@@ -4,7 +4,7 @@
 
 #include "ImageFactory.h"
 #include "SceneManager.h"
-#include "SoundManager.h"
+#include "HandManager.h"
 
 #include "DCBitmap.h"
 
@@ -98,11 +98,22 @@ void Book2::update( MainParent* parent )
 	}
 
 	if( Main::SceneManager::isMouseDown ) {
+		Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );
 		setPointMask();
 		mChangeCount = CHANGE_COUNT_MAX;
 	} else {
+		Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_BEFORE );
 		mOldMousePos.x = -1;
 		mOldMousePos.y = -1;
+	}
+
+	if( Main::HandManager::inst()->getX() > windowWidth - 64 && Main::HandManager::inst()->getY() > windowHeight - 64 ) {
+		if( Main::SceneManager::isClick ) {
+			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
+			parent->moveTo( parent->SEQ_ROOM );
+		} else {
+			Main::HandManager::inst()->setState( Main::HandManager::HAND_BACK );
+		}
 	}
 }
 
@@ -145,23 +156,23 @@ void Book2::draw( HDC& hdc, MainParent* parent )
 
 int Book2::setPointMask( void )
 {
-	POINT mousePos;
-	GetCursorPos( &mousePos );
+	int mouseX = Main::HandManager::inst()->getX();
+	int mouseY = Main::HandManager::inst()->getY();
 
 	int setCount = POINT_MASK_ANIME_NUM * POINT_MASK_FRAME_COUNT;
-	if( ( mOldMousePos.x < mousePos.x - POINT_TRACK_DIS || mOldMousePos.x > mousePos.x + POINT_TRACK_DIS )
-		|| ( mOldMousePos.y < mousePos.y - POINT_TRACK_DIS || mOldMousePos.y > mousePos.y + POINT_TRACK_DIS ) ) { 
+	if( ( mOldMousePos.x < mouseX - POINT_TRACK_DIS || mOldMousePos.x > mouseX + POINT_TRACK_DIS )
+		|| ( mOldMousePos.y < mouseY - POINT_TRACK_DIS || mOldMousePos.y > mouseY + POINT_TRACK_DIS ) ) { 
 		for( int i = 0; i < POINT_TRACK_NUM; ++i ) {
 			if( mPointTrack[i].count > 0 ) continue;
-			mPointTrack[i].x = mousePos.x;
-			mPointTrack[i].y = mousePos.y;
+			mPointTrack[i].x = mouseX;
+			mPointTrack[i].y = mouseY;
 			mPointTrack[i].count = setCount * 2;
 			break;
 		}
-		mOldMousePos.x = mousePos.x;
-		mOldMousePos.y = mousePos.y;
+		mOldMousePos.x = mouseX;
+		mOldMousePos.y = mouseY;
 	}
-	
+
 	return 0;
 }
 

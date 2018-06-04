@@ -115,7 +115,7 @@ void HandManager::update( void )
 		case HAND_NORMAL:
 			mImageState = HAND_IMAGE_NORMAL;
 			break;
-		case HAND_POINT:
+		case HAND_CHECK:
 		case HAND_PUSH_AFTER:
 		case HAND_PUSH_BEFORE:
 			mImageState = HAND_IMAGE_PUSH;

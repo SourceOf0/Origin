@@ -145,19 +145,18 @@ void SceneManager::endSetWave( void )
 int SceneManager::update()
 {
 	int nowTime;
-	SYSTEMTIME time;
+	SYSTEMTIME localTime;
 
-	GetLocalTime( &time );
-	nowTime = ( time.wSecond == mLocalTime.wMilliseconds )? time.wMilliseconds : ( 1000 + time.wMilliseconds );
+	GetLocalTime( &localTime );
+	nowTime = ( localTime.wSecond == mLocalTime.wMilliseconds )? localTime.wMilliseconds : ( 1000 + localTime.wMilliseconds );
 	while( nowTime - mLocalTime.wMilliseconds < mFrameRate ) {
 		Sleep( 1 );
-		GetLocalTime( &time );
-		nowTime = ( time.wSecond == mLocalTime.wMilliseconds )? time.wMilliseconds : ( 1000 + time.wMilliseconds );
+		GetLocalTime( &localTime );
+		nowTime = ( localTime.wSecond == mLocalTime.wMilliseconds )? localTime.wMilliseconds : ( 1000 + localTime.wMilliseconds );
 	}
-	GetLocalTime( &time );
-	mLocalTime = time;
+	GetLocalTime( &localTime );
+	mLocalTime = localTime;
 
-	rand();
 	mParent->update();
 	isClick = FALSE;
 	isAddWave = FALSE;

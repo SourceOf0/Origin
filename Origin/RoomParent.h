@@ -2,10 +2,9 @@
 #define INCLUDED_SEQUENCE_ROOM_PARENT_H
 
 #include "MainChild.h"
+#include "MainParent.h"
 
 namespace Sequence {
-
-class MainParent;
 
 namespace Room {
 	class RoomChild;
@@ -20,6 +19,15 @@ public:
 		SEQ_ROOM2,
 		SEQ_ROOM3,
 		SEQ_ROOM4,
+		
+		// 上位シーケンス
+		SEQ_BOOK1,
+		SEQ_BOOK2,
+		SEQ_BOOK3,
+		SEQ_BOOK4,
+		SEQ_BOOK5,
+		SEQ_BOOK6,
+		SEQ_BOOK7,
 	
 		SEQ_NONE
 	};
@@ -28,7 +36,8 @@ public:
 	~RoomParent( void );
 	void update( MainParent* parent );
 	void draw( HDC& hdc, MainParent* parent );
-	void moveTo( SeqID );
+	void moveTo( SeqID next );
+	void setParentSeq( MainParent::SeqID setSeq );
 
 private:
 	Room::RoomChild* mRoom1;
