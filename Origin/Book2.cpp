@@ -98,13 +98,11 @@ void Book2::update( MainParent* parent )
 	}
 
 	if( Main::SceneManager::isMouseDown ) {
-//		Main::SoundManager::inst()->play();
 		setPointMask();
 		mChangeCount = CHANGE_COUNT_MAX;
 	} else {
 		mOldMousePos.x = -1;
 		mOldMousePos.y = -1;
-//		Main::SoundManager::inst()->stop();
 	}
 }
 

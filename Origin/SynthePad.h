@@ -11,7 +11,7 @@ void Synthesizer::padInit( void )
 BOOL Synthesizer::updatePad( BOOL isHit, BOOL isClick, int mouseX, int mouseY )
 {
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
-	BOOL isPlay = FALSE;
+	Main::HandManager* handManager = Main::HandManager::inst();
 	int hitX1 = 581;
 	int hitY1 = 417;
 	int disX = 22;
@@ -37,9 +37,9 @@ BOOL Synthesizer::updatePad( BOOL isHit, BOOL isClick, int mouseX, int mouseY )
 					mScaleSign.defY = PARTS_SIGN_SCALE_C;
 				}
 			}
-			mHandState = Main::HandManager::HAND_PUSH_AFTER;
+			handManager->setState( handManager->HAND_PUSH_AFTER );
 		} else {
-			mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+			handManager->setState( handManager->HAND_PUSH_BEFORE );
 		}
 	}
 	updateDial( -1, mScaleDial, mScaleSign );
@@ -53,19 +53,20 @@ BOOL Synthesizer::updatePad( BOOL isHit, BOOL isClick, int mouseX, int mouseY )
 				if( setX > target.hitX2 - 10 ) setX = target.hitX2 - 10;
 				target.x = setX;
 				isHit = TRUE;
-				Main::HandManager::inst()->lockY();
-				Main::HandManager::inst()->setRangeX( target.defX + 5, target.hitX2 - 5 );
-				mHandState = Main::HandManager::HAND_HOLD_AFTER;
+				handManager->lockY();
+				handManager->setRangeX( target.defX + 5, target.hitX2 - 5 );
+				handManager->setState( handManager->HAND_HOLD_AFTER );
 				if( i != 1 ) continue;
 				mNoteRatio[ getSelectTrack() ][ mPlayTime ] = getFaderH( target ) * ( NOTE_HEIGHT_NUM - 1 );
 			} else {
-				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
+				handManager->setState( handManager->HAND_HOLD_BEFORE );
 			}
 		}
 		if( i != 0 ) continue;
 		mTempo = static_cast< int >( ( 1 - getFaderH( target ) ) * 80 + 4 );
 	}
 
+	BOOL isLampClick = FALSE;
 	for( int i = 0; i < NOTE_SET_MAX_NUM; ++i ) {
 		if( checkHit( mTimeLampX[ i ], mouseX , mouseY ) ) {
 			if( !isHit ) {
@@ -73,12 +74,13 @@ BOOL Synthesizer::updatePad( BOOL isHit, BOOL isClick, int mouseX, int mouseY )
 				if( isClick ) {
 					mPlayTime = i;
 					mPlayCount = 0;
-					mHandState = Main::HandManager::HAND_PUSH_AFTER;
+					handManager->setState( handManager->HAND_PUSH_AFTER );
+					isLampClick = TRUE;
 				} else {
-					mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+					handManager->setState( handManager->HAND_PUSH_BEFORE );
 				}
-			} else if( mHandState != Main::HandManager::HAND_PUSH_AFTER ) {
-				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+			} else if( !isLampClick ) {
+				handManager->setState( handManager->HAND_PUSH_BEFORE );
 			}
 		}
 	}
@@ -97,27 +99,9 @@ BOOL Synthesizer::updatePad( BOOL isHit, BOOL isClick, int mouseX, int mouseY )
 			} else {
 				mNoteRatio[ trackIndex ][ targetX ] = targetY;
 			}
-			mHandState = Main::HandManager::HAND_PUSH_AFTER;
+			handManager->setState( handManager->HAND_PUSH_AFTER );
 		} else {
-			mHandState = Main::HandManager::HAND_PUSH_BEFORE;
-		}
-	}
-
-	if( mPlayButton[ 0 ].partsID == PARTS_BUTTON_PLAY_ON ) {
-		isPlay = TRUE;
-		++mPlayCount;
-	}
-	if( mPlayButton[ 1 ].partsID == PARTS_BUTTON_PLAY_ON ) {
-		isPlay = TRUE;
-		mPlayCount = 0;
-	}
-	if( mPlayButton[ 2 ].partsID == PARTS_BUTTON_PLAY_ON ) {
-		isPlay = TRUE;
-		mPlayCount = 0;
-		for( int i = 0 ; i < KEY_NUM; ++i ) {
-			if( mKeyButton[ i ].partsID == PARTS_BUTTON_KEY_OFF ) continue;
-			mNoteRatio[ getSelectTrack() ][ mPlayTime ] = getCodeRatio( i );
-			break;
+			handManager->setState( handManager->HAND_PUSH_BEFORE );
 		}
 	}
 
@@ -142,17 +126,6 @@ BOOL Synthesizer::updatePad( BOOL isHit, BOOL isClick, int mouseX, int mouseY )
 					target.y = mNotePosY[ NOTE_HEIGHT_NUM - 1 ][ j ];
 				}
 			}
-		}
-	}
-
-	if( isPlay ) {
-		if( mPlayCount >= mTempo ) {
-			mPlayCount = 0;
-			mPlayTime = ( mPlayTime + 1 ) % NOTE_SET_MAX_NUM;
-		}
-		for( int i = 0 ; i < TRACK_NUM; ++i ) {
-			mPlayWaveID[ i ] = ( WaveID )( mWaveSign[ i ].partsID - PARTS_SIGN_CURVE );
-			soundManager->getTrack( i )->setF( getFixCodeHz( mNoteRatio[ i ][ mPlayTime ] ) );
 		}
 	}
 

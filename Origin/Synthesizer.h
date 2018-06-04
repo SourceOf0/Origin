@@ -4,8 +4,6 @@
 #include "RoomChild.h"
 #include "SoundBase.h"
 
-#include "HandManager.h"
-
 #define EFFECT_FADER_NUM 18
 #define EQ_FADER_NUM 18
 #define EFFECT_SELECT_NUM 9
@@ -36,6 +34,7 @@ public:
 	~Synthesizer( void );
 	void update( Sequence::RoomParent* parent );
 	void draw( HDC& hdc, Sequence::RoomParent* parent );
+	void playTrack( void );
 
 private:
 	enum PartsID {
@@ -168,10 +167,6 @@ private:
 	Image::LayerData* mPartsBmp;
 	Image::DCBitmap* mWaveBmp;
 	Image::DCBitmap* mPadBmp;
-
-	int mX;
-	int mY;
-	Main::HandManager::HandState mHandState;
 
 	PartsSize mPartsSize[ PARTS_NONE ];
 

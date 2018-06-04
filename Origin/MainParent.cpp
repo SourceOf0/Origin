@@ -3,6 +3,9 @@
 
 #include "RoomParent.h"
 #include "Book2.h"
+#include "Book3.h"
+#include "Book4.h"
+#include "Book7.h"
 
 #include "DebugLoading.h"
 #include "Debug1.h"
@@ -18,6 +21,7 @@ MainParent* MainParent::mInst = 0;
 MainParent::MainParent(	HWND& hwnd, HDC& hdc, int windowWidth, int windowHeight ) : 
 mHWnd( hwnd ),
 mChild( 0 ),
+mDebugLoading( 0 ),
 mThreadState( 3 ),
 mNext( SEQ_NONE )
 {
@@ -25,7 +29,7 @@ mNext( SEQ_NONE )
 
 	mDebugLoading = new DebugLoading( hdc, this );
 
-	mNext = SEQ_ROOM;
+	mNext = SEQ_BOOK7;
 }
 
 MainParent::~MainParent( void )
@@ -65,6 +69,15 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 		case SEQ_BOOK2:
 			inst->mChild = new Book2( hdc, inst );
 			break;
+		case SEQ_BOOK3:
+			inst->mChild = new Book3( hdc, inst );
+			break;
+		case SEQ_BOOK4:
+			inst->mChild = new Book4( hdc, inst );
+			break;
+		case SEQ_BOOK7:
+			inst->mChild = new Book7( hdc, inst );
+			break;
 	}
 	ReleaseDC( inst->mHWnd, hdc );
 
@@ -84,7 +97,7 @@ void MainParent::update( void )
 			mChild->update( this );
 			if( mNext != SEQ_NONE ) {
 				mThreadState = 1;
-				mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
+				mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd, 0, &id );
 			}
 			break;
 
@@ -114,7 +127,6 @@ void MainParent::moveTo( SeqID next )
 {
 	mNext = next;
 }
-
 
 } //namespace Sequence
 

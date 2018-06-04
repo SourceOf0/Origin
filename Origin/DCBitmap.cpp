@@ -18,7 +18,6 @@ DCBitmap::DCBitmap( HDC& hdc, PixelBitmap* target )
 	if( mHdcBmp == NULL ) {
 		MessageBox( NULL, TEXT( "mHdcbmp‚ªì‚ê‚Ä‚È‚¢‚Á‚·B" ), TEXT( "Origin" ), MB_OK );
 	}
-//	HBITMAP hbmp = CreateBitmap( mWidth, mHeight, 1, 1, target->mPixelData );
 	HBITMAP hbmp = CreateBitmap( mWidth, mHeight, 1, 1, target->mPixelData );
 	if( hbmp == NULL ) {
 		MessageBox( NULL, TEXT( "hbmp‚ªì‚ê‚Ä‚È‚¢‚Á‚·B" ), TEXT( "Origin" ), MB_OK );

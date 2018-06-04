@@ -2,12 +2,13 @@
 void Synthesizer::update( Sequence::RoomParent* parent )
 {
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
+	Main::HandManager* handManager = Main::HandManager::inst();
 	BOOL isClick = Main::SceneManager::isClick;
 	BOOL isHit = !Main::SceneManager::isMouseDown;
-	int mouseX = Main::HandManager::inst()->getX() - mX;
-	int mouseY = Main::HandManager::inst()->getY() - mY;
+	int mouseX = handManager->getX() - mX;
+	int mouseY = handManager->getY() - mY;
 
-	mHandState = Main::HandManager::HAND_NORMAL;
+	handManager->setState( handManager->HAND_NORMAL );
 
 	for( int i = 0; i < TRACK_NUM; ++i ) {
 		mPlayWaveID[ i ] = WAVE_NONE;
@@ -27,11 +28,11 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 					soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum2( getFaderV( target ) );
 				}
 				isHit = TRUE;
-				mHandState = Main::HandManager::HAND_HOLD_AFTER;
-				Main::HandManager::inst()->lockX();
-				Main::HandManager::inst()->setRangeY( target.defY + 5, target.hitY2 - 5 );
+				handManager->setState( handManager->HAND_HOLD_AFTER );
+				handManager->lockX();
+				handManager->setRangeY( target.defY + 5, target.hitY2 - 5 );
 			} else {
-				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
+				handManager->setState( handManager->HAND_HOLD_BEFORE );
 			}
 		}
 	}
@@ -68,11 +69,11 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 						break;
 				}
 				isHit = TRUE;
-				Main::HandManager::inst()->lockX();
-				Main::HandManager::inst()->setRangeY( target.defY + 5, target.hitY2 - 5 );
-				mHandState = Main::HandManager::HAND_HOLD_AFTER;
+				handManager->lockX();
+				handManager->setRangeY( target.defY + 5, target.hitY2 - 5 );
+				handManager->setState( handManager->HAND_HOLD_AFTER );
 			} else {
-				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
+				handManager->setState( handManager->HAND_HOLD_BEFORE );
 			}
 		}
 	}
@@ -98,9 +99,9 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 						targetSign.defY = PARTS_SIGN_NOISE_GATE;
 					}
 				}
-				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+				handManager->setState( handManager->HAND_PUSH_AFTER );
 			} else {
-				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+				handManager->setState( handManager->HAND_PUSH_BEFORE );
 			}
 		}
 		updateDial( i, target, targetSign );
@@ -127,9 +128,9 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 						targetSign.defY = PARTS_SIGN_CURVE;
 					}
 				}
-				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+				handManager->setState( handManager->HAND_PUSH_AFTER );
 			} else {
-				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+				handManager->setState( handManager->HAND_PUSH_BEFORE );
 			}
 		}
 		updateDial( -1, target, targetSign );
@@ -153,11 +154,12 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 					soundManager->getTrack( i / 2 - 1 )->setPan( getFaderH( target ) );
 				}
 				isHit = TRUE;
-				Main::HandManager::inst()->lockY();
-				Main::HandManager::inst()->setRangeX( target.defX + 5, target.hitX2 - 5 );
-				mHandState = Main::HandManager::HAND_HOLD_AFTER;
+
+				handManager->lockY();
+				handManager->setRangeX( target.defX + 5, target.hitX2 - 5 );
+				handManager->setState( handManager->HAND_HOLD_AFTER );
 			} else {
-				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
+				handManager->setState( handManager->HAND_HOLD_BEFORE );
 			}
 		}
 	}
@@ -174,9 +176,9 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 					soundManager->getTrack( i )->setAutoPan( FALSE );
 				}
 				soundManager->getTrack( i )->setPan( getFaderH( mVolumeFader[ i * 2 + 3 ] ) );
-				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+				handManager->setState( handManager->HAND_PUSH_AFTER );
 			} else {
-				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+				handManager->setState( handManager->HAND_PUSH_BEFORE );
 			}
 		}
 	}
@@ -188,9 +190,9 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 			if( isClick ) {
 				waveButtonIndex = i;
 				mTrackButton[ i ].partsID = ( mTrackButton[ i ].partsID == PARTS_BUTTON_TRACK_OFF )? PARTS_BUTTON_TRACK_ON : PARTS_BUTTON_TRACK_OFF;
-				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+				handManager->setState( handManager->HAND_PUSH_AFTER );
 			} else {
-				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+				handManager->setState( handManager->HAND_PUSH_BEFORE );
 			}
 		}
 	}
@@ -225,14 +227,16 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 				}
 				target.x = setX;
 				isHit = TRUE;
-				Main::HandManager::inst()->lockY();
-				Main::HandManager::inst()->setRangeX( target.defX + 8, target.hitX2 - 4 );
-				mHandState = Main::HandManager::HAND_HOLD_AFTER;
+				handManager->lockY();
+				handManager->setRangeX( target.defX + 8, target.hitX2 - 4 );
+				handManager->setState( handManager->HAND_HOLD_AFTER );
 			} else {
-				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
+				handManager->setState( handManager->HAND_HOLD_BEFORE );
 			}
 		}
 	}
+
+	BOOL isPushKey = FALSE;
 	for( int i = 0 ; i < KEY_NUM; ++i ) {
 		if( checkHit( mKeyButton[ i ], mouseX , mouseY ) ) {
 			if( !isHit ) {
@@ -249,9 +253,10 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 				}
 				isHit = TRUE;
 				mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_ON;
-				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+				handManager->setState( handManager->HAND_PUSH_AFTER );
+				isPushKey = TRUE;
 			} else {
-				if( mHandState != Main::HandManager::HAND_PUSH_AFTER ) mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+				if( !isPushKey ) handManager->setState( handManager->HAND_PUSH_BEFORE );
 				mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_OFF;
 			}
 		} else {
@@ -273,9 +278,9 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 					target.partsID = PARTS_BUTTON_PLAY_OFF;
 					mPlaySign[ i ].y = mPlaySign[ i ].defY;
 				}
-				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+				handManager->setState( handManager->HAND_PUSH_AFTER );
 			} else {
-				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+				handManager->setState( handManager->HAND_PUSH_BEFORE );
 			}
 		}
 	}
@@ -291,11 +296,11 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 
 	if( mouseX < 50 || mouseY < 100 || ( mouseX > static_cast< int >( mBackBmp->mWidth ) - 50 ) || ( mouseY > static_cast< int >( mBackBmp->mHeight ) - 50 ) ) {
 		isHit = TRUE;
-		mHandState = Main::HandManager::HAND_BACK;
-	}
-
-	for( int i = 0; i < TRACK_NUM; ++i ) {
-		soundManager->getTrack( i )->setWave( mPlayWaveID[ i ] );
+		if( isClick ) {
+			parent->moveTo( parent->SEQ_ROOM1 );
+		} else {
+			handManager->setState( handManager->HAND_BACK );
+		}
 	}
 
 	if( !mIsInit ) {
@@ -308,8 +313,44 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 	if( Main::SceneManager::isAddWave ) {
 		updateWave();
 	}
+}
 
-	Main::HandManager::inst()->setState( mHandState );
+void Synthesizer::playTrack( void )
+{
+	BOOL isPlay = FALSE;
+
+	if( mPlayButton[ 0 ].partsID == PARTS_BUTTON_PLAY_ON ) {
+		isPlay = TRUE;
+		++mPlayCount;
+	}
+	if( mPlayButton[ 1 ].partsID == PARTS_BUTTON_PLAY_ON ) {
+		isPlay = TRUE;
+		mPlayCount = 0;
+	}
+	if( mPlayButton[ 2 ].partsID == PARTS_BUTTON_PLAY_ON ) {
+		isPlay = TRUE;
+		mPlayCount = 0;
+		for( int i = 0 ; i < KEY_NUM; ++i ) {
+			if( mKeyButton[ i ].partsID == PARTS_BUTTON_KEY_OFF ) continue;
+			mNoteRatio[ getSelectTrack() ][ mPlayTime ] = getCodeRatio( i );
+			break;
+		}
+	}
+
+	if( isPlay ) {
+		if( mPlayCount >= mTempo ) {
+			mPlayCount = 0;
+			mPlayTime = ( mPlayTime + 1 ) % NOTE_SET_MAX_NUM;
+		}
+		for( int i = 0 ; i < TRACK_NUM; ++i ) {
+			mPlayWaveID[ i ] = ( WaveID )( mWaveSign[ i ].partsID - PARTS_SIGN_CURVE );
+			Main::SoundManager::inst()->getTrack( i )->setF( getFixCodeHz( mNoteRatio[ i ][ mPlayTime ] ) );
+		}
+	}
+
+	for( int i = 0; i < TRACK_NUM; ++i ) {
+		Main::SoundManager::inst()->getTrack( i )->setWave( mPlayWaveID[ i ] );
+	}
 }
 
 BOOL Synthesizer::checkHit( PartsData& target, int x, int y )

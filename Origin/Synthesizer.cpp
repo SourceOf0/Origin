@@ -5,6 +5,7 @@
 #include "ImageFactory.h"
 #include "SceneManager.h"
 #include "SoundManager.h"
+#include "HandManager.h"
 
 #include "LayerData.h"
 #include "DCBitmap.h"
@@ -18,12 +19,9 @@ namespace Room {
 BOOL Synthesizer::mIsInit = FALSE;
 
 Synthesizer::Synthesizer( HDC& hdc, Sequence::RoomParent* parent ) :
-mX( 0 ),
-mY( 0 ),
 mPlayTime( 0 ),
 mPlayCount( 0 ),
-mTempo( 10 ),
-mHandState( Main::HandManager::HAND_NORMAL )
+mTempo( 10 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 	int windowWidth = Main::SceneManager::windowWidth;

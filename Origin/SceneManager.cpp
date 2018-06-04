@@ -157,6 +157,7 @@ int SceneManager::update()
 	GetLocalTime( &time );
 	mLocalTime = time;
 
+	rand();
 	mParent->update();
 	isClick = FALSE;
 	isAddWave = FALSE;

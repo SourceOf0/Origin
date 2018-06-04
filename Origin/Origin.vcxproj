@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FAC7A1C7-1657-47C2-AED8-A1ADDC21E41E}</ProjectGuid>
+    <ProjectGuid>{E392AE65-7037-4C5C-A550-FB0BE67DAD78}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -80,6 +80,9 @@
     <ClCompile Include="BandPassFilter.cpp" />
     <ClCompile Include="BitmapBase.cpp" />
     <ClCompile Include="Book2.cpp" />
+    <ClCompile Include="Book3.cpp" />
+    <ClCompile Include="Book4.cpp" />
+    <ClCompile Include="Book7.cpp" />
     <ClCompile Include="Chorus.cpp" />
     <ClCompile Include="Compressor.cpp" />
     <ClCompile Include="DCBitmap.cpp" />
@@ -101,6 +104,10 @@
     <ClCompile Include="MainParent.cpp" />
     <ClCompile Include="NoiseGate.cpp" />
     <ClCompile Include="PixelBitmap.cpp" />
+    <ClCompile Include="Room1.cpp" />
+    <ClCompile Include="Room2.cpp" />
+    <ClCompile Include="Room3.cpp" />
+    <ClCompile Include="Room4.cpp" />
     <ClCompile Include="RoomParent.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
@@ -118,6 +125,12 @@
     <ClInclude Include="BandPassFilter.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="Book2.h" />
+    <ClInclude Include="Book3.h" />
+    <ClInclude Include="Book3Objs.h" />
+    <ClInclude Include="Book4.h" />
+    <ClInclude Include="Book4Ball.h" />
+    <ClInclude Include="Book7.h" />
+    <ClInclude Include="Book7Man.h" />
     <ClInclude Include="Chorus.h" />
     <ClInclude Include="Compressor.h" />
     <ClInclude Include="DCBitmap.h" />
@@ -139,14 +152,18 @@
     <ClInclude Include="MainParent.h" />
     <ClInclude Include="NoiseGate.h" />
     <ClInclude Include="PixelBitmap.h" />
+    <ClInclude Include="Room1.h" />
+    <ClInclude Include="Room2.h" />
+    <ClInclude Include="Room3.h" />
+    <ClInclude Include="Room4.h" />
     <ClInclude Include="RoomChild.h" />
     <ClInclude Include="RoomParent.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SoundBase.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SynthePad.h" />
     <ClInclude Include="SynthePartsInit.h" />
     <ClInclude Include="Synthesizer.h" />
-    <ClInclude Include="SynthePad.h" />
     <ClInclude Include="SyntheUpdate.h" />
     <ClInclude Include="ToneFactory.h" />
     <ClInclude Include="Track.h" />

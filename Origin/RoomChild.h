@@ -16,6 +16,9 @@ public:
 	// 中身なし（派生クラスで定義されてないとエラー）
 	virtual void update( Sequence::RoomParent* parent ) = 0; 
 	virtual void draw( HDC& hdc, Sequence::RoomParent* parent ) = 0;
+protected:
+	int mX;
+	int mY;
 };
 
 } // namespace Room

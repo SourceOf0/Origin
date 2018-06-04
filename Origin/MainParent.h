@@ -14,9 +14,14 @@ public:
 		SEQ_DEBUG2,
 		SEQ_ROOM,
 		SEQ_BOOK2,
+		SEQ_BOOK3,
+		SEQ_BOOK4,
+		SEQ_BOOK7,
 	
 		SEQ_NONE
 	};
+	static DWORD WINAPI LoadThread( LPVOID hWnd );
+
 	MainParent( HWND& hwnd, HDC& hdc, int windowWidth, int windowHeight);
 	~MainParent( void );
 	void update( void );
@@ -24,7 +29,6 @@ public:
 	void moveTo( SeqID );
 
 private:
-	static DWORD WINAPI LoadThread( LPVOID hWnd );
 	static MainParent* getInst( void );
 	static MainParent* mInst;
 
