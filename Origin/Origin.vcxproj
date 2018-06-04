@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D6412842-2EA6-4D8D-B463-B80662403864}</ProjectGuid>
+    <ProjectGuid>{545541A4-7869-4569-AE28-399F056818B3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -75,6 +75,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Chorus.cpp" />
+    <ClCompile Include="CmpBitmap.cpp" />
     <ClCompile Include="Compressor.cpp" />
     <ClCompile Include="DCBitmap.cpp" />
     <ClCompile Include="Debug1.cpp" />
@@ -96,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chorus.h" />
+    <ClInclude Include="CmpBitmap.h" />
     <ClInclude Include="Compressor.h" />
     <ClInclude Include="DCBitmap.h" />
     <ClInclude Include="Debug1.h" />

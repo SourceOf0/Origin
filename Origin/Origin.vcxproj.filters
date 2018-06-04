@@ -2,6 +2,12 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Chorus.cpp">
+      <Filter>Sound\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CmpBitmap.cpp">
+      <Filter>Image</Filter>
+    </ClCompile>
     <ClCompile Include="Compressor.cpp">
       <Filter>Sound\Effect</Filter>
     </ClCompile>
@@ -53,11 +59,14 @@
     <ClCompile Include="Wave.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Chorus.cpp">
-      <Filter>Sound\Effect</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Chorus.h">
+      <Filter>Sound\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CmpBitmap.h">
+      <Filter>Image</Filter>
+    </ClInclude>
     <ClInclude Include="Compressor.h">
       <Filter>Sound\Effect</Filter>
     </ClInclude>
@@ -118,31 +127,28 @@
     <ClInclude Include="Wave.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="Chorus.h">
-      <Filter>Sound\Effect</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
-      <UniqueIdentifier>{e65281e1-4676-4909-8996-f4add900e0fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sound">
-      <UniqueIdentifier>{2bc19987-9593-4570-a9b7-e669ac8c1946}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence">
-      <UniqueIdentifier>{243c4b0b-c7ca-4f8f-ac02-cfa5a2d0ca01}</UniqueIdentifier>
+      <UniqueIdentifier>{cda4ba2d-87fb-4d1d-8707-d74b63ad6194}</UniqueIdentifier>
     </Filter>
     <Filter Include="Image">
-      <UniqueIdentifier>{c716a46e-7672-46af-86ee-93b158cc5a55}</UniqueIdentifier>
+      <UniqueIdentifier>{b0794d0b-bb2c-4fcb-9ab1-0eae0780d671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence">
+      <UniqueIdentifier>{ab0f2718-b8ff-48ab-97ba-63ff0ea71ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{d4b0df67-d252-4101-89fa-245d9eb7d9f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Title">
-      <UniqueIdentifier>{837f3c96-719b-40bc-91ab-d46789d10256}</UniqueIdentifier>
+      <UniqueIdentifier>{ec869caf-554e-4ee2-b45e-cd4cd339c0a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Debug1">
-      <UniqueIdentifier>{e22fabd8-8219-477e-b32c-7a99b129f506}</UniqueIdentifier>
+      <UniqueIdentifier>{c5da63a0-61ad-43f3-b67b-a5888de72113}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect">
-      <UniqueIdentifier>{4874c3a5-b368-4a60-9c1c-6d8539f0df0b}</UniqueIdentifier>
+      <UniqueIdentifier>{2c0f2bed-b7b5-4335-9e4a-ef46575b7692}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

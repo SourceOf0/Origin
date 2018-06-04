@@ -71,7 +71,7 @@ void Debug1::update( MainParent* parent )
 
 void Debug1::draw( HDC& hdc, MainParent* parent )
 {
-	mBackBmp->drawWindow();
+	mBackBmp->drawWindow( 0, 0 );
 }
 
 

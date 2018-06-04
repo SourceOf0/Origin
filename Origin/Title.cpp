@@ -6,8 +6,8 @@
 #include "SceneManager.h"
 #include "SoundManager.h"
 
-#include "PixelBitmap.h"
 #include "DCBitmap.h"
+#include "CmpBitmap.h"
 
 #include <stdlib.h>
 
@@ -32,44 +32,31 @@ Title::Title( HDC& hdc )
 		mPointTrack[i].count = 0;
 	}
 
-	Image::PixelBitmap* tempBmp;
+	mTempBmp = imageFactory->loadCmp( hdc, "resource\\test.dad" );
+	mTempBmp->mX = ( float )( windowWidth - mTempBmp->mWidth ) / 2 - 5;
+	mTempBmp->mY = ( float )( windowHeight - mTempBmp->mHeight ) / 2 - 5;
 
-//	tempBmp = imageFactory->load( "resource\\pic03.dad" );
-	tempBmp = imageFactory->load( "resource\\test.dad" );
-	mBackBmp1 = new Image::DCBitmap( hdc, tempBmp );
-	delete tempBmp;
+	mBackBmp1 = imageFactory->loadDC( hdc, "resource\\test.dad" );
 	mBackBmp1->mX = ( float )( windowWidth - mBackBmp1->mWidth ) / 2;
 	mBackBmp1->mY = ( float )( windowHeight - mBackBmp1->mHeight ) / 2;
 
-	tempBmp = imageFactory->load( "resource\\pic02.dad" );
-	mBackBmp2 = new Image::DCBitmap( hdc, tempBmp );
-	delete tempBmp;
+	mBackBmp2 = imageFactory->loadDC( hdc, "resource\\pic02.dad" );
 	mBackBmp2->mX = ( float )( windowWidth - mBackBmp2->mWidth ) / 2;
 	mBackBmp2->mY = ( float )( windowHeight - mBackBmp2->mHeight ) / 2;
 
-	tempBmp = imageFactory->load( "resource\\pic01.dad" );
-	mBackBmp3 = new Image::DCBitmap( hdc, tempBmp );
-	delete tempBmp;
+	mBackBmp3 = imageFactory->loadDC( hdc, "resource\\pic01.dad" );
 	mBackBmp3->mX = ( float )( windowWidth - mBackBmp3->mWidth ) / 2;
 	mBackBmp3->mY = ( float )( windowHeight - mBackBmp3->mHeight ) / 2;
 
-	tempBmp = imageFactory->load( "resource\\frame.dad" );
-	mFrontBmp = new Image::DCBitmap( hdc, tempBmp );
-	delete tempBmp;
+	mFrontBmp = imageFactory->loadDC( hdc, "resource\\frame.dad" );
 	mFrontBmp->mX = ( float )( windowWidth - mFrontBmp->mWidth ) / 2;
 	mFrontBmp->mY = ( float )( windowHeight - mFrontBmp->mHeight ) / 2;
 
-	tempBmp = new Image::PixelBitmap( windowWidth, windowHeight, windowWidth * windowHeight / 8 );
-	mMaskBmp = new Image::DCBitmap( hdc, tempBmp );
-	delete tempBmp;
+	mMaskBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
 
-	tempBmp = imageFactory->load( "resource\\smallFilter.dad" );
-	mMaskBlockBmp = new Image::DCBitmap( hdc, tempBmp );
-	delete tempBmp;
+	mMaskBlockBmp = imageFactory->loadDC( hdc, "resource\\smallFilter.dad" );
 
-	tempBmp = imageFactory->load( "resource\\pointMask.dad" );
-	mPointBmp = new Image::DCBitmap( hdc, tempBmp );
-	delete tempBmp;
+	mPointBmp = imageFactory->loadDC( hdc, "resource\\pointMask.dad" );
 
 	mCount = FILTER_FRAME_COUNT;
 	mChangeCount = CHANGE_COUNT_MAX;
@@ -80,6 +67,9 @@ Title::Title( HDC& hdc )
 
 Title::~Title()
 {
+	delete mTempBmp;
+	mTempBmp = 0;
+
 	delete mBackBmp1;
 	mBackBmp1 = 0;
 
@@ -163,6 +153,7 @@ void Title::draw( HDC& hdc, MainParent* parent )
 			mBackBmp3->drawWindow();
 			break;
 	}
+	mTempBmp->drawWindow();
 	mMaskBmp->drawWindowAnd();
 	mFrontBmp->drawWindowAnd();
 }

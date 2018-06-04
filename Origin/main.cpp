@@ -30,8 +30,6 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 	switch (msg) {
 	case WM_DESTROY:
-		gIsSoundThreadEnd = TRUE;
-
 		Main::SoundManager::destroy();
 		Main::SceneManager::destroy();
 
@@ -57,7 +55,10 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		return 0;
 
 	case WM_KEYDOWN:
-		if( wp == VK_ESCAPE ) PostMessage( hwnd, WM_CLOSE, 0, 0 );
+		if( wp == VK_ESCAPE ) {
+			gIsSoundThreadEnd = TRUE;
+			PostMessage( hwnd, WM_CLOSE, 0, 0 );
+		}
 		return 0;
 
 	case WM_LBUTTONDOWN:

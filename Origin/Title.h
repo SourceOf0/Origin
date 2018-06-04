@@ -6,8 +6,8 @@
 #define POINT_TRACK_NUM 50
 
 namespace Image {
-	class PixelBitmap;
 	class DCBitmap;
+	class CmpBitmap;
 }
 
 namespace Sequence {
@@ -31,6 +31,7 @@ private:
 
 	int setPointMask( void );
 
+	Image::CmpBitmap* mTempBmp;
 	Image::DCBitmap* mBackBmp1;
 	Image::DCBitmap* mBackBmp2;
 	Image::DCBitmap* mBackBmp3;

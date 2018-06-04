@@ -4,7 +4,9 @@
 #include <windows.h>
 
 namespace Image {
+	class DCBitmap;
 	class PixelBitmap;
+	class CmpBitmap;
 }
 
 namespace Main {
@@ -16,7 +18,8 @@ public:
 	static void create( void );
 	static void destroy( void );
 
-	Image::PixelBitmap* load( const char* fileName );
+	Image::DCBitmap* loadDC( HDC& hdc, const char* fileName );
+	Image::CmpBitmap* loadCmp( HDC& hdc, const char* fileName );
 
 private:
 	ImageFactory( void );

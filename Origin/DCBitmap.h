@@ -11,11 +11,16 @@ class DCBitmap
 {
 public:
 	DCBitmap( HDC& hdc, PixelBitmap* target );
+	DCBitmap( HDC& hdc, int width, int height );
 	~DCBitmap( void );
 
 	int setData( int index, unsigned char data );
 	int drawWindow( void );
+	int drawWindow( int x, int y );
 	int drawWindowAnd( void );
+	int drawWindowAnd( int x, int y );
+	int drawWindowOr( void );
+	int drawWindowOr( int x, int y );
 	int drawBlock( HDC& targetHdc, int x, int y, int width, int index );
 	int drawBlockAnd( HDC& targetHdc, int x, int y, int width, int index );
 	int drawBlockOr( HDC& targetHdc, int x, int y, int width, int index );

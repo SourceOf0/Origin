@@ -4,13 +4,13 @@
 namespace Image {
 
 PixelBitmap::PixelBitmap( int width, int height, int dataLeng ) : 
-	mWidth( width ),
-	mHeight( height ),
-	mWidthIndex( width / 32 ),
-	mHeightIndex( height / 32 ),
-	mDataLeng( dataLeng ),
-	mX( 0 ),
-	mY( 0 )
+mWidth( width ),
+mHeight( height ),
+mWidthIndex( width / 32 ),
+mHeightIndex( height / 32 ),
+mDataLeng( dataLeng ),
+mX( 0 ),
+mY( 0 )
 {
 	mPixelData = new unsigned char[ dataLeng ];
 	for( int i = 0; i < dataLeng; ++i ) {
