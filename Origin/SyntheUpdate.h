@@ -4,59 +4,76 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
 	BOOL isClick = Main::SceneManager::isClick;
 	BOOL isHit = !Main::SceneManager::isMouseDown;
-	POINT mousePos;
-	GetCursorPos( &mousePos );
-	int mouseX = mousePos.x;
-	int mouseY = mousePos.y;
-	BOOL isPlaySound = FALSE;
+	int mouseX = Main::HandManager::inst()->getX() - mX;
+	int mouseY = Main::HandManager::inst()->getY() - mY;
+
+	mHandState = Main::HandManager::HAND_NORMAL;
+
+	for( int i = 0; i < TRACK_NUM; ++i ) {
+		mPlayWaveID[ i ] = WAVE_NONE;
+	}
 
 	for( int i = 0 ; i < EFFECT_FADER_NUM; ++i ) {
-		if( !isHit && checkHit( mEffectFader[ i ], mouseX , mouseY ) ) {
-			PartsData& target = mEffectFader[ i ];
-			int setY = mouseY - 5;
-			if( setY < target.defY ) setY = target.defY;
-			if( setY > target.hitY2 - 10 ) setY = target.hitY2 - 10;
-			target.y = setY;
-			if( i % 2 == 0 ) {
-				soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum1( getFaderV( target ) );
+		if( checkHit( mEffectFader[ i ], mouseX , mouseY ) ) {
+			if( !isHit ) {
+				PartsData& target = mEffectFader[ i ];
+				int setY = mouseY - 5;
+				if( setY < target.defY ) setY = target.defY;
+				if( setY > target.hitY2 - 10 ) setY = target.hitY2 - 10;
+				target.y = setY;
+				if( i % 2 == 0 ) {
+					soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum1( getFaderV( target ) );
+				} else {
+					soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum2( getFaderV( target ) );
+				}
+				isHit = TRUE;
+				mHandState = Main::HandManager::HAND_HOLD_AFTER;
+				Main::HandManager::inst()->lockX();
+				Main::HandManager::inst()->setRangeY( target.defY + 5, target.hitY2 - 5 );
 			} else {
-				soundManager->getTrack( i / 6 )->getEffect( ( i % 6 ) / 2 )->setNum2( getFaderV( target ) );
+				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
 			}
-			isHit = TRUE;
 		}
 	}
 
 	for( int i = 0 ; i < EQ_FADER_NUM; ++i ) {
-		if( !isHit && checkHit( mEQFader[ i ], mouseX , mouseY ) ) {
-			PartsData& target = mEQFader[ i ];
-			int setY = mouseY - 5;
-			double setFc = 0;
-			double setG = 0;
-			if( setY < target.defY ) setY = target.defY;
-			if( setY > target.hitY2 - 10 ) setY = target.hitY2 - 10;
-			target.y = setY;
-			if( i % 2 == 0 ) {
-				setFc = getFaderV( mEQFader[ i ] ) * 1400 + 100;
-				setG = ( getFaderV( mEQFader[ i + 1 ] ) - 0.5 ) * 2;
+		if( checkHit( mEQFader[ i ], mouseX , mouseY ) ) {
+			if( !isHit ) {
+				PartsData& target = mEQFader[ i ];
+				int setY = mouseY - 5;
+				double setFc = 0;
+				double setG = 0;
+				if( setY < target.defY ) setY = target.defY;
+				if( setY > target.hitY2 - 10 ) setY = target.hitY2 - 10;
+				target.y = setY;
+				if( i % 2 == 0 ) {
+					setFc = getFaderV( mEQFader[ i ] ) * 1400 + 100;
+					setG = ( getFaderV( mEQFader[ i + 1 ] ) - 0.5 ) * 2;
+				} else {
+					setFc = getFaderV( mEQFader[ i - 1 ] ) * 1400 + 100;
+					setG = ( getFaderV( mEQFader[ i ] ) - 0.5 ) * 2;
+				}
+				switch( mEQLever[ i / 2 ].partsID ) {
+					case PARTS_LEVER_1:
+						soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
+						break;
+					case PARTS_LEVER_2:
+						soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
+						break;
+					case PARTS_LEVER_3:
+						soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
+						break;
+					case PARTS_LEVER_4:
+						soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
+						break;
+				}
+				isHit = TRUE;
+				Main::HandManager::inst()->lockX();
+				Main::HandManager::inst()->setRangeY( target.defY + 5, target.hitY2 - 5 );
+				mHandState = Main::HandManager::HAND_HOLD_AFTER;
 			} else {
-				setFc = getFaderV( mEQFader[ i - 1 ] ) * 1400 + 100;
-				setG = ( getFaderV( mEQFader[ i ] ) - 0.5 ) * 2;
+				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
 			}
-			switch( mEQLever[ i / 2 ].partsID ) {
-				case PARTS_LEVER_1:
-					soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
-					break;
-				case PARTS_LEVER_2:
-					soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
-					break;
-				case PARTS_LEVER_3:
-					soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
-					break;
-				case PARTS_LEVER_4:
-					soundManager->getTrack( i / 6 )->setEQState( ( i % 6 ) / 2, setFc, setG );
-					break;
-			}
-			isHit = TRUE;
 		}
 	}
 
@@ -81,6 +98,9 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 						targetSign.defY = PARTS_SIGN_NOISE_GATE;
 					}
 				}
+				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+			} else {
+				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
 			}
 		}
 		updateDial( i, target, targetSign );
@@ -107,27 +127,37 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 						targetSign.defY = PARTS_SIGN_CURVE;
 					}
 				}
+				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+			} else {
+				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
 			}
 		}
 		updateDial( -1, target, targetSign );
 	}
 
 	for( int i = 0 ; i < VOLUME_FADER_NUM; ++i ) {
-		if( !isHit && checkHit( mVolumeFader[ i ], mouseX , mouseY ) ) {
-			PartsData& target = mVolumeFader[ i ];
-			int setX = mouseX - 5;
-			if( setX < target.defX ) setX = target.defX;
-			if( setX > target.hitX2 - 10 ) setX = target.hitX2 - 10;
-			target.x = setX;
-			isHit = TRUE;
-			if( i == 0 ) {
-				soundManager->setVol( getFaderH( target ) );
-			} else if( i == 1 ) {
-				soundManager->setPan( getFaderH( target ) );
-			} else if( i % 2 == 0 ) {
-				soundManager->getTrack( i / 2 - 1 )->setVol( getFaderH( target ) );
+		if( checkHit( mVolumeFader[ i ], mouseX , mouseY ) ) {
+			if( !isHit ) {
+				PartsData& target = mVolumeFader[ i ];
+				int setX = mouseX - 5;
+				if( setX < target.defX ) setX = target.defX;
+				if( setX > target.hitX2 - 10 ) setX = target.hitX2 - 10;
+				target.x = setX;
+				if( i == 0 ) {
+					soundManager->setVol( getFaderH( target ) );
+				} else if( i == 1 ) {
+					soundManager->setPan( getFaderH( target ) );
+				} else if( i % 2 == 0 ) {
+					soundManager->getTrack( i / 2 - 1 )->setVol( getFaderH( target ) );
+				} else {
+					soundManager->getTrack( i / 2 - 1 )->setPan( getFaderH( target ) );
+				}
+				isHit = TRUE;
+				Main::HandManager::inst()->lockY();
+				Main::HandManager::inst()->setRangeX( target.defX + 5, target.hitX2 - 5 );
+				mHandState = Main::HandManager::HAND_HOLD_AFTER;
 			} else {
-				soundManager->getTrack( i / 2 - 1 )->setPan( getFaderH( target ) );
+				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
 			}
 		}
 	}
@@ -135,7 +165,7 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 	for( int i = 0 ; i < TRACK_NUM; ++i ) {
 		if( checkHit( mAutoPanButton[ i ], mouseX , mouseY ) ) {
 			isHit = TRUE;
-			if( isClick && checkHit( mAutoPanButton[ i ], mouseX , mouseY ) ) {
+			if( isClick ) {
 				if( mAutoPanButton[ i ].partsID == PARTS_BUTTON_AUTOPAN_OFF ) {
 					mAutoPanButton[ i ].partsID = PARTS_BUTTON_AUTOPAN_ON;
 					soundManager->getTrack( i )->setAutoPan( TRUE );
@@ -144,6 +174,9 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 					soundManager->getTrack( i )->setAutoPan( FALSE );
 				}
 				soundManager->getTrack( i )->setPan( getFaderH( mVolumeFader[ i * 2 + 3 ] ) );
+				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+			} else {
+				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
 			}
 		}
 	}
@@ -152,9 +185,12 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 	for( int i = 0 ; i < TRACK_NUM; ++i ) {
 		if( checkHit( mTrackButton[ i ], mouseX , mouseY ) ) {
 			isHit = TRUE;
-			if( isClick && checkHit( mTrackButton[ i ], mouseX , mouseY ) ) {
+			if( isClick ) {
 				waveButtonIndex = i;
 				mTrackButton[ i ].partsID = ( mTrackButton[ i ].partsID == PARTS_BUTTON_TRACK_OFF )? PARTS_BUTTON_TRACK_ON : PARTS_BUTTON_TRACK_OFF;
+				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+			} else {
+				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
 			}
 		}
 	}
@@ -166,53 +202,61 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 	}
 
 	for( int i = 0 ; i < EFFECT_EQ_NUM; ++i ) {
-		if( !isHit && checkHit( mEQLever[ i ], mouseX , mouseY ) ) {
-			PartsData& target = mEQLever[ i ];
-			int setX = mouseX - 12;
-			if( setX < target.defX ) {
-				target.partsID = PARTS_LEVER_4;
-				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_HIGH_SHELVING );
-				setX = target.defX;
-			} else if( setX < target.defX + 12 ) {
-				target.partsID = PARTS_LEVER_3;
-				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_PEAKING );
-				setX = target.defX + 12;
-			} else if( setX < target.defX + 23 ) {
-				target.partsID = PARTS_LEVER_2;
-				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_LOW_SHELVING );
-				setX = target.defX + 23;
+		if( checkHit( mEQLever[ i ], mouseX , mouseY ) ) {
+			if( !isHit ) {
+				PartsData& target = mEQLever[ i ];
+				int setX = mouseX - 12;
+				if( setX < target.defX ) {
+					target.partsID = PARTS_LEVER_4;
+					soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_HIGH_SHELVING );
+					setX = target.defX;
+				} else if( setX < target.defX + 12 ) {
+					target.partsID = PARTS_LEVER_3;
+					soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_PEAKING );
+					setX = target.defX + 12;
+				} else if( setX < target.defX + 23 ) {
+					target.partsID = PARTS_LEVER_2;
+					soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_LOW_SHELVING );
+					setX = target.defX + 23;
+				} else {
+					target.partsID = PARTS_LEVER_1;
+					soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_NONE );
+					setX = target.hitX2 - 20;
+				}
+				target.x = setX;
+				isHit = TRUE;
+				Main::HandManager::inst()->lockY();
+				Main::HandManager::inst()->setRangeX( target.defX + 8, target.hitX2 - 4 );
+				mHandState = Main::HandManager::HAND_HOLD_AFTER;
 			} else {
-				target.partsID = PARTS_LEVER_1;
-				soundManager->getTrack( i / 3 )->setEQKind( i % 3, EQ_NONE );
-				setX = target.hitX2 - 20;
+				mHandState = Main::HandManager::HAND_HOLD_BEFORE;
 			}
-			target.x = setX;
-			isHit = TRUE;
 		}
 	}
 	for( int i = 0 ; i < KEY_NUM; ++i ) {
-		if( !isHit && checkHit( mKeyButton[ i ], mouseX , mouseY ) ) {
-			if( mKeyButton[ i ].partsID == PARTS_BUTTON_KEY_OFF ) {
-				int trackIndex = getSelectTrack();
-				if( trackIndex >= 0 ) {
-					soundManager->getTrack( trackIndex )->setF( getHz( i ) );
+		if( checkHit( mKeyButton[ i ], mouseX , mouseY ) ) {
+			if( !isHit ) {
+				if( mKeyButton[ i ].partsID == PARTS_BUTTON_KEY_OFF ) {
+					int trackIndex = getSelectTrack();
+					if( trackIndex >= 0 ) {
+						soundManager->getTrack( trackIndex )->setF( getHz( i ) );
+					}
 				}
+				if( mPlayButton[ 0 ].partsID == PARTS_BUTTON_PLAY_OFF && mPlayButton[ 1 ].partsID == PARTS_BUTTON_PLAY_OFF && mPlayButton[ 2 ].partsID == PARTS_BUTTON_PLAY_OFF ) {
+					for( int k = 0; k < TRACK_NUM; ++k ) {
+						mPlayWaveID[ k ] = ( WaveID )( mWaveSign[ k ].partsID - PARTS_SIGN_CURVE );
+					}
+				}
+				isHit = TRUE;
+				mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_ON;
+				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+			} else {
+				if( mHandState != Main::HandManager::HAND_PUSH_AFTER ) mHandState = Main::HandManager::HAND_PUSH_BEFORE;
+				mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_OFF;
 			}
-			isPlaySound = TRUE;
-			mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_ON;
-			isHit = TRUE;
 		} else {
 			mKeyButton[ i ].partsID = PARTS_BUTTON_KEY_OFF;
 		}
-	}
-	if( !isPlaySound ) {
-		soundManager->getTrack( 0 )->setWave( WAVE_NONE );
-		soundManager->getTrack( 1 )->setWave( WAVE_NONE );
-		soundManager->getTrack( 2 )->setWave( WAVE_NONE );
-	} else {
-		soundManager->getTrack( 0 )->setWave( ( WaveID )( mWaveSign[ 0 ].partsID - PARTS_SIGN_CURVE ) );
-		soundManager->getTrack( 1 )->setWave( ( WaveID )( mWaveSign[ 1 ].partsID - PARTS_SIGN_CURVE ) );
-		soundManager->getTrack( 2 )->setWave( ( WaveID )( mWaveSign[ 2 ].partsID - PARTS_SIGN_CURVE ) );
 	}
 
 	int playButtonIndex = -1;
@@ -229,6 +273,9 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 					target.partsID = PARTS_BUTTON_PLAY_OFF;
 					mPlaySign[ i ].y = mPlaySign[ i ].defY;
 				}
+				mHandState = Main::HandManager::HAND_PUSH_AFTER;
+			} else {
+				mHandState = Main::HandManager::HAND_PUSH_BEFORE;
 			}
 		}
 	}
@@ -240,103 +287,34 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 		}
 	}
 
-	if( checkHit( mScaleDial, mouseX , mouseY ) ) {
+	isHit |= updatePad( isHit, isClick, mouseX, mouseY );
+
+	if( mouseX < 50 || mouseY < 100 || ( mouseX > static_cast< int >( mBackBmp->mWidth ) - 50 ) || ( mouseY > static_cast< int >( mBackBmp->mHeight ) - 50 ) ) {
 		isHit = TRUE;
-		if( isClick ) {
-			if( mouseX < mScaleDial.x + 30 ) {
-				mScaleSign.defY = mScaleSign.defY + 1;
-				if( mScaleSign.defY <= PARTS_SIGN_SCALE_BM ) {
-					if( mScaleDial.defX == 100 ) mScaleDial.defX = 0;
-				} else {
-					mScaleSign.defY = PARTS_SIGN_SCALE_BM;
-				}
-			} else {
-				mScaleSign.defY = mScaleSign.defY - 1;
-				if( mScaleSign.defY >= PARTS_SIGN_SCALE_C ) {
-					if( mScaleDial.defX == 100 ) mScaleDial.defX = 0;
-				} else {
-					mScaleSign.defY = PARTS_SIGN_SCALE_C;
-				}
-			}
-		}
+		mHandState = Main::HandManager::HAND_BACK;
 	}
-	updateDial( -1, mScaleDial, mScaleSign );
+
+	for( int i = 0; i < TRACK_NUM; ++i ) {
+		soundManager->getTrack( i )->setWave( mPlayWaveID[ i ] );
+	}
 
 	if( !mIsInit ) {
 		mIsInit = TRUE;
 		updateSoundState();
 		Main::SoundManager::inst()->play();
-	} else if( !Main::SceneManager::isAddWave ) {
-		return;
+		updateWave();
 	}
-	updateWave();
 
-	double test1 = 1.0 / 12;
-	double test2 = getHz( 0 ) + test1;
-	double test3 = getHz( 0 ) + test1 * 2;
-	double test4 = getHz( 0 ) + test1 * 3;
+	if( Main::SceneManager::isAddWave ) {
+		updateWave();
+	}
+
+	Main::HandManager::inst()->setState( mHandState );
 }
 
 BOOL Synthesizer::checkHit( PartsData& target, int x, int y )
 {
 	return ( x >= target.hitX1 && x <= target.hitX2 && y >= target.hitY1 && y <= target.hitY2 );
-}
-
-#include <Math.h>
-double Synthesizer::getHz( int index )
-{
-	double ret = 0;
-	switch( index % 12 ) {
-		case 0:
-			ret = pow( 2.0, -9 / 12.0 ) * 440;
-//			ret = 261.6255653005986;
-			break;
-		case 1:
-			ret = pow( 2.0, -8 / 12.0 ) * 440;
-//			ret = 277.1826309768721;
-			break;
-		case 2:
-			ret = pow( 2.0, -7 / 12.0 ) * 440;
-//			ret = 293.6647679174076;
-			break;
-		case 3:
-			ret = pow( 2.0, -6 / 12.0 ) * 440;
-//			ret = 311.1269837220809;
-			break;
-		case 4:
-			ret = pow( 2.0, -5 / 12.0 ) * 440;
-//			ret = 329.6275569128699;
-			break;
-		case 5:
-			ret = pow( 2.0, -4 / 12.0 ) * 440;
-//			ret = 349.2282314330039;
-			break;
-		case 6:
-			ret = pow( 2.0, -3 / 12.0 ) * 440;
-//			ret = 369.9944227116344;
-			break;
-		case 7:
-			ret = pow( 2.0, -2 / 12.0 ) * 440;
-//			ret = 391.99543598174926;
-			break;
-		case 8:
-			ret = pow( 2.0, -1 / 12.0 ) * 440;
-//			ret = 415.3046975799451;
-			break;
-		case 9:
-			ret = 440.0;
-			break;
-		case 10:
-			ret = pow( 2.0, 1 / 12.0 ) * 440;
-//			ret = 466.1637615180899;
-			break;
-		case 11:
-			ret = pow( 2.0, 2 / 12.0 ) * 440;
-//			ret = 493.8833012561241;
-			break;
-	}
-	if( index >= 12 ) ret *= 2;
-	return ret;
 }
 
 int Synthesizer::getSelectTrack( void )
@@ -398,7 +376,7 @@ void Synthesizer::updateDial( int index, PartsData& target, PartsData& targetSig
 	}
 	if( target.defX == 100 ) return;
 	++target.defX;
-	target.partsID = ( target.defX / 5 == 0 )? PARTS_DIAL_1 : PARTS_DIAL_2;
+	target.partsID = ( target.defX / 5 == 0 )? PARTS_DIAL_2 : PARTS_DIAL_1;
 }
 
 void Synthesizer::updateWave( void )

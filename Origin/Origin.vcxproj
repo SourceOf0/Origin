@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{750D1DEF-220A-45C1-B57B-0ABFDE2C5F7C}</ProjectGuid>
+    <ProjectGuid>{FAC7A1C7-1657-47C2-AED8-A1ADDC21E41E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Origin</RootNamespace>
   </PropertyGroup>
@@ -92,6 +92,7 @@
     <ClCompile Include="Distortion3.cpp" />
     <ClCompile Include="EffectBase.cpp" />
     <ClCompile Include="Equalizer.cpp" />
+    <ClCompile Include="HandManager.cpp" />
     <ClCompile Include="HighPassFilter.cpp" />
     <ClCompile Include="ImageFactory.cpp" />
     <ClCompile Include="LayerData.cpp" />
@@ -100,9 +101,9 @@
     <ClCompile Include="MainParent.cpp" />
     <ClCompile Include="NoiseGate.cpp" />
     <ClCompile Include="PixelBitmap.cpp" />
+    <ClCompile Include="RoomParent.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="RoomParent.cpp" />
     <ClCompile Include="Synthesizer.cpp" />
     <ClCompile Include="ToneFactory.cpp" />
     <ClCompile Include="Track.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Distortion3.h" />
     <ClInclude Include="EffectBase.h" />
     <ClInclude Include="Equalizer.h" />
+    <ClInclude Include="HandManager.h" />
     <ClInclude Include="HighPassFilter.h" />
     <ClInclude Include="ImageFactory.h" />
     <ClInclude Include="LayerData.h" />
@@ -138,12 +140,13 @@
     <ClInclude Include="NoiseGate.h" />
     <ClInclude Include="PixelBitmap.h" />
     <ClInclude Include="RoomChild.h" />
+    <ClInclude Include="RoomParent.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SoundBase.h" />
     <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="RoomParent.h" />
     <ClInclude Include="SynthePartsInit.h" />
     <ClInclude Include="Synthesizer.h" />
+    <ClInclude Include="SynthePad.h" />
     <ClInclude Include="SyntheUpdate.h" />
     <ClInclude Include="ToneFactory.h" />
     <ClInclude Include="Track.h" />

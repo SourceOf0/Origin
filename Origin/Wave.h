@@ -27,8 +27,9 @@ private:
 	void setSilent( Track* track );
 
 	double mA;
+	double mRatio;
 	double mF;
-
+	double mTargetF;
 };
 
 } //namespace Sound

@@ -3,16 +3,12 @@
 
 #include <windows.h>
 
-namespace Image {
-	class DCBitmap;
-}
-
 namespace Main {
 
 class ToneFactory
 {
 public:
-	static ToneFactory* inst();
+	static ToneFactory* inst( void );
 	static void create( HDC& hdc );
 	static void destroy( void );
 

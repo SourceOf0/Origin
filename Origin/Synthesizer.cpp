@@ -17,7 +17,13 @@ namespace Room {
 
 BOOL Synthesizer::mIsInit = FALSE;
 
-Synthesizer::Synthesizer( HDC& hdc, Sequence::RoomParent* parent )
+Synthesizer::Synthesizer( HDC& hdc, Sequence::RoomParent* parent ) :
+mX( 0 ),
+mY( 0 ),
+mPlayTime( 0 ),
+mPlayCount( 0 ),
+mTempo( 10 ),
+mHandState( Main::HandManager::HAND_NORMAL )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 	int windowWidth = Main::SceneManager::windowWidth;
@@ -26,15 +32,27 @@ Synthesizer::Synthesizer( HDC& hdc, Sequence::RoomParent* parent )
 	mBackBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe.dad" ) );
 	mBackBmp->mUseAlpha = FALSE;
 
+	mX = ( windowWidth - mBackBmp->mWidth ) / 2;
+	mY = ( windowHeight - mBackBmp->mHeight ) / 2;
+
 	mPartsBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe_parts.dad" ) );
 	mPartsBmp->mUseAlpha = TRUE;
 
 	mWaveBmp = new Image::DCBitmap( hdc, 355, 176, 0xFF );
-	mWaveBmp->mX = 580;
-	mWaveBmp->mY = 158;
+	mWaveBmp->mX = 580 + mX;
+	mWaveBmp->mY = 158 + mY;
+
+	mPadBmp = imageFactory->loadDC( hdc, "resource\\synthe_pad.dad" );
+	mPadBmp->mX = 581 + mX;
+	mPadBmp->mY = 416 + mY;
+
+	for( int i = 0; i < TRACK_NUM; ++i ) {
+		mPlayWaveID[ i ] = WAVE_NONE;
+	}
 
 	sizeInit();
 	posInit();
+	padInit();
 }
 
 Synthesizer::~Synthesizer()
@@ -47,14 +65,18 @@ Synthesizer::~Synthesizer()
 
 	delete mWaveBmp;
 	mWaveBmp = 0;
+
+	delete mPadBmp;
+	mPadBmp = 0;
 }
 
 #include "SynthePartsInit.h"
 #include "SyntheUpdate.h"
+#include "SynthePad.h"
 
 void Synthesizer::draw( HDC& hdc, Sequence::RoomParent* parent )
 {
-	mBackBmp->drawWindow();
+	mBackBmp->drawWindow( mX, mY );
 	
 	for( int i = 0 ; i < EFFECT_FADER_NUM; ++i ) {
 		viewParts( mEffectFader[ i ] );
@@ -90,28 +112,46 @@ void Synthesizer::draw( HDC& hdc, Sequence::RoomParent* parent )
 		viewParts( mPlayButton[ i ] );
 		viewParts( mPlaySign[ i ] );
 	}
-	viewParts( mScaleDial );
+
+	if( mScaleDial.defX != 100 ) {
+		viewParts( mScaleDial );
+	}
 	viewSign( mScaleSign );
+	
+	for( int i = 0 ; i < TRACK_NUM; ++i ) {
+		for( int j = 0 ; j < NOTE_SET_MAX_NUM; ++j ) {
+			if( mNoteLamp[ i ][ j ].defX == 100 ) continue;
+			viewParts( mNoteLamp[ i ][ j ] );
+		}
+	}
+	for( int i = 0 ; i < NOTE_SET_MAX_NUM; ++i ) {
+		if( mTimeLampX[ i ].defX == 100 ) continue;
+		viewParts( mTimeLampX[ i ] );
+	}
+	for( int i = 0; i < PAD_FADER_NUM; ++i ) {
+		viewParts( mPadFader[ i ] );
+	}
 
 	mWaveBmp->drawWindowAnd();
+	mPadBmp->drawWindowAnd();
 }
 
-void Synthesizer::viewParts( PartsData& target )
+void Synthesizer::viewParts( PartsData& target, BOOL isTransparent )
 {
 	PartsSize size = mPartsSize[ target.partsID ];
-	mPartsBmp->drawWindow( target.x, target.y, size.startX, size.startY, size.width, size.height );
+	mPartsBmp->drawWindow( mX + target.x, mY + target.y, size.startX, size.startY, size.width, size.height, isTransparent );
 }
 void Synthesizer::viewSign( PartsData& target )
 {
 	PartsSize size = mPartsSize[ target.partsID ];
 	if( target.x < target.defX - 4 ) {
 		int fixX = target.defX - 4 - target.x;
-		mPartsBmp->drawWindow( target.x + fixX - size.width / 2, target.y - size.height / 2, size.startX + fixX, size.startY, size.width - fixX, size.height );
+		mPartsBmp->drawWindow( mX + target.x + fixX - size.width / 2, mY + target.y - size.height / 2, size.startX + fixX, size.startY, size.width - fixX, size.height );
 	} else if( target.x > target.defX + 5 ) {
 		int fixX = target.x - target.defX - 5;
-		mPartsBmp->drawWindow( target.x - size.width / 2, target.y - size.height / 2, size.startX, size.startY, size.width - fixX, size.height );
+		mPartsBmp->drawWindow( mX + target.x - size.width / 2, mY + target.y - size.height / 2, size.startX, size.startY, size.width - fixX, size.height );
 	} else {
-		mPartsBmp->drawWindow( target.x - size.width / 2, target.y - size.height / 2, size.startX, size.startY, size.width, size.height );
+		mPartsBmp->drawWindow( mX + target.x - size.width / 2, mY + target.y - size.height / 2, size.startX, size.startY, size.width, size.height );
 	}
 }
 

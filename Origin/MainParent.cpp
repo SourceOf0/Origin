@@ -8,6 +8,7 @@
 #include "Debug1.h"
 #include "Debug2.h"
 
+#include "HandManager.h"
 #include "BitmapBase.h"
 
 namespace Sequence {
@@ -76,23 +77,27 @@ void MainParent::update( void )
 {
 	DWORD id;
 
-	if( mThreadState == 1 ) {
-		mDebugLoading->update( this );
-		return;
-	} else if( mThreadState == 2 ) {
-		mThreadState = 0;
-	} else if( mThreadState == 3 ) {
-		mDebugLoading->update( this );
-		mThreadState = 1;
-		mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
-		return;
-	}
-	mChild->update( this );
+	switch( mThreadState ) {
+		case 2:
+			mThreadState = 0;
+		case 0:
+			mChild->update( this );
+			if( mNext != SEQ_NONE ) {
+				mThreadState = 1;
+				mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
+			}
+			break;
 
-	if( mNext != SEQ_NONE ) {
-		mThreadState = 1;
-		mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
+		case 3:
+			mThreadState = 1;
+			mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
+		case 1:
+			mDebugLoading->update( this );
+			break;
+
 	}
+
+	Main::HandManager::inst()->update();
 }
 
 void MainParent::draw( HDC& hdc )
@@ -102,6 +107,7 @@ void MainParent::draw( HDC& hdc )
 	} else {
 		mDebugLoading->draw( hdc, this );
 	}
+	Main::HandManager::inst()->draw();
 }
 
 void MainParent::moveTo( SeqID next )

@@ -15,6 +15,9 @@ void Synthesizer::posInit( void )
 	setPlayButtonPos();
 	setScaleSignPos();
 	setScaleDialPos();
+	setPadFaderPos();
+	setNoteLampPos();
+	setTimeLampPos();
 }
 
 void Synthesizer::setEffectFaderPos( void )
@@ -165,7 +168,7 @@ void Synthesizer::setEffectSignPos( void )
 {
 	int index = -1;
 	int baseX = 117;
-	int baseY = 179;
+	int baseY = 178;
 	int disX1 = 62;
 	int disY1 = 178;
 	int disX = 0;
@@ -443,7 +446,167 @@ void Synthesizer::setScaleDialPos( void )
 {
 	int baseX = 584;
 	int baseY = 382;
-	setPos( mScaleDial, PARTS_DIAL_1, baseX, baseY);
+	setPos( mScaleDial, PARTS_DIAL_1, baseX, baseY );
+}
+
+void Synthesizer::setPadFaderPos( void )
+{
+	int index = -1;
+	int baseX = 659;
+	int baseY = 348;
+	int disY1 = 30;
+	int disX = 0;
+	int disY = 0;
+
+	setPos( mPadFader[ ++index ], PARTS_FADER_H, baseX + disX, baseY + disY );
+	disY += disY1;
+	setPos( mPadFader[ ++index ], PARTS_FADER_H, baseX + disX, baseY + disY );
+
+	for( int i = 0; i < PAD_FADER_NUM; ++i ) {
+		PartsData& target = mPadFader[ i ];
+		fixHitRange( target, 0, 10, 113, -10 );
+	}
+}
+
+void Synthesizer::setNoteLampPos( void )
+{
+	int index = -1;
+	int baseX = 583;
+	int baseY = 418;
+	int disX1 = 22;
+	int disY1 = 21;
+	int disX = 0;
+	int disY = 0;
+
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1 + 1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1 + 1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1 - 1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1 - 1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+
+	disX += disX1 - 1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	disX += disX1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+	
+	disX += disX1 + 1;
+	mNotePosX[ 0 ][ ++index ] = baseX + disX;
+
+
+	index = -1;
+	mNotePosY[ ++index ][ 0 ] = baseY + disY;
+	disY += disY1;
+	mNotePosY[ ++index ][ 0 ] = baseY + disY;
+	disY += disY1;
+	mNotePosY[ ++index ][ 0 ] = baseY + disY;
+	disY += disY1;
+	mNotePosY[ ++index ][ 0 ] = baseY + disY;
+	disY += disY1;
+	mNotePosY[ ++index ][ 0 ] = baseY + disY;
+	disY += disY1;
+	mNotePosY[ ++index ][ 0 ] = baseY + disY;
+	disY += disY1 + 1;
+	mNotePosY[ ++index ][ 0 ] = baseY + disY;
+	disY += disY1 + 2;
+	mNotePosY[ ++index ][ 0 ] = baseY + disY;
+
+	for( int i = 0; i < NOTE_HEIGHT_NUM; ++i ) {
+		for( int j = 0; j < NOTE_SET_MAX_NUM; ++j ) {
+			if( i < 3 ) {
+				mNotePosX[ i ][ j ] = mNotePosX[ 0 ][ j ];
+			} else {
+				mNotePosX[ i ][ j ] = mNotePosX[ 0 ][ j ] + 1;
+			}
+			if( i != 6 ) {
+				if( j < 5 ) {
+					mNotePosY[ i ][ j ] = mNotePosY[ i ][ 0 ];
+				} else if( j < 12 ) {
+					mNotePosY[ i ][ j ] = mNotePosY[ i ][ 0 ] - 1;
+				} else {
+					mNotePosY[ i ][ j ] = mNotePosY[ i ][ 0 ] - 2;
+				}
+			} else {
+				if( j < 5 ) {
+					mNotePosY[ i ][ j ] = mNotePosY[ i ][ 0 ] + 1;
+				} else if( j < 12 ) {
+					mNotePosY[ i ][ j ] = mNotePosY[ i ][ 0 ];
+				} else {
+					mNotePosY[ i ][ j ] = mNotePosY[ i ][ 0 ] - 1;
+				}
+			}
+		}
+	}
+
+	for( int i = 0; i < TRACK_NUM; ++i ) {
+		for( int j = 0; j < NOTE_SET_MAX_NUM; ++j ) {
+			setPos( mNoteLamp[ i ][ j ], PARTS_LAMP_NOTE_1, mNotePosX[ 0 ][ j ], mNotePosY[ 0 ][ j ] );
+		}
+	}
+}
+
+void Synthesizer::setTimeLampPos( void )
+{
+	int index = -1;
+	int baseX = 587;
+	int baseY = 599;
+	int disX1 = 21;
+	int disX = 0;
+
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1 + 1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1 + 2;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+
+	disX += disX1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1 + 1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1 + 2;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1 + 2;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+
+	disX += disX1 + 1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1 + 2;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+	disX += disX1 + 1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
+
+	disX += disX1;
+	setPos( mTimeLampX[ ++index ], PARTS_LAMP_TIME, baseX + disX, baseY );
 }
 
 void Synthesizer::setPos( PartsData& target, PartsID id, int x, int y )
@@ -497,8 +660,9 @@ void Synthesizer::sizeInit( void )
 	setSize( PARTS_BUTTON_KEY_OFF, 57, 67, 24, 36 );
 
 	// ランプ
-	setSize( PARTS_RAMP_TIME, 208, 73, 16, 15 );
-	setSize( PARTS_RAMP_NOTE, 208, 88, 16, 16 );
+	setSize( PARTS_LAMP_NOTE_1, 208, 73, 16, 15 );
+	setSize( PARTS_LAMP_NOTE_2, 208, 88, 16, 15 );
+	setSize( PARTS_LAMP_TIME, 208, 103, 16, 16 );
 
 	// フェーダー
 	setSize( PARTS_FADER_H, 197, 73, 11, 31 );

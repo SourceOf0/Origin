@@ -33,6 +33,9 @@ public:
 	LPDWORD mWindowPixel;
 	HDC mHdcBmp;
 
+	SYSTEMTIME mLocalTime;
+	int mFrameRate;
+
 private:
 	SceneManager( HWND& hwnd );
 	SceneManager( SceneManager& );

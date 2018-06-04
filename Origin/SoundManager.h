@@ -2,6 +2,7 @@
 #define INCLUDED_MAIN_SOUND_MANAGER_H
 
 #include <windows.h>
+#include "SoundBase.h"
 
 namespace Sound {
 	class Track;
@@ -50,8 +51,7 @@ private:
 
 	HWAVEOUT mHWaveOut;
 	WAVEHDR mWaveHeader[ 2 ];
-	LPBYTE mLpWave[ 2 ];
-//	short* mLpWave[ 2 ];
+	short mLpWave[ 2 ][ BUFFER_SIZE ];
 };
 
 } // namespace Main

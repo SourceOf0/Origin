@@ -36,16 +36,21 @@ void LayerData::drawWindow( int x, int y )
 	drawWindow( x, y, 0, 0, mWidth, mHeight );
 }
 
-void LayerData::drawWindow( int x, int y, int startX, int startY, int width, int height )
+void LayerData::drawWindow( int x, int y, int startX, int startY, int width, int height, BOOL isTransparent )
 {
-	if( mUseAlpha && mLayer[ 1 ] != 0 ) {
+	if( !isTransparent ) {
 		mViewTone->setWhite( x, y, width, height );
-		mLayer[ 1 ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
-		mLayer[ 3 ]->drawImageAnd( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
-		mViewTone->drawWindowOr( x, y, 0, 0, width, height );
-	} else {
-		mViewTone->setWhite( x, y, width, height );
-		mViewTone->drawWindow( x, y, startX, startY, width, height );
+		if( mUseAlpha ) {
+			if( mLayer[ 1 ] != 0 ) {
+				mLayer[ 1 ]->drawImage( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+			}
+			if( mLayer[ 3 ] != 0 ) {
+				mLayer[ 3 ]->drawImageAnd( mViewTone->mHdcBmp, 0, 0, startX, startY, width, height );
+			}
+			mViewTone->drawWindowOr( x, y, 0, 0, width, height );
+		} else {
+			mViewTone->drawWindow( x, y, startX, startY, width, height );
+		}
 	}
 	
 	for( int i = 2; i < COLOR_KIND_NUM; ++ i ) {
@@ -72,7 +77,7 @@ ToneID LayerData::getToneID( int index )
 			value = ( mUseAlpha )? -1 : 1.0;
 			break;
 		case CLR_RED_GREEN:
-			value = ( mUseAlpha )? 0.5 : 0.9;
+			value = ( mUseAlpha )? 0.7 : 0.9;
 			break;
 		case CLR_GREEN_BLUE:
 			value = ( mUseAlpha )? 1.0 : 0.8;

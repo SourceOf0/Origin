@@ -26,6 +26,9 @@
     <ClCompile Include="Compressor.cpp">
       <Filter>Sound\Effect1</Filter>
     </ClCompile>
+    <ClCompile Include="DCBitmap.cpp">
+      <Filter>Image</Filter>
+    </ClCompile>
     <ClCompile Include="Debug1.cpp">
       <Filter>Sequence\Debug1</Filter>
     </ClCompile>
@@ -59,9 +62,6 @@
     <ClCompile Include="ImageFactory.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="DCBitmap.cpp">
-      <Filter>Image</Filter>
-    </ClCompile>
     <ClCompile Include="LayerData.cpp">
       <Filter>Image</Filter>
     </ClCompile>
@@ -76,6 +76,12 @@
     </ClCompile>
     <ClCompile Include="PixelBitmap.cpp">
       <Filter>Image</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomParent.cpp">
+      <Filter>Sequence\Room</Filter>
+    </ClCompile>
+    <ClCompile Include="Synthesizer.cpp">
+      <Filter>Sequence\Room\Synthesizer</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Main</Filter>
@@ -98,11 +104,8 @@
     <ClCompile Include="Wave.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="RoomParent.cpp">
-      <Filter>Sequence\Room</Filter>
-    </ClCompile>
-    <ClCompile Include="Synthesizer.cpp">
-      <Filter>Sequence\Room\Synthesizer</Filter>
+    <ClCompile Include="HandManager.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -112,10 +115,10 @@
     <ClInclude Include="AutoPan.h">
       <Filter>Sound\Effect4</Filter>
     </ClInclude>
-    <ClInclude Include="BandEliminateFilter.h">
+    <ClInclude Include="BandPassFilter.h">
       <Filter>Sound\Effect3</Filter>
     </ClInclude>
-    <ClInclude Include="BandPassFilter.h">
+    <ClInclude Include="BandEliminateFilter.h">
       <Filter>Sound\Effect3</Filter>
     </ClInclude>
     <ClInclude Include="BitmapBase.h">
@@ -129,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="Compressor.h">
       <Filter>Sound\Effect1</Filter>
+    </ClInclude>
+    <ClInclude Include="DCBitmap.h">
+      <Filter>Image</Filter>
     </ClInclude>
     <ClInclude Include="Debug1.h">
       <Filter>Sequence\Debug1</Filter>
@@ -163,9 +169,6 @@
     <ClInclude Include="ImageFactory.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="DCBitmap.h">
-      <Filter>Image</Filter>
-    </ClInclude>
     <ClInclude Include="LayerData.h">
       <Filter>Image</Filter>
     </ClInclude>
@@ -184,16 +187,31 @@
     <ClInclude Include="PixelBitmap.h">
       <Filter>Image</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="RoomChild.h">
+      <Filter>Sequence\Room</Filter>
     </ClInclude>
-    <ClInclude Include="SoundManager.h">
+    <ClInclude Include="RoomParent.h">
+      <Filter>Sequence\Room</Filter>
+    </ClInclude>
+    <ClInclude Include="SynthePartsInit.h">
+      <Filter>Sequence\Room\Synthesizer</Filter>
+    </ClInclude>
+    <ClInclude Include="SyntheUpdate.h">
+      <Filter>Sequence\Room\Synthesizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Synthesizer.h">
+      <Filter>Sequence\Room\Synthesizer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="SoundBase.h">
       <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="ToneFactory.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Track.h">
@@ -208,64 +226,55 @@
     <ClInclude Include="Wave.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="RoomParent.h">
-      <Filter>Sequence\Room</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomChild.h">
-      <Filter>Sequence\Room</Filter>
-    </ClInclude>
-    <ClInclude Include="Synthesizer.h">
+    <ClInclude Include="SynthePad.h">
       <Filter>Sequence\Room\Synthesizer</Filter>
     </ClInclude>
-    <ClInclude Include="SynthePartsInit.h">
-      <Filter>Sequence\Room\Synthesizer</Filter>
-    </ClInclude>
-    <ClInclude Include="SyntheUpdate.h">
-      <Filter>Sequence\Room\Synthesizer</Filter>
+    <ClInclude Include="HandManager.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
-      <UniqueIdentifier>{a650621e-65fc-4736-8585-d41ecad13c65}</UniqueIdentifier>
+      <UniqueIdentifier>{ebfee812-8020-4dfd-b797-d9e5f0c98c84}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence">
-      <UniqueIdentifier>{d93ba2db-a11f-4b9c-8951-2ddfe03ce55f}</UniqueIdentifier>
+      <UniqueIdentifier>{192343f4-ab31-49b5-94cd-98f5e97777c9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound">
-      <UniqueIdentifier>{d95eef38-0fe6-4d6a-8cca-682609e14a82}</UniqueIdentifier>
+      <UniqueIdentifier>{702e809a-8cef-4ad5-bccc-c6a7ddb145a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Image">
-      <UniqueIdentifier>{bec8cf93-8fb8-45c2-a7f3-0c0cd2999825}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Debug1">
-      <UniqueIdentifier>{ab1f5adc-46a2-47b0-a381-7bb39ad02be2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Debug2">
-      <UniqueIdentifier>{81dc84c9-ad79-4064-ab8b-d799db9a5294}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\Book2">
-      <UniqueIdentifier>{de4b6627-e1cd-480c-bb79-d35d77cbb6c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sound\Effect1">
-      <UniqueIdentifier>{2bdc0438-656c-4ff9-8ba6-fc84ac9f6204}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sound\Effect3">
-      <UniqueIdentifier>{8f5985ef-a7c5-4761-8995-bd64cea71b69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sound\Effect4">
-      <UniqueIdentifier>{3abc142a-9105-4790-b040-12c4b3461901}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sequence\DebugLoading">
-      <UniqueIdentifier>{c082e449-83ce-4c79-835a-4da7d16c88da}</UniqueIdentifier>
+      <UniqueIdentifier>{b3a60726-1485-4309-9444-fce41cb5ab6d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sequence\Room">
-      <UniqueIdentifier>{c6f0dd38-3e9c-41b8-8504-77b5bc771b35}</UniqueIdentifier>
+      <UniqueIdentifier>{950175ae-b053-4a09-abdd-c4540833176c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sequence\Room\Synthesizer">
-      <UniqueIdentifier>{d67f76fd-cae5-44f5-8632-02348eba3aac}</UniqueIdentifier>
+    <Filter Include="Sequence\DebugLoading">
+      <UniqueIdentifier>{7fe4182c-55ed-4653-b6cd-70fb08b0d73d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Debug1">
+      <UniqueIdentifier>{8ed64e9b-007f-4173-a146-34f1b8055589}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Debug2">
+      <UniqueIdentifier>{787a304c-e036-4e73-9aa3-ba3f47f38327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound\Effect1">
+      <UniqueIdentifier>{26864f58-b39f-471e-ab43-0b31ee5e7053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Book2">
+      <UniqueIdentifier>{70e7a2ad-c542-413e-84bb-af9b7c264f65}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Effect2">
-      <UniqueIdentifier>{852c677b-bfeb-40d0-82a2-409739097296}</UniqueIdentifier>
+      <UniqueIdentifier>{9640298b-1d14-4beb-b419-e0b400980848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound\Effect3">
+      <UniqueIdentifier>{6fa881c6-ec0c-4e2a-8226-7b876b550d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound\Effect4">
+      <UniqueIdentifier>{c6e79308-650e-4f08-b619-1437c8ac1944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sequence\Room\Synthesizer">
+      <UniqueIdentifier>{9c46a750-ec1d-458b-915a-6042f5c96e51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -56,14 +56,15 @@ mMainVolR( 0.5 )
 	wfe.nSamplesPerSec = SAMPLES_PER_SEC;	//標本化周波数
 	wfe.nAvgBytesPerSec = BYTES_PER_SEC;
 
-	waveOutOpen( &mHWaveOut, WAVE_MAPPER, &wfe, (DWORD)hwnd, 0, CALLBACK_WINDOW );
+	waveOutOpen( &mHWaveOut, WAVE_MAPPER, &wfe, ( DWORD )hwnd, 0, CALLBACK_WINDOW );
 
 	for( int k = 0; k < 2; ++k ) {
-		mLpWave[k] = (LPBYTE)new char[ BUFFER_SIZE ];
+//		mLpWave[k] = (LPBYTE)new char[ BUFFER_SIZE ];
+//		mLpWave[k] = new short[ BUFFER_SIZE ];
 		for( int i = 0; i < BUFFER_SIZE; ++i ) {		//波形データ初期化
 			mLpWave[k][i] = 0;
 		}
-		mWaveHeader[k].lpData = (LPSTR)mLpWave[k];
+		mWaveHeader[k].lpData = ( LPSTR )mLpWave[k];
 		mWaveHeader[k].dwBufferLength = BUFFER_SIZE;
 		mWaveHeader[k].dwLoops = 1;
 		mWaveHeader[k].dwFlags = WHDR_BEGINLOOP | WHDR_ENDLOOP;
@@ -87,9 +88,10 @@ SoundManager::~SoundManager( void )
 		waveOutUnprepareHeader( mHWaveOut, &mWaveHeader[ i ], sizeof(WAVEHDR) );
 	}
 	waveOutClose( mHWaveOut );
-	for( int i = 0; i < 2; ++i ) {
+/*	for( int i = 0; i < 2; ++i ) {
 		delete[] mLpWave[ i ];
-	}
+		mLpWave[ i ] = 0;
+	}*/
 
 	delete mTrack1;
 	mTrack1 = 0;
@@ -172,20 +174,16 @@ int SoundManager::makeWave( void )
 		s += mTrack2->getPlayDataR( i );
 		s += mTrack3->getPlayDataR( i );
 		s = clipping( s / 3.0 * mMainVol * mMainVolR );
-		short data = static_cast< short >( s + 0.5 ) - 32768; /* 四捨五入とオフセットの調節 */
-		// 右
-		mLpWave[ mSetBufferIndex ][ i*4 ] = static_cast< char >( data & 0 << 8 );
-		mLpWave[ mSetBufferIndex ][ i*4+1 ] = static_cast< char >( data >> 8 );
+		// 右   /* 四捨五入とオフセットの調節 */
+		mLpWave[ mSetBufferIndex ][ i*2 ] = static_cast< short >( s + 0.5 ) - 32768;
 		
 		s = 0;
 		s += mTrack1->getPlayDataL( i );
 		s += mTrack2->getPlayDataL( i );
 		s += mTrack3->getPlayDataL( i );
 		s = clipping( s / 3.0 * mMainVol * mMainVolL );
-		data = static_cast< short >( s + 0.5 ) - 32768; /* 四捨五入とオフセットの調節 */
-		// 左
-		mLpWave[ mSetBufferIndex ][ i*4+2 ] = static_cast< char >(data & 0 << 8);
-		mLpWave[ mSetBufferIndex ][ i*4+3 ] = static_cast< char >(data >> 8);
+		// 左   /* 四捨五入とオフセットの調節 */
+		mLpWave[ mSetBufferIndex ][ i*2+1 ] = static_cast< short >( s + 0.5 ) - 32768;
 	}
 	waveOutWrite( mHWaveOut, &mWaveHeader[ mSetBufferIndex ], sizeof( WAVEHDR ) );
 

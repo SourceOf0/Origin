@@ -61,7 +61,7 @@ ToneFactory::ToneFactory( HDC& hdc )
 	filter = 0;
 }
 
-ToneFactory::~ToneFactory()
+ToneFactory::~ToneFactory( void )
 {
 	for( int i = 0; i < TONE_NONE; ++i ) {
 		delete BitmapBase::mTone[ i ];

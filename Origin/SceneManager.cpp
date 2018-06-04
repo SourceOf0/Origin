@@ -4,6 +4,7 @@
 
 #include "SceneManager.h"
 #include "ImageFactory.h"
+#include "HandManager.h"
 #include "PixelBitmap.h"
 #include "DCBitmap.h"
 
@@ -36,12 +37,15 @@ void SceneManager::destroy( void )
 	}
 }
 
-SceneManager::SceneManager( HWND& hwnd )
+SceneManager::SceneManager( HWND& hwnd ) :
+mFrameRate( 40 )
 {
 	HDC hdc;
 //	long black = RGB( 0, 0, 0 );
 	long black = RGB( 100, 100, 100 );
 	long white = RGB( 255, 255, 255 );
+
+//	ShowCursor( FALSE );
 
 	hdc = GetDC( hwnd );
 	windowWidth = GetDeviceCaps( hdc, HORZRES );
@@ -79,7 +83,7 @@ SceneManager::SceneManager( HWND& hwnd )
 	
 	Image::DCBitmap::mHdcBlackBmp = CreateCompatibleDC( hdc );
 	setHBmp = CreateBitmap( windowWidth, windowHeight, 1, 1, pixelData->mPixelData );
-	Image::DCBitmap::mHBmpBlackPrev = (HBITMAP)SelectObject( Image::DCBitmap::mHdcBlackBmp, setHBmp );
+	Image::DCBitmap::mHBmpBlackPrev = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcBlackBmp, setHBmp );
 
 	pixelData->reset( windowWidth, windowHeight, 0xFF );
 
@@ -90,7 +94,11 @@ SceneManager::SceneManager( HWND& hwnd )
 	delete pixelData;
 	pixelData = 0;
 
+	HandManager::create( hdc );
+
 	ReleaseDC( hwnd, hdc );
+
+	GetLocalTime( &mLocalTime );
 }
 
 
@@ -106,13 +114,14 @@ SceneManager::~SceneManager( void )
 	free( mBmpInfo );
 
 	ImageFactory::destroy();
+	HandManager::destroy();
 
 	HBITMAP hbmp = 0;
-	hbmp = (HBITMAP)SelectObject( Image::DCBitmap::mHdcBlackBmp, Image::DCBitmap::mHBmpBlackPrev );
+	hbmp = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcBlackBmp, Image::DCBitmap::mHBmpBlackPrev );
 	DeleteObject( hbmp );
 	DeleteObject( Image::DCBitmap::mHdcBlackBmp );
 
-	hbmp = (HBITMAP)SelectObject( Image::DCBitmap::mHdcWhiteBmp, Image::DCBitmap::mHBmpWhitePrev );
+	hbmp = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcWhiteBmp, Image::DCBitmap::mHBmpWhitePrev );
 	DeleteObject( hbmp );
 	DeleteObject( Image::DCBitmap::mHdcWhiteBmp );
 }
@@ -135,6 +144,19 @@ void SceneManager::endSetWave( void )
 
 int SceneManager::update()
 {
+	int nowTime;
+	SYSTEMTIME time;
+
+	GetLocalTime( &time );
+	nowTime = ( time.wSecond == mLocalTime.wMilliseconds )? time.wMilliseconds : ( 1000 + time.wMilliseconds );
+	while( nowTime - mLocalTime.wMilliseconds < mFrameRate ) {
+		Sleep( 1 );
+		GetLocalTime( &time );
+		nowTime = ( time.wSecond == mLocalTime.wMilliseconds )? time.wMilliseconds : ( 1000 + time.wMilliseconds );
+	}
+	GetLocalTime( &time );
+	mLocalTime = time;
+
 	mParent->update();
 	isClick = FALSE;
 	isAddWave = FALSE;

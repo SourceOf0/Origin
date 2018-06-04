@@ -9,7 +9,9 @@ namespace Sound {
 
 Wave::Wave( void ) :
 mA( 0.0 ),
-mF( 0.0 )
+mF( 0.0 ),
+mTargetF( 0.0 ),
+mRatio( 0.5 )
 {
 }
 
@@ -23,11 +25,11 @@ void Wave::reset( void )
 
 void Wave::setF( double f )
 {
-	mF = f;
+	mTargetF = f;
 }
 double Wave::getF( void )
 {
-	return mF;
+	return mTargetF;
 }
 void Wave::setVol( double vol )
 {
@@ -68,9 +70,25 @@ void Wave::setCurve( Track* track )
 {
 	double* waveData = track->getWaveData();
 	double time = track->getPlayTime();
+	double s1 = 0.0;
+	double s2 = 0.0;
+	double setF = 0.0;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		waveData[i] = mA * sin( 2.0 * M_PI * mF * time / SAMPLES_PER_SEC );
+		if( mF == mTargetF ) {
+			waveData[ i ] = mA * sin( 2.0 * M_PI * mF * time / SAMPLES_PER_SEC );
+			time += 1.0;
+			continue;
+		}
+		s1 = mA * sin( 2.0 * M_PI * mF * time / SAMPLES_PER_SEC );
+		s2 = mA * sin( 2.0 * M_PI * mTargetF * time / SAMPLES_PER_SEC );
+		waveData[ i ] = ( s1 + s2 ) / 2.0;
+		setF = ( mTargetF - mF ) * mRatio;
+		if( setF * setF < 0.000001  ) {
+			mF = mTargetF;
+		} else {
+			mF += setF;
+		}
 		time += 1.0;
 	}
 }
@@ -80,16 +98,31 @@ void Wave::setSawtooth( Track* track )
 {
 	double* waveData = track->getWaveData();
 	double time = track->getPlayTime();
+	double setF = 0.0;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = 0;
-		for( int j = 1; j <= 18; ++j ) {		/* ”{‰¹‚Ìd‚Ë‡‚í‚¹ */
-			s += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
-//			s += mA / j * cos( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC + M_PI / 2 );
-//			s += mA / j * cos( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+		if( mF == mTargetF ) {
+			double s = 0;
+			for( int j = 1; j <= 18; ++j ) {		/* ”{‰¹‚Ìd‚Ë‡‚í‚¹ */
+				s += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+			}
+			waveData[ i ] = s;
+			time += 1.0;
+			continue;
 		}
-		waveData[i] = s;
-
+		double s1 = 0.0;
+		double s2 = 0.0;
+		for( int j = 1; j <= 18; ++j ) {		/* ”{‰¹‚Ìd‚Ë‡‚í‚¹ */
+			s1 += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+			s2 += mA / j * sin( 2.0 * M_PI * mTargetF * j * time / SAMPLES_PER_SEC );
+		}
+		waveData[ i ] = ( s1 + s2 ) / 2.0;
+		setF = ( mTargetF - mF ) * mRatio;
+		if( setF * setF < 0.000001  ) {
+			mF = mTargetF;
+		} else {
+			mF += setF;
+		}
 		time += 1.0;
 	}
 }
@@ -99,15 +132,33 @@ void Wave::setSquare( Track* track )
 {
 	double* waveData = track->getWaveData();
 	double time = track->getPlayTime();
+	double setF = 0.0;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = 0;
+		if( mF == mTargetF ) {
+			double s = 0;
+			/* Šï”ŽŸ‚Ì”{‰¹‚Ì‚Ýd‚Ë‡‚í‚¹‚é */
+			for( int j = 1; j <= 30; j += 2 ) {
+				s += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+			}
+			waveData[ i ] = s;
+			time += 1.0;
+			continue;
+		}
+		double s1 = 0.0;
+		double s2 = 0.0;
 		/* Šï”ŽŸ‚Ì”{‰¹‚Ì‚Ýd‚Ë‡‚í‚¹‚é */
 		for( int j = 1; j <= 30; j += 2 ) {
-			s += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+			s1 += mA / j * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+			s2 += mA / j * sin( 2.0 * M_PI * mTargetF * j * time / SAMPLES_PER_SEC );
 		}
-		waveData[i] = s;
-
+		waveData[ i ] = ( s1 + s2 ) / 2.0;
+		setF = ( mTargetF - mF ) * mRatio;
+		if( setF * setF < 0.000001  ) {
+			mF = mTargetF;
+		} else {
+			mF += setF;
+		}
 		time += 1.0;
 	}
 }
@@ -117,19 +168,42 @@ void Wave::setTriangle( Track* track )
 {
 	double* waveData = track->getWaveData();
 	double time = track->getPlayTime();
+	double setF = 0.0;
 
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
-		double s = 0;
+		if( mF == mTargetF ) {
+			double s = 0;
+			/* Šï”ŽŸ‚Ì”{‰¹‚Ì‚Ýd‚Ë‡‚í‚¹‚é */
+			for( int j = 1; j <= 16; j += 2 ) {
+				if( j % 4 == 1 ) {
+					s += mA / ( j * j ) * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+				} else if( j % 4 == 3 ){
+					s -= mA / ( j * j ) * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+				}
+			}
+			waveData[ i ] = s;
+			time += 1.0;
+			continue;
+		}
+		double s1 = 0.0;
+		double s2 = 0.0;
 		/* Šï”ŽŸ‚Ì”{‰¹‚Ì‚Ýd‚Ë‡‚í‚¹‚é */
 		for( int j = 1; j <= 16; j += 2 ) {
 			if( j % 4 == 1 ) {
-				s += mA / ( j * j ) * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+				s1 += mA / ( j * j ) * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+				s1 += mA / ( j * j ) * sin( 2.0 * M_PI * mTargetF * j * time / SAMPLES_PER_SEC );
 			} else if( j % 4 == 3 ){
-				s -= mA / ( j * j ) * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+				s1 -= mA / ( j * j ) * sin( 2.0 * M_PI * mF * j * time / SAMPLES_PER_SEC );
+				s1 -= mA / ( j * j ) * sin( 2.0 * M_PI * mTargetF * j * time / SAMPLES_PER_SEC );
 			}
 		}
-		waveData[i] = s;
-
+		waveData[ i ] = ( s1 + s2 ) / 2.0;
+		setF = ( mTargetF - mF ) * mRatio;
+		if( setF * setF < 0.000001  ) {
+			mF = mTargetF;
+		} else {
+			mF += setF;
+		}
 		time += 1.0;
 	}
 }

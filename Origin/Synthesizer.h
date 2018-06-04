@@ -2,6 +2,9 @@
 #define INCLUDED_SEQUENCE_ROOM_SYNTHESIZER_H
 
 #include "RoomChild.h"
+#include "SoundBase.h"
+
+#include "HandManager.h"
 
 #define EFFECT_FADER_NUM 18
 #define EQ_FADER_NUM 18
@@ -10,7 +13,11 @@
 #define TRACK_NUM 3
 #define VOLUME_FADER_NUM 8
 #define KEY_NUM 24
+#define PAD_FADER_NUM 2
 #define PLAY_BUTTON_NUM 3
+
+#define NOTE_SET_MAX_NUM 16
+#define NOTE_HEIGHT_NUM 8
 
 namespace Image {
 	class LayerData;
@@ -48,8 +55,9 @@ private:
 		PARTS_LEVER_4,
 		PARTS_DIAL_1,
 		PARTS_DIAL_2,
-		PARTS_RAMP_TIME,
-		PARTS_RAMP_NOTE,
+		PARTS_LAMP_TIME,
+		PARTS_LAMP_NOTE_1,
+		PARTS_LAMP_NOTE_2,
 
 		PARTS_SIGN_PLAY,
 		PARTS_SIGN_PAUSE,
@@ -127,22 +135,31 @@ private:
 	void setPlayButtonPos( void );
 	void setScaleSignPos( void );
 	void setScaleDialPos( void );
+	void setPadFaderPos( void );
+	void setNoteLampPos( void );
+	void setTimeLampPos( void );
 	void setPos( PartsData& target, PartsID id, int x, int y );
 	void fixHitRange( PartsData& target, int fixX1, int fixY1, int fixX2, int fixY2 );
 
 	void sizeInit( void );
 	void setSize( PartsID id, int startX, int startY, int width, int height );
 	
+	void padInit( void );
+
 	BOOL checkHit( PartsData& target, int x, int y );
-	double getHz( int index );
+	double getCodeRatio( int seed ); /* 0 <= seed <= 23 */
+	double getFixCodeHz( double seed ); /* 0.0 <= seed <= NOTE_HEIGHT_NUM(8.0) */
+	double getCodeHz( int seed ); /* 0 <= seed <= NOTE_HEIGHT_NUM(8) */
+	double getHz( double seed ); /* 0.0 <= seed <= 23.0 */
 	int getSelectTrack( void );
 	double getFaderH( PartsData& target );
 	double getFaderV( PartsData& target );
 	void updateDial( int index, PartsData& target, PartsData& targetSign );
 	void updateWave( void );
 	void updateSoundState( void );
+	BOOL updatePad( BOOL isHit, BOOL isClick, int mouseX, int mouseY );
 
-	void viewParts( PartsData& target );
+	void viewParts( PartsData& target, BOOL isTransparent = FALSE );
 	void viewSign( PartsData& target );
 
 	static BOOL mIsInit;
@@ -150,6 +167,11 @@ private:
 	Image::LayerData* mBackBmp;
 	Image::LayerData* mPartsBmp;
 	Image::DCBitmap* mWaveBmp;
+	Image::DCBitmap* mPadBmp;
+
+	int mX;
+	int mY;
+	Main::HandManager::HandState mHandState;
 
 	PartsSize mPartsSize[ PARTS_NONE ];
 
@@ -168,6 +190,18 @@ private:
 	PartsData mPlaySign[ PLAY_BUTTON_NUM ];
 	PartsData mScaleSign;
 	PartsData mScaleDial;
+	PartsData mPadFader[ PAD_FADER_NUM ];
+	PartsData mNoteLamp[ TRACK_NUM ][ NOTE_SET_MAX_NUM ];
+	PartsData mTimeLampX[ NOTE_SET_MAX_NUM ];
+
+	WaveID mPlayWaveID[ TRACK_NUM ];
+
+	int mNotePosX[ NOTE_HEIGHT_NUM ][ NOTE_SET_MAX_NUM ];
+	int mNotePosY[ NOTE_HEIGHT_NUM ][ NOTE_SET_MAX_NUM ];
+	double mNoteRatio[ TRACK_NUM ][ NOTE_SET_MAX_NUM ]; /* 0.0 < val < 7.0 */
+	int mPlayTime;
+	int mPlayCount;
+	int mTempo;
 };
 
 } //namespace Room

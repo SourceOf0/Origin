@@ -24,7 +24,7 @@ void Chorus::reset( void )
 // ÉRÅ[ÉâÉX
 void Chorus::apply( Track* track )
 {
-	int time = static_cast< int >( track->getPlayTime() );
+	double time = track->getPlayTime();
 	double* waveData = track->getWaveData();
 
 	double rate = 0.1;
@@ -41,9 +41,9 @@ void Chorus::apply( Track* track )
 		double s = waveData[ i ];
 
 		tau = d + depth * sin( 2.0 * M_PI * rate * ( time + i ) / SAMPLES_PER_SEC );
-		t = ( double )i - tau;
-		m = ( int )t;
-		delta = t - ( double )m;
+		t = static_cast< double >( i ) - tau;
+		m = static_cast< int >( t );
+		delta = t - static_cast< double >( m );
 		s += delta * getPrevData( m + 1 ) + ( 1.0 - delta ) * getPrevData( m ); 
 
 		waveData[ i ] = s;

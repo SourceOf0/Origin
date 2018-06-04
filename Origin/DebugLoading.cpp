@@ -86,7 +86,7 @@ void DebugLoading::update( MainParent* parent )
 			mY1 -= 2;
 			if( mY1 <= mTargetY1 ) {
 				mY1 = mTargetY1;
-				mState = ( mState + 1 ) % 7;
+				mState = ( mState + 1 ) % 8;
 			}
 			break;
 	}
