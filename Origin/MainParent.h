@@ -49,7 +49,11 @@ private:
 	MainChild* mDebugLoading;
 
 	Image::DCBitmap* mBookCornerBmp;
+	Image::DCBitmap* mPrevBmp;
 
+	int mToneIndex;
+	int mFadeCount;
+	int mFadeState;
 	SeqID mNext;
 };
 

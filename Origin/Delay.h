@@ -10,13 +10,14 @@ class Track;
 class Delay : public EffectBase
 {
 public:
-	Delay( double** setWaveLog );
+	Delay( void );
 	~Delay( void );
 
 	void reset( void );
 	void apply( Track* track );
 
 private:
+	double mWaveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ];
 };
 
 } // namespace Sound

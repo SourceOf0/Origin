@@ -10,7 +10,7 @@ class Track;
 class Vibrato : public EffectBase
 {
 public:
-	Vibrato( double** setWaveLog );
+	Vibrato( void );
 	~Vibrato( void );
 
 	void reset( void );
@@ -18,6 +18,7 @@ public:
 
 private:
 	double mTime;
+	double mWaveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ];
 };
 
 } // namespace Sound

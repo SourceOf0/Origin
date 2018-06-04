@@ -7,6 +7,7 @@
 #include "SoundManager.h"
 
 #include "DCBitmap.h"
+#include "LayerData.h"
 
 namespace Sequence {
 
@@ -18,7 +19,9 @@ Debug2::Debug2( HDC& hdc, MainParent* parent )
 
 //	mBackBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
 //	mBackBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight, 0xFF );
-	mBackBmp = imageFactory->loadDC( hdc, "resource\\synthe.dad" );
+//	mBackBmp = imageFactory->loadDC( hdc, "resource\\synthe.dad" );
+	mBackBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\test.dad" ) );
+	mBackBmp->mUseAlpha = FALSE;
 
 	const char* loadFile[ 10 ];
 	for( int i = 0; i < 10; ++i ) {
@@ -52,9 +55,9 @@ void Debug2::draw( HDC& hdc, MainParent* parent )
 {
 	mBackBmp->drawWindow();
 
-	for( int i = 0; i < DEBUG2_BMP_NUM; ++i ) {
+/*	for( int i = 0; i < DEBUG2_BMP_NUM; ++i ) {
 		mTempBmp[ i ]->drawWindow();
-	}
+	}*/
 }
 
 

@@ -22,6 +22,7 @@ public:
 	void setWhite( void );
 	void setWhite( int x, int y, unsigned int width, unsigned int height );
 
+	void copyWindow( void );
 	void drawWindow( void );
 	void drawWindow( int x, int y );
 	void drawWindow( int x, int y, int startX, int startY, int width, int height );

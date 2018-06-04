@@ -50,17 +50,24 @@ public:
 	static void create( HDC& hdc );
 	static void destroy( void );
 
-	void update( void );
+	void update( BOOL isLoading );
 	void draw( void );
 
 	int getX( void );
 	int getY( void );
+
+	void mouseDown( void );
+	void mouseUp( void );
+	void endUpdate( void );
 
 	void setState( HandState state );
 	void lockX( void );
 	void lockY( void );
 	void setRangeX( int min, int max );
 	void setRangeY( int min, int max );
+
+	static BOOL isMouseDown;
+	static BOOL isClick;
 
 private:
 	HandManager( HDC& hdc );

@@ -77,8 +77,8 @@ void Book3::update( MainParent* parent )
 {
 	int mouseX = Main::HandManager::inst()->getX();
 	int mouseY = Main::HandManager::inst()->getY();
-	BOOL isClick = Main::SceneManager::isClick;
-	BOOL isMouseDown = Main::SceneManager::isMouseDown;
+	BOOL isClick = Main::HandManager::isClick;
+	BOOL isMouseDown = Main::HandManager::isMouseDown;
 	BOOL wasHit = FALSE;
 
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
@@ -134,8 +134,8 @@ void Book3::update( MainParent* parent )
 		target = target->next;
 	}
 
-	if( mouseX > Main::SceneManager::windowWidth - 64 && mouseY > Main::SceneManager::windowHeight - 64 ) {
-		if( Main::SceneManager::isClick ) {
+	if( mouseX > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && mouseY > Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {
@@ -161,6 +161,13 @@ void Book3::newAnimeState( int setX, int setY )
 	if( setY < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setY > Main::SceneManager::windowHeight - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
 		return;
 	}
+	AnimeState* checkTarget = mFirstNode.next;
+	while( checkTarget != &mLastNode ) {
+		if( setX > checkTarget->x - 20 && setX < checkTarget->x + 20 && setY > checkTarget->y - 20 && setY < checkTarget->y + 20 ) {
+			return;
+		}
+		checkTarget = checkTarget->next;
+	}
 	
 	AnimeState* newAnime = new AnimeState();
 	AnimeState* temp = mLastNode.prev;
@@ -182,6 +189,13 @@ BOOL Book3::setAnimeState( AnimeState* target, int setX, int setY )
 	}
 	if( setY < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setY > Main::SceneManager::windowHeight - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
 		return FALSE;
+	}
+	AnimeState* checkTarget = mFirstNode.next;
+	while( checkTarget != &mLastNode ) {
+		if( setX > checkTarget->x - 20 && setX < checkTarget->x + 20 && setY > checkTarget->y - 20 && setY < checkTarget->y + 20 ) {
+			return FALSE;
+		}
+		checkTarget = checkTarget->next;
 	}
 
 	target->x = setX;

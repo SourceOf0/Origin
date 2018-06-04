@@ -5,8 +5,7 @@
 #include "Track.h"
 #include "Wave.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
+#define MAX_SYSTEM_VOL 0x5F
 
 namespace Main {
 
@@ -37,9 +36,12 @@ mSetBufferIndex( 0 ),
 mSetBufferNum( 0 ),
 mMainVol( 0.0 ),
 mMainVolL( 0.5 ),
-mMainVolR( 0.5 )
+mMainVolR( 0.5 ),
+mSysVol( 0 )
 {
 	WAVEFORMATEX wfe;
+
+	Sound::EffectBase::initTable();
 
 	mTrack1 = new Sound::Track();
 	mTrack2 = new Sound::Track();
@@ -59,8 +61,6 @@ mMainVolR( 0.5 )
 	waveOutOpen( &mHWaveOut, WAVE_MAPPER, &wfe, ( DWORD )hwnd, 0, CALLBACK_WINDOW );
 
 	for( int k = 0; k < 2; ++k ) {
-//		mLpWave[k] = (LPBYTE)new char[ BUFFER_SIZE ];
-//		mLpWave[k] = new short[ BUFFER_SIZE ];
 		for( int i = 0; i < BUFFER_SIZE; ++i ) {		//波形データ初期化
 			mLpWave[k][i] = 0;
 		}
@@ -73,9 +73,7 @@ mMainVolR( 0.5 )
 
 		waveOutPrepareHeader( mHWaveOut, &mWaveHeader[k], sizeof(WAVEHDR) );
 	}
-//	waveOutSetVolume( mHWaveOut, ( DWORD )( 0xFFFFFFFF ) );
-//	waveOutSetVolume( mHWaveOut, ( DWORD )( 0x05FF05FF ) );
-	waveOutSetVolume( mHWaveOut, ( DWORD )( 0x2FFF2FFF ) );
+	setSysVol();
 }
 
 
@@ -88,10 +86,6 @@ SoundManager::~SoundManager( void )
 		waveOutUnprepareHeader( mHWaveOut, &mWaveHeader[ i ], sizeof(WAVEHDR) );
 	}
 	waveOutClose( mHWaveOut );
-/*	for( int i = 0; i < 2; ++i ) {
-		delete[] mLpWave[ i ];
-		mLpWave[ i ] = 0;
-	}*/
 
 	delete mTrack1;
 	mTrack1 = 0;
@@ -107,14 +101,12 @@ int SoundManager::play( void )
 {
 	mIsPlay = TRUE;
 	mWasReset = FALSE;
-	waveOutSetVolume( mHWaveOut, ( DWORD )( 0x2FFF2FFF ) );
 	return 0;
 }
 
 int SoundManager::stop( void )
 {
-//	mIsPlay = FALSE;
-	waveOutSetVolume( mHWaveOut, ( DWORD )( 0x00FF00FF ) );
+	mIsPlay = FALSE;
 	return 0;
 }
 
@@ -153,7 +145,13 @@ Sound::Track* SoundManager::getTrack( int index )
 int SoundManager::makeWave( void )
 {
 	if( !mIsPlay ) {
-		if( mWasReset ) return 0;
+		if( mSysVol == 0 ) {
+			return 0;
+		} else {
+			--mSysVol;
+			setSysVol();
+		}
+/*		if( mWasReset ) return 0;
 		mWasReset = TRUE;
 		waveOutReset( mHWaveOut );
 		mSetBufferNum = 0;
@@ -161,8 +159,12 @@ int SoundManager::makeWave( void )
 		mTrack1->reset();
 		mTrack2->reset();
 		mTrack3->reset();
-		return 0;
+		return 0;*/
+	} else if( mSysVol < MAX_SYSTEM_VOL ) {
+		++mSysVol;
+		setSysVol();
 	}
+
 	if( mSetBufferNum >= 2 ) return 0;
 	++mSetBufferNum;
 
@@ -204,6 +206,13 @@ double SoundManager::clipping( double s )
 	}
 
 	return s;
+}
+
+void SoundManager::setSysVol( void )
+{
+	unsigned vol = 0;
+	vol = 0xFF | mSysVol << 8;
+	waveOutSetVolume( mHWaveOut, ( DWORD )( vol | vol << 16 ) );
 }
 
 

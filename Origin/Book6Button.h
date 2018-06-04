@@ -65,7 +65,7 @@ void Book6::updateButton( void )
 	int mouseX = Main::HandManager::inst()->getX();
 	int mouseY = Main::HandManager::inst()->getY();
 
-	BOOL isClick = Main::SceneManager::isClick;
+	BOOL isClick = Main::HandManager::isClick;
 	BOOL isReady = FALSE;
 
 	if( mIsMove ) {
@@ -78,8 +78,8 @@ void Book6::updateButton( void )
 		ButtonState *target = &mButtonState[ i ];
 		int x = mouseX - target->x;
 		int y = mouseY - target->y;
-		int size = target->partsSize;
-		int hitSize = 10;
+		int size = target->partsSize + 5;
+		int hitSize = 15;
 		if( x > BUTTON_SIZE_HALF - hitSize && x < BUTTON_SIZE_HALF + hitSize && y > 0 && y < size ) {
 			if( isClick ) {
 				target->instruction = ( target->instruction == CAR_FORWARD )? CAR_NONE : CAR_FORWARD;

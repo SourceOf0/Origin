@@ -18,10 +18,11 @@ public:
 	Room2( HDC& hdc, RoomParent* parent );
 	~Room2( void );
 	void update( RoomParent* parent );
-	void draw( HDC& hdc, RoomParent* parent );
+	void draw( HDC& hdc, RoomParent* parent, double depth, int fadeCount );
 
 private:
-	Image::LayerData* mBackBmp;
+	Image::LayerData* mBackBmp1;
+	Image::LayerData* mBackBmp2;
 };
 
 } // namespace Room

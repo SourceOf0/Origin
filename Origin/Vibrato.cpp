@@ -3,15 +3,12 @@
 #include "Vibrato.h"
 #include "Track.h"
 
-#define _USE_MATH_DEFINES
-#include <Math.h>
-
 namespace Sound {
 
-Vibrato::Vibrato( double** setWaveLog ) :
+Vibrato::Vibrato( void ) :
 mTime( 0 )
 {
-	init( setWaveLog );
+	init( mWaveLog );
 }
 
 
@@ -42,12 +39,12 @@ void Vibrato::apply( Track* track )
 		double s = waveData[ i ];
 
 		t = mTime;
-		tau = d + depth * sin( 2.0 * M_PI * rate * t / SAMPLES_PER_SEC );
+		tau = d + depth * customSin( 2.0 * M_PI * rate * t / SAMPLES_PER_SEC );
 		t -= tau;
 		m = static_cast< int >( t );
 		delta = t - static_cast< double >( m );
 		m -= fixIndex;
-		s = delta * getPrevData( m + 1 ) + ( 1.0 - delta ) * getPrevData( m );
+		s = delta * getPrevData( mWaveLog, m + 1 ) + ( 1.0 - delta ) * getPrevData( mWaveLog, m );
 
 		++mTime;
 

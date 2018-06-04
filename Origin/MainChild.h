@@ -3,6 +3,8 @@
 
 #include <windows.h>
 
+#define BOOK_CORNAR_HIT_SIZE 32
+
 namespace Sequence {
 
 class MainParent;

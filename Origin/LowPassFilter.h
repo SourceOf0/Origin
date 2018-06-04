@@ -10,7 +10,7 @@ class Track;
 class LowPassFilter : public EffectBase
 {
 public:
-	LowPassFilter( double** setWaveLog );
+	LowPassFilter( void );
 	~LowPassFilter( void );
 
 	void reset( void );
@@ -20,6 +20,8 @@ private:
 	/* Low-Pass（低域通過）フィルタ */
 	void setLPF( double fe, double* w );
 	void setState( void );
+
+	double mWaveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ];
 
 	double* mB;
 	double* mX;

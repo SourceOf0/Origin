@@ -33,8 +33,8 @@ public:
 	Synthesizer( HDC& hdc, Sequence::RoomParent* parent );
 	~Synthesizer( void );
 	void update( Sequence::RoomParent* parent );
-	void draw( HDC& hdc, Sequence::RoomParent* parent );
-	void playTrack( void );
+	void draw( HDC& hdc, Sequence::RoomParent* parent, double depth, int fadeCount );
+	void playTrack( Sequence::RoomParent* parent );
 
 private:
 	enum PartsID {
@@ -163,7 +163,8 @@ private:
 
 	static BOOL mIsInit;
 
-	Image::LayerData* mBackBmp;
+	Image::LayerData* mBackBmp1;
+	Image::LayerData* mBackBmp2;
 	Image::LayerData* mPartsBmp;
 	Image::DCBitmap* mWaveBmp;
 	Image::DCBitmap* mPadBmp;

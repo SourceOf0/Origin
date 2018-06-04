@@ -10,7 +10,7 @@ class Track;
 class HighPassFilter : public EffectBase
 {
 public:
-	HighPassFilter( double** setWaveLog );
+	HighPassFilter( void );
 	~HighPassFilter( void );
 
 	void reset( void );
@@ -20,6 +20,8 @@ private:
 	/* High-Pass（高域通過）フィルタ */
 	void setHPF( double fe, double* w );
 	void setState( void );
+
+	double mWaveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ];
 
 	double* mB;
 	double* mX;

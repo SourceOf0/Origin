@@ -96,7 +96,6 @@ private:
 	void motion11( void );
 	void motion12( void );
 
-	int mToneMaxNum;
 	int mState;
 	int mToneIndex;
 	int mAnimeCount;
@@ -109,7 +108,6 @@ private:
 	MaskState mMask[ BOOK1_MASK_NUM ];
 
 	Image::DCBitmap* mBmp[ BOOK1_IMAGE_NUM ];
-	Image::DCBitmap* mFilterBmp;
 	Image::DCBitmap* mDotBmp;
 
 	Image::DCBitmap* mMaskBmp;

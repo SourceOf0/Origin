@@ -1,9 +1,6 @@
 #include "Distortion2.h"
 #include "Track.h"
 
-#define _USE_MATH_DEFINES
-#include <Math.h>
-
 namespace Sound {
 
 Distortion2::Distortion2( void )
@@ -34,9 +31,9 @@ void Distortion2::apply( Track* track )
 
 		s = s * gain; /* 音データの増幅 */
 		if( s >= 0.0 ) {
-			s = atan( s ) / ( M_PI / 2.0 ); /* クリッピング */
+			s = customAtan( s ) / ( M_PI / 2.0 ); /* クリッピング */
 		} else if ( s < -0.0 ) {
-			s = atan( s ) / ( M_PI / 2.0 ) * 1; /* クリッピング */
+			s = customAtan( s ) / ( M_PI / 2.0 ) * 1; /* クリッピング */
 		}
 		s *= level; /* 音の大きさを調節する */
 		

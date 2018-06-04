@@ -97,7 +97,7 @@ void Book2::update( MainParent* parent )
 		}
 	}
 
-	if( Main::SceneManager::isMouseDown ) {
+	if( Main::HandManager::isMouseDown ) {
 		Main::HandManager::inst()->setState( Main::HandManager::HAND_PUSH_AFTER );
 		setPointMask();
 		mChangeCount = CHANGE_COUNT_MAX;
@@ -107,8 +107,8 @@ void Book2::update( MainParent* parent )
 		mOldMousePos.y = -1;
 	}
 
-	if( Main::HandManager::inst()->getX() > windowWidth - 64 && Main::HandManager::inst()->getY() > windowHeight - 64 ) {
-		if( Main::SceneManager::isClick ) {
+	if( Main::HandManager::inst()->getX() > windowWidth - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {

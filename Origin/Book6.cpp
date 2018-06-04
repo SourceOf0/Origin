@@ -154,8 +154,8 @@ void Book6::update( MainParent* parent )
 {
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 
-	if( Main::HandManager::inst()->getX() > Main::SceneManager::windowWidth - 64 && Main::HandManager::inst()->getY()> Main::SceneManager::windowHeight - 64 ) {
-		if( Main::SceneManager::isClick ) {
+	if( Main::HandManager::inst()->getX() > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY()> Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {

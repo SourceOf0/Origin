@@ -87,7 +87,7 @@ void Book1::motion3( void )
 			mBmp[ target->kind ]->drawImageOr( mMainBmp->mHdcBmp, target->x, target->y );
 			drawTone( mMainBmp->mHdcBmp, mToneIndex );
 			if( fadeIn( 10 ) ) {
-				mToneIndex = mToneMaxNum - 1;
+				mToneIndex = TONE_NONE - 1;
 				mAnimeCount = 0;
 				mAnimeState = 1;
 			}
@@ -112,7 +112,7 @@ void Book1::motion3( void )
 
 			if( fadeOut( 10 ) ) {
 				mToneIndex = 0;
-				mAnimeCount = mToneMaxNum * 10 - 1;
+				mAnimeCount = TONE_NONE * 10 - 1;
 				mAnimeState = 3;
 			}
 			break;
@@ -153,7 +153,7 @@ void Book1::motion4( void )
 
 			if( fadeIn( 10 ) ) {
 				mAnimeState = 1;
-				mToneIndex = mToneMaxNum - 1;
+				mToneIndex = TONE_NONE - 1;
 				mAnimeCount = 0;
 				break;
 			}
@@ -185,7 +185,7 @@ void Book1::motion4( void )
 			target = &mImage[ 3 ];
 			mBmp[ target->kind ]->drawImageOr( mMainBmp->mHdcBmp, target->x, target->y );
 			drawTone( mMainBmp->mHdcBmp, mToneIndex );
-			if( mAnimeCount == mToneMaxNum * 5 - 1 ) {
+			if( mAnimeCount == TONE_NONE * 5 - 1 ) {
 				mAnimeState = 4;
 			} else if( ++mAnimeCount % 10 == 0 ) ++mToneIndex;
 			break;
@@ -282,12 +282,12 @@ void Book1::motion7( void )
 	if( mAnimeState < BOOK1_MASK_NUM ) {
 		MaskState *mask = &mMask[ mAnimeState ];
 		if( ++mAnimeCount % 2 == 0 ) {
-			drawDot( mMaskBmp->mHdcBmp, mask->x + ( rand() % ( mBmp[ target->kind ]->mWidth + mFilterBmp->mHeight ) ), mask->y, mask->count );
+			drawDot( mMaskBmp->mHdcBmp, mask->x + ( rand() % ( mBmp[ target->kind ]->mWidth + mDotBmp->mHeight ) ), mask->y, mask->count );
 			mask->y += 50;
 		}
 		if( mask->y > Main::SceneManager::windowHeight ) ++mAnimeState;
 		if( mAnimeState == BOOK1_MASK_NUM ) {
-			mAnimeCount = mToneMaxNum * 10 - 1;
+			mAnimeCount = TONE_NONE * 10 - 1;
 			mToneIndex = 0;
 		}
 	} else {
@@ -398,7 +398,7 @@ void Book1::motion10( void )
 			if( mAnimeCount == 7 * 30 - 1 ) {
 				mAnimeCount = 0;
 				mAnimeState = 1;
-				mToneIndex = mToneMaxNum - 1;
+				mToneIndex = TONE_NONE - 1;
 				break;
 			}
 			if( ++mAnimeCount % 30 == 0 ) --mToneIndex;
@@ -491,7 +491,7 @@ void Book1::motion12( void )
 		drawDot( mMaskBmp->mHdcBmp, rand() % width - bmpWidth, rand() % height - bmpWidth + windowHeight * 3 / 5, rand() % 3 );
 	}
 	if( mAnimeCount > 100 ) {
-		mAnimeCount = mToneMaxNum * 15 - 1;
+		mAnimeCount = TONE_NONE * 15 - 1;
 		mAnimeState = 2;
 	}
 }

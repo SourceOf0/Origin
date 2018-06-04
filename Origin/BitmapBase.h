@@ -35,6 +35,12 @@ enum ToneID {
 	TONE_014,
 	TONE_015,
 
+	TONE_016,
+	TONE_017,
+	TONE_018,
+	TONE_019,
+	TONE_020,
+
 	TONE_NONE
 };
 

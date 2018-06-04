@@ -3,8 +3,8 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 {
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
 	Main::HandManager* handManager = Main::HandManager::inst();
-	BOOL isClick = Main::SceneManager::isClick;
-	BOOL isHit = !Main::SceneManager::isMouseDown;
+	BOOL isClick = Main::HandManager::isClick;
+	BOOL isHit = !Main::HandManager::isMouseDown;
 	int mouseX = handManager->getX() - mX;
 	int mouseY = handManager->getY() - mY;
 
@@ -294,7 +294,7 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 
 	isHit |= updatePad( isHit, isClick, mouseX, mouseY );
 
-	if( mouseX < 50 || mouseY < 100 || ( mouseX > static_cast< int >( mBackBmp->mWidth ) - 50 ) || ( mouseY > static_cast< int >( mBackBmp->mHeight ) - 50 ) ) {
+	if( mouseX < 50 || mouseY < 100 || ( mouseX > static_cast< int >( mBackBmp1->mWidth ) - 50 ) || ( mouseY > static_cast< int >( mBackBmp1->mHeight ) - 50 ) ) {
 		isHit = TRUE;
 		if( isClick ) {
 			parent->moveTo( parent->SEQ_ROOM1 );
@@ -308,6 +308,7 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 		updateSoundState();
 		Main::SoundManager::inst()->play();
 		updateWave();
+		return;
 	}
 
 	if( Main::SceneManager::isAddWave ) {
@@ -315,9 +316,17 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 	}
 }
 
-void Synthesizer::playTrack( void )
+void Synthesizer::playTrack( Sequence::RoomParent* parent )
 {
 	BOOL isPlay = FALSE;
+
+	if( !parent->mIsConnectSocket ) {
+		for( int i = 0; i < TRACK_NUM; ++i ) {
+			for( int j = 0; j < NOTE_SET_MAX_NUM; ++j ) {
+				mNoteRatio[ i ][ j ] = -1.0;
+			}
+		}
+	}
 
 	if( mPlayButton[ 0 ].partsID == PARTS_BUTTON_PLAY_ON ) {
 		isPlay = TRUE;

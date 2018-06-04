@@ -148,8 +148,8 @@ void Book5::update( MainParent* parent )
 	DeleteObject( hBrushW );
 	DeleteObject( hBrushB );
 
-	if( Main::HandManager::inst()->getX() > windowWidth - 64 && Main::HandManager::inst()->getY() > windowHeight - 64 ) {
-		if( Main::SceneManager::isClick ) {
+	if( Main::HandManager::inst()->getX() > windowWidth - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {
@@ -164,7 +164,7 @@ void Book5::updateBoard( void )
 
 	int mouseX = Main::HandManager::inst()->getX();
 	int mouseY = Main::HandManager::inst()->getY();
-	BOOL isClick = Main::SceneManager::isClick;
+	BOOL isClick = Main::HandManager::isClick;
 
 	for( int y = 0; y < LINE_NUM; ++y ) {
 		for( int x = 0; x < LINE_NUM; ++x ) {

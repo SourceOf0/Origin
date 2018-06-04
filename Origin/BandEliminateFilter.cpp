@@ -3,12 +3,9 @@
 #include "BandEliminateFilter.h"
 #include "Track.h"
 
-#define _USE_MATH_DEFINES
-#include <Math.h>
-
 namespace Sound {
 
-BandEliminateFilter::BandEliminateFilter( double** setWaveLog ) : 
+BandEliminateFilter::BandEliminateFilter( void ) : 
 mFe1( 1000.0 ),
 mFe2( 5000.0 ),
 mDelta( 1000.0 ),
@@ -17,7 +14,7 @@ mJ( 0 ),
 mX( 0 ),
 mY( 0 )
 {
-	init( setWaveLog );
+	init( mWaveLog );
 
 	mL = WAVE_DATA_LENGTH / 10; /* フレームの長さ */
 	mY = new double[ mL ];
@@ -57,7 +54,7 @@ void BandEliminateFilter::apply( Track* track )
 
 		/* 直前のフレームの後半のJサンプルをつけ加える */
 		for( int n = 0; n < mL + mJ; ++n ) {
-			mX[ n ] = getPrevData( offset - mJ + n );
+			mX[ n ] = getPrevData( mWaveLog, offset - mJ + n );
 		}
 
 		/* フィルタリング */

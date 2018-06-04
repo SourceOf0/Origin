@@ -15,8 +15,6 @@ namespace Main {
 SceneManager* SceneManager::mInst = 0;
 int SceneManager::windowWidth = 0;
 int SceneManager::windowHeight = 0;
-BOOL SceneManager::isMouseDown = FALSE;
-BOOL SceneManager::isClick = FALSE;
 BOOL SceneManager::isAddWave = FALSE;
 
 SceneManager* SceneManager::inst( void )
@@ -42,10 +40,11 @@ mFrameRate( 40 )
 {
 	HDC hdc;
 //	long black = RGB( 0, 0, 0 );
-	long black = RGB( 100, 100, 100 );
+//	long black = RGB( 100, 100, 100 );
+	long black = RGB( 10, 10, 10 );
 	long white = RGB( 255, 255, 255 );
 
-//	ShowCursor( FALSE );
+	ShowCursor( FALSE );
 
 	hdc = GetDC( hwnd );
 	windowWidth = GetDeviceCaps( hdc, HORZRES );
@@ -126,17 +125,6 @@ SceneManager::~SceneManager( void )
 	DeleteObject( Image::DCBitmap::mHdcWhiteBmp );
 }
 
-void SceneManager::mouseDown( void )
-{
-	isClick = TRUE;
-	isMouseDown = TRUE;
-}
-
-void SceneManager::mouseUp( void )
-{
-	isMouseDown = FALSE;
-}
-
 void SceneManager::endSetWave( void )
 {
 	isAddWave = TRUE;
@@ -158,18 +146,18 @@ int SceneManager::update()
 	mLocalTime = localTime;
 
 	mParent->update();
-	isClick = FALSE;
+	HandManager::inst()->endUpdate();
 	isAddWave = FALSE;
 	return 0;
 }
 
 int SceneManager::draw( HDC& hdc )
 {
-	BitBlt(hdc, 0, 0, windowWidth, windowHeight, mHdcBmp, 0, 0, SRCCOPY);
 	for ( int i = 0; i < windowWidth * windowHeight / 32; ++i ) {
 		mWindowPixel[i] = 0;
 	}
 	mParent->draw( hdc );
+	BitBlt( hdc, 0, 0, windowWidth, windowHeight, mHdcBmp, 0, 0, SRCCOPY );
 
 	return 0;
 }

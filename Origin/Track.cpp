@@ -45,12 +45,6 @@ mIsUpdate( FALSE )
 		mPlayData[i] = 0;
 	}
 
-	for( int i = 0; i < LOG_MAX_INDEX_NUM; ++i ) {
-		for( int j = 0; j < LOG_MAX_DATA_NUM; ++j ) {
-			mWaveLog[ i ][ j ] = new double[ WAVE_DATA_LENGTH ];
-		}
-	}
-
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
 		mEffectList[ i ] = 0;
 	}
@@ -69,13 +63,6 @@ Track::~Track( void )
 
 	delete[] mPlayData;
 	mPlayData = 0;
-
-	for( int i = 0; i < LOG_MAX_INDEX_NUM; ++i ) {
-		for( int j = 0; j < LOG_MAX_DATA_NUM; ++j ) {
-			delete[] mWaveLog[ i ][ j ];
-			mWaveLog[ i ][ j ] = 0;
-		}
-	}
 
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
 		delete mEffectList[ i ];
@@ -231,25 +218,25 @@ int Track::addEffect( int index, EffectID id )
 			newEffect = new Sound::Tremolo();
 			break;
 		case EFFECT_DELAY:
-			newEffect = new Sound::Delay( mWaveLog[ index ] );
+			newEffect = new Sound::Delay();
 			break;
 		case EFFECT_CHORUS:
-			newEffect = new Sound::Chorus( mWaveLog[ index ] );
+			newEffect = new Sound::Chorus();
 			break;
 		case EFFECT_VIBRATO:
-			newEffect = new Sound::Vibrato( mWaveLog[ index ] );
+			newEffect = new Sound::Vibrato();
 			break;
 		case EFFECT_LOW_PASS_FILTER:
-			newEffect = new Sound::LowPassFilter( mWaveLog[ index ] );
+			newEffect = new Sound::LowPassFilter();
 			break;
 		case EFFECT_HIGH_PASS_FILTER:
-			newEffect = new Sound::HighPassFilter( mWaveLog[ index ] );
+			newEffect = new Sound::HighPassFilter();
 			break;
 		case EFFECT_BAND_PASS_FILTER:
-			newEffect = new Sound::BandPassFilter( mWaveLog[ index ] );
+			newEffect = new Sound::BandPassFilter();
 			break;
 		case EFFECT_BAND_ELIMINATE_FILTER:
-			newEffect = new Sound::BandEliminateFilter( mWaveLog[ index ] );
+			newEffect = new Sound::BandEliminateFilter();
 			break;
 		case EFFECT_EQUALIZER:
 			newEffect = new Sound::Equalizer();

@@ -162,6 +162,10 @@ void DCBitmap::setWhite( int x, int y, unsigned int width, unsigned int height )
 	}
 }
 
+void DCBitmap::copyWindow( void )
+{
+	BitBlt( mHdcBmp, 0, 0, mWidth, mHeight, Main::SceneManager::inst()->mHdcBmp, 0, 0, SRCCOPY );
+}
 void DCBitmap::drawWindow( void )
 {
 	BitBlt( Main::SceneManager::inst()->mHdcBmp, static_cast< int >( mX + 0.5 ), static_cast< int >( mY + 0.5 ), mWidth, mHeight, mHdcBmp, 0, 0, SRCCOPY );

@@ -112,8 +112,8 @@ void Book7::update( MainParent* parent )
 {
 	int mouseX = Main::HandManager::inst()->getX();
 	int mouseY = Main::HandManager::inst()->getY();
-	BOOL isClick = Main::SceneManager::isClick;
-	BOOL isMouseDown = Main::SceneManager::isMouseDown;
+	BOOL isClick = Main::HandManager::isClick;
+	BOOL isMouseDown = Main::HandManager::isMouseDown;
 	BOOL wasHit = FALSE;
 
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
@@ -136,8 +136,8 @@ void Book7::update( MainParent* parent )
 		moveMan( &mManState[ i ] );
 	}
 
-	if( mouseX > Main::SceneManager::windowWidth - 64 && mouseY > Main::SceneManager::windowHeight - 64 ) {
-		if( Main::SceneManager::isClick ) {
+	if( mouseX > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && mouseY > Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {
@@ -239,7 +239,7 @@ void Book7::putWall( int targetX, int targetY )
 	BOOL isHitMan = FALSE;
 	for( int i = 0; i < MAN_NUM; ++i ) {
 		int checkX = mManState[ i ].x / USE_OBJ_IMAGE_WIDTH + ( ( mManState[ i ].isLeft )? 0 : 1 );
-		if( checkX != targetX || mManState[ i ].line != targetY ) continue;
+		if( ( checkX != targetX && checkX != targetX + 1 ) || mManState[ i ].line != targetY ) continue;
 		isHitMan = TRUE;
 		break;
 	}

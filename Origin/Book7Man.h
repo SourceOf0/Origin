@@ -123,8 +123,8 @@ void Book7::moveManWalk( ManState* target )
 		target->count = 0;
 	}
 
-	if( checkEntrance( target ) ) return;
 	if( checkLadder( target ) ) return;
+	if( checkEntrance( target ) ) return;
 }
 
 void Book7::moveManEnterStart( ManState* target )
@@ -145,12 +145,7 @@ void Book7::moveManEnterStart( ManState* target )
 		target->count = 0;
 	}
 
-	int targetX = target->x / OBJ_X_NUM;
-	int entranceX = target->target->indexX + ( ( target->isLeft )? -2 : 1 );
-
-	if( target->x < 0 ) targetX = ( ( target->x - OBJ_X_NUM ) / OBJ_X_NUM );
-
-	if( entranceX != targetX ) return;
+	if( ++target->animeState < USE_OBJ_IMAGE_WIDTH_HALF ) return;
 
 	for( int i = 0; i < ENTRANCE_PAIR_NUM; ++i ) {
 		ObjState* entTarget = 0;
@@ -190,12 +185,9 @@ void Book7::moveManEnterEnd( ManState* target )
 		target->count = 0;
 	}
 
-	int targetX = target->x / OBJ_X_NUM;
-	int entranceX = target->target->indexX + ( ( target->isLeft)? -1 : 0 );
-
-	if( target->x < 0 ) targetX = -1;
-
-	if( entranceX != targetX ) return;
+	if( !checkWall( target, FALSE ) ) {
+		if( ++target->animeState < USE_OBJ_IMAGE_WIDTH_HALF ) return;
+	}
 
 	for( int i = 0; i < ENTRANCE_PAIR_NUM; ++i ) {
 		if( target->target == mEntranceState[ i ][ 0 ] ) {
@@ -207,6 +199,10 @@ void Book7::moveManEnterEnd( ManState* target )
 		}
 	}
 	removeTarget( target );
+	if( target->animeState < USE_OBJ_IMAGE_WIDTH_HALF ) {
+		setManState( target, MAN_STAY_TURN );
+		return;
+	}
 	setManState( target, MAN_WALK );
 }
 
@@ -269,14 +265,14 @@ void Book7::moveManLadderDown( ManState* target )
 
 
 
-BOOL Book7::checkEntrance( ManState* target )
+BOOL Book7::checkEntrance( ManState* target, BOOL isSet )
 {
 	if( target->isLeft ) {
 		if( ( target->x + WALK_SPEED ) % USE_OBJ_IMAGE_WIDTH != 0 ) return FALSE;
 	} else {
 		if( target->x % USE_OBJ_IMAGE_WIDTH != 0 ) return FALSE;
 	}
-	if( target->target != 0 ) return FALSE;
+	if( isSet && target->target != 0 ) return FALSE;
 
 	int targetX = ( target->x + ( ( target->isLeft )? WALK_SPEED : 0 ) ) / OBJ_X_NUM;
 
@@ -285,13 +281,16 @@ BOOL Book7::checkEntrance( ManState* target )
 	if( targetObj->image != IMAGE_OBJ_ENTRANCE ) return FALSE;
 	if( targetObj->isHold ) return FALSE;
 
+
 	for( int i = 0 ; i < ENTRANCE_PAIR_NUM; ++i ) {
 		if( targetObj == mEntranceState[ i ][ 0 ] && !mEntranceState[ i ][ 1 ]->isHold ) {
+			if( !isSet ) return TRUE;
 			++mEntranceState[ i ][ 1 ]->useNum;
 			addTarget( target, targetObj );
 			setManState( target, MAN_ENTER_START );
 			return TRUE;
 		} else if( targetObj == mEntranceState[ i ][ 1 ] && !mEntranceState[ i ][ 0 ]->isHold  ) {
+			if( !isSet ) return TRUE;
 			++mEntranceState[ i ][ 0 ]->useNum;
 			addTarget( target, targetObj );
 			setManState( target, MAN_ENTER_START );
@@ -302,10 +301,10 @@ BOOL Book7::checkEntrance( ManState* target )
 	return FALSE;
 }
 
-BOOL Book7::checkWall( ManState* target )
+BOOL Book7::checkWall( ManState* target, BOOL isSet )
 {
 	if( target->x % USE_OBJ_IMAGE_WIDTH != 0 ) return FALSE;
-	if( target->target != 0 ) return FALSE;
+	if( isSet && target->target != 0 ) return FALSE;
 
 	int targetX = target->x / OBJ_X_NUM;
 
@@ -324,15 +323,15 @@ BOOL Book7::checkWall( ManState* target )
 	if( targetObj->image != IMAGE_OBJ_WALL ) return FALSE;
 	if( targetObj->isHold ) return FALSE;
 	
+	if( !isSet ) return TRUE;
 	setManState( target, MAN_STAY_TURN );
-
 	return TRUE;
 }
 
-BOOL Book7::checkLadder( ManState* target )
+BOOL Book7::checkLadder( ManState* target, BOOL isSet )
 {
 	if( ( target->x - USE_OBJ_IMAGE_WIDTH ) % USE_OBJ_IMAGE_WIDTH != 0 ) return FALSE;
-	if( target->target != 0 ) return FALSE;
+	if( isSet && target->target != 0 ) return FALSE;
 
 	int targetLine = target->line;
 
@@ -343,6 +342,7 @@ BOOL Book7::checkLadder( ManState* target )
 		if( checkY < 0 ) checkY = OBJ_Y_NUM - 1;
 		ObjState* checkObj = &mObjState[ checkY ][ target->x / OBJ_X_NUM ];
 		if( checkObj->isHold || checkObj->image != IMAGE_OBJ_WALL ) {
+			if( !isSet ) return TRUE;
 			setManState( target, MAN_LADDER_UP );
 			addTarget( target, targetObj );
 			--target->line;
@@ -360,6 +360,7 @@ BOOL Book7::checkLadder( ManState* target )
 	}
 	targetObj = &mObjState[ targetLine ][ target->x / OBJ_X_NUM ];
 	if( !targetObj->isHold && targetObj->image == IMAGE_OBJ_LADDER ) {
+		if( !isSet ) return TRUE;
 		setManState( target, MAN_LADDER_DOWN );
 		addTarget( target, targetObj );
 		return TRUE;

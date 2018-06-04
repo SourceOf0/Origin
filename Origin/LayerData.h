@@ -23,6 +23,8 @@ public:
 	DCBitmap* mLayer[ COLOR_KIND_NUM ];
 	DCBitmap* mViewTone;
 
+	double mDepth;
+
 private :
 	ToneID getToneID( int index );
 };

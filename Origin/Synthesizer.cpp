@@ -27,11 +27,14 @@ mTempo( 10 )
 	int windowWidth = Main::SceneManager::windowWidth;
 	int windowHeight = Main::SceneManager::windowHeight;
 
-	mBackBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe.dad" ) );
-	mBackBmp->mUseAlpha = FALSE;
+	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe.dad" ) );
+	mBackBmp1->mUseAlpha = FALSE;
 
-	mX = ( windowWidth - mBackBmp->mWidth ) / 2;
-	mY = ( windowHeight - mBackBmp->mHeight ) / 2;
+	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe_2.dad" ) );
+	mBackBmp2->mUseAlpha = FALSE;
+
+	mX = ( windowWidth - mBackBmp1->mWidth ) / 2;
+	mY = ( windowHeight - mBackBmp1->mHeight ) / 2;
 
 	mPartsBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe_parts.dad" ) );
 	mPartsBmp->mUseAlpha = TRUE;
@@ -55,8 +58,11 @@ mTempo( 10 )
 
 Synthesizer::~Synthesizer()
 {
-	delete mBackBmp;
-	mBackBmp = 0;
+	delete mBackBmp1;
+	mBackBmp1 = 0;
+
+	delete mBackBmp2;
+	mBackBmp2 = 0;
 
 	delete mPartsBmp;
 	mPartsBmp = 0;
@@ -72,9 +78,29 @@ Synthesizer::~Synthesizer()
 #include "SyntheUpdate.h"
 #include "SynthePad.h"
 
-void Synthesizer::draw( HDC& hdc, Sequence::RoomParent* parent )
+void Synthesizer::draw( HDC& hdc, Sequence::RoomParent* parent, double depth, int fadeCount )
 {
-	mBackBmp->drawWindow( mX, mY );
+	mPartsBmp->mDepth = depth;
+	mBackBmp1->mDepth = depth;
+	mBackBmp2->mDepth = depth;
+
+	if( fadeCount == 0 ) {
+		mBackBmp1->drawWindow();
+	} else if( fadeCount == TONE_NONE * 2 ) {
+		mBackBmp2->drawWindow();
+	} else if( fadeCount < TONE_NONE ) {
+		mBackBmp2->drawWindow();
+		mFadeBmp->copyWindow();
+		Image::BitmapBase::mTone[ fadeCount - 1 ]->drawImageOr( mFadeBmp->mHdcBmp, 0, 0 );
+		mBackBmp1->drawWindow();
+		mFadeBmp->drawWindowAnd();
+	} else {
+		mBackBmp1->drawWindow();
+		mFadeBmp->copyWindow();
+		Image::BitmapBase::mTone[ TONE_NONE * 2 - fadeCount - 1 ]->drawImageOr( mFadeBmp->mHdcBmp, 0, 0 );
+		mBackBmp2->drawWindow();
+		mFadeBmp->drawWindowAnd();
+	}
 	
 	for( int i = 0 ; i < EFFECT_FADER_NUM; ++i ) {
 		viewParts( mEffectFader[ i ] );
@@ -124,19 +150,21 @@ void Synthesizer::draw( HDC& hdc, Sequence::RoomParent* parent )
 			viewParts( mNoteLamp[ i ][ j ] );
 		}
 	}
-	for( int j = 0 ; j < NOTE_SET_MAX_NUM; ++j ) {
-		if( mNoteLamp[ selectTrack ][ j ].defX == 100 ) continue;
-		viewParts( mNoteLamp[ selectTrack ][ j ] );
-	}
-	for( int i = 0 ; i < NOTE_SET_MAX_NUM; ++i ) {
-		if( mTimeLampX[ i ].defX == 100 ) continue;
-		viewParts( mTimeLampX[ i ] );
+	if( parent->mIsConnectSocket ) {
+		for( int j = 0 ; j < NOTE_SET_MAX_NUM; ++j ) {
+			if( mNoteLamp[ selectTrack ][ j ].defX == 100 ) continue;
+			viewParts( mNoteLamp[ selectTrack ][ j ] );
+		}
+		for( int i = 0 ; i < NOTE_SET_MAX_NUM; ++i ) {
+			if( mTimeLampX[ i ].defX == 100 ) continue;
+			viewParts( mTimeLampX[ i ] );
+		}
 	}
 	for( int i = 0; i < PAD_FADER_NUM; ++i ) {
 		viewParts( mPadFader[ i ] );
 	}
 
-	mWaveBmp->drawWindowAnd();
+	if( parent->mIsConnectSocket ) mWaveBmp->drawWindowAnd();
 	mPadBmp->drawWindowAnd();
 }
 

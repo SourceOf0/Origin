@@ -3,9 +3,13 @@
 
 #include <windows.h>
 
+namespace Image {
+	class DCBitmap;
+}
+
 namespace Sequence {
 
-	class RoomParent;
+class RoomParent;
 
 namespace Room {
 
@@ -15,7 +19,10 @@ public:
 	
 	// 中身なし（派生クラスで定義されてないとエラー）
 	virtual void update( Sequence::RoomParent* parent ) = 0; 
-	virtual void draw( HDC& hdc, Sequence::RoomParent* parent ) = 0;
+	virtual void draw( HDC& hdc, Sequence::RoomParent* parent, double depth, int fadeCount ) = 0;
+	
+	static Image::DCBitmap* mFadeBmp;
+
 protected:
 	int mX;
 	int mY;

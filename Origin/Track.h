@@ -39,7 +39,6 @@ public:
 
 private:
 	double* mWaveData;
-	double* mWaveLog[ LOG_MAX_INDEX_NUM ][ LOG_MAX_DATA_NUM ];
 
 	double mVolL;
 	double mVolR;

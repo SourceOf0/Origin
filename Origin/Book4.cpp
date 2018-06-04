@@ -90,8 +90,8 @@ void Book4::update( MainParent* parent )
 	int windowHeight = Main::SceneManager::windowHeight;
 	int mouseX = Main::HandManager::inst()->getX();
 	int mouseY = Main::HandManager::inst()->getY();
-	BOOL isClick = Main::SceneManager::isClick;
-	BOOL isMouseDown = Main::SceneManager::isMouseDown;
+	BOOL isClick = Main::HandManager::isClick;
+	BOOL isMouseDown = Main::HandManager::isMouseDown;
 	BOOL wasHit = FALSE;
 
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
@@ -138,8 +138,8 @@ void Book4::update( MainParent* parent )
 		if( target->y > windowHeight ) target->kind = -1;
 	}
 
-	if( mouseX > Main::SceneManager::windowWidth - 64 && mouseY > windowHeight - 64 ) {
-		if( Main::SceneManager::isClick ) {
+	if( mouseX > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && mouseY > windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {

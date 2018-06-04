@@ -5,8 +5,8 @@
 
 #define OBJ_X_NUM 32
 #define OBJ_Y_NUM 12
-#define MAN_NUM 20
-#define ENTRANCE_PAIR_NUM 5
+#define MAN_NUM 10
+#define ENTRANCE_PAIR_NUM 3
 
 namespace Image {
 	class DCBitmap;
@@ -83,9 +83,9 @@ private:
 	void moveManLadderUp( ManState* target );
 	void moveManLadderDown( ManState* target );
 
-	BOOL checkEntrance( ManState* target );
-	BOOL checkWall( ManState* target );
-	BOOL checkLadder( ManState* target );
+	BOOL checkEntrance( ManState* target, BOOL isSet = TRUE );
+	BOOL checkWall( ManState* target, BOOL isSet = TRUE );
+	BOOL checkLadder( ManState* target, BOOL isSet = TRUE );
 
 	int getCount( int count );
 	int getMaxCount( ManImageID image );

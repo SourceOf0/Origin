@@ -5,7 +5,7 @@ void Book4::moveBall( void )
 	GetCursorPos( &mousePos );
 	int mouseX = mousePos.x;
 	int mouseY = mousePos.y;
-	BOOL isClick = Main::SceneManager::isClick;
+	BOOL isClick = Main::HandManager::isClick;
 
 	switch( mBallState.image ) {
 		case IMAGE_BALL_NORMAL:

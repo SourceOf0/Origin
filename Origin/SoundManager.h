@@ -33,6 +33,7 @@ private:
 	~SoundManager( void );
 
 	double clipping( double s );
+	void setSysVol( void );
 
 	static SoundManager* mInst;
 
@@ -45,6 +46,7 @@ private:
 	BOOL mIsPlay;
 	BOOL mWasReset;
 
+	unsigned int mSysVol;
 	double mMainVol;
 	double mMainVolL;
 	double mMainVolR;

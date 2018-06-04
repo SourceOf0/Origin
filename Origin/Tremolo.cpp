@@ -1,9 +1,6 @@
 #include "Tremolo.h"
 #include "Track.h"
 
-#define _USE_MATH_DEFINES
-#include <Math.h>
-
 namespace Sound {
 
 Tremolo::Tremolo( void )
@@ -33,7 +30,7 @@ void Tremolo::apply( Track* track )
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[ i ];
 
-		s *= 1.0 + depth * sin( 2.0 * M_PI * rate * time / SAMPLES_PER_SEC );
+		s *= 1.0 + depth * customSin( 2.0 * M_PI * rate * time / SAMPLES_PER_SEC );
 		time += 1;
 
 		waveData[i] = s;

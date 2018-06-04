@@ -4,6 +4,7 @@
 
 #include "SceneManager.h"
 #include "SoundManager.h"
+#include "HandManager.h"
 
 #include "DCBitmap.h"
 #include "Track.h"
@@ -25,7 +26,7 @@ Debug1::~Debug1()
 void Debug1::update( MainParent* parent )
 {
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
-	if( Main::SceneManager::isMouseDown ) {
+	if( Main::HandManager::isMouseDown ) {
 		soundManager->play();
 		soundManager->getTrack( 0 )->setWave( WAVE_SQUARE );
 		soundManager->getTrack( 1 )->setWave( WAVE_SQUARE );

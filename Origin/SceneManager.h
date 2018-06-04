@@ -19,15 +19,11 @@ public:
 	int update( void );
 	int draw( HDC& hdc );
 
-	void mouseDown( void );
-	void mouseUp( void );
 	void endSetWave( void );
 
 	static int windowWidth;
 	static int windowHeight;
 
-	static BOOL isMouseDown;
-	static BOOL isClick;
 	static BOOL isAddWave;
 
 	LPDWORD mWindowPixel;

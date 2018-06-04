@@ -64,13 +64,11 @@ BOOL Book3::motion01( AnimeState* target, int mouseX, int mouseY )
 	} else {
 		int x = target->x;
 		int y = target->y;
-		int range = static_cast< int >( RAND_MAX * 0.05 );
-		if( rand() > range ) newAnimeState( x - 68, y - 95 );
-		if( rand() > range ) newAnimeState( x + 50, y - 100 );
-		if( rand() > range ) newAnimeState( x - 100, y + 10 );
-		if( rand() > range ) newAnimeState( x + 100, y - 12 );
-		if( rand() > range ) newAnimeState( x - 10, y + 95 );
-		return FALSE;
+		newAnimeState( x - 68, y - 95 );
+		newAnimeState( x + 50, y - 100 );
+		newAnimeState( x - 100, y + 10 );
+		newAnimeState( x + 100, y - 12 );
+		return setAnimeState( target, x - 10, y + 95 );
 	}
 	return TRUE;
 }
@@ -158,8 +156,8 @@ BOOL Book3::motion11( AnimeState* target, int mouseX, int mouseY )
 	} else {
 		int x = target->x;
 		int y = target->y;
-		if( rand() > RAND_MAX * 0.1 ) newAnimeState( x - 100, y + 90 );
-		if( rand() > RAND_MAX * 0.1 ) newAnimeState( x + 100, y + 90 );
+		newAnimeState( x - 100, y + 90 );
+		newAnimeState( x + 100, y + 90 );
 		return setAnimeState( target, x + 0, y + 70 );
 	}
 	return TRUE;
@@ -214,11 +212,10 @@ BOOL Book3::motion21( AnimeState* target, int mouseX, int mouseY )
 		int x = target->x;
 		int y = target->y;
 		int range = static_cast< int >( RAND_MAX * 0.1 );
-		if( rand() > range ) newAnimeState( x - 42, y - 110 );
-		if( rand() > range ) newAnimeState( x + 92, y - 35 );
-		if( rand() > range ) newAnimeState( x - 92, y + 45 );
-		if( rand() > range ) newAnimeState( x + 38, y + 78 );
-		return FALSE;
+		newAnimeState( x - 42, y - 110 );
+		newAnimeState( x + 92, y - 35 );
+		newAnimeState( x - 92, y + 45 );
+		return setAnimeState( target, x + 38, y + 78 );
 	}
 	return TRUE;
 }
@@ -363,7 +360,6 @@ BOOL Book3::motion42( AnimeState* target, int mouseX, int mouseY )
 		int x = target->x;
 		int y = target->y;
 		return setAnimeState( target, x + 50, y + 42 );
-		return FALSE;
 	}
 	return TRUE;
 }

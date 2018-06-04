@@ -10,13 +10,14 @@ class Track;
 class Chorus : public EffectBase
 {
 public:
-	Chorus( double** setWaveLog );
+	Chorus( void );
 	~Chorus( void );
 
 	void reset( void );
 	void apply( Track* track );
 
 private:
+	double mWaveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ];
 };
 
 } // namespace Sound

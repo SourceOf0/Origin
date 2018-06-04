@@ -1,27 +1,33 @@
 #include "EffectBase.h"
 #include "SoundBase.h"
 
-#define _USE_MATH_DEFINES
 #include <Math.h>
 
 namespace Sound {
 
-void EffectBase::init( double** setWaveLog )
+double EffectBase::mSinCosTable[ SIN_COS_TABLE_NUM ];
+
+void EffectBase::init( double waveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ] )
 {
 	mLogIndex = 0;
 	mSetNum1 = 0;
 	mSetNum2 = 0;
 
-	mWaveLog = setWaveLog;
-	if( mWaveLog == 0 ) return;
+	if( waveLog == 0 ) return;
 	for( int i = 0; i < LOG_MAX_DATA_NUM; ++i ) {
 		for( int j = 0; j < WAVE_DATA_LENGTH; ++j ) {
-			mWaveLog[ i ][ j ] = 0;
+			waveLog[ i ][ j ] = 0;
 		}
 	}
 }
+void EffectBase::initTable( void )
+{
+	for( int i = 0; i < SIN_COS_TABLE_NUM; ++i ) {
+		mSinCosTable[ i ] = cos( i * M_PI / 2 / SIN_COS_TABLE_NUM );
+	}
+}
 
-double EffectBase::getPrevData( int prevIndex )
+double EffectBase::getPrevData( double waveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ], int prevIndex )
 {
 	int dataIndex = 0;
 	int blockIndex = 0;
@@ -37,7 +43,7 @@ double EffectBase::getPrevData( int prevIndex )
 		return 0;
 	}
 
-	return mWaveLog[ blockIndex ][ dataIndex ];
+	return waveLog[ blockIndex ][ dataIndex ];
 }
 
 void EffectBase::setNum1( double val )
@@ -61,9 +67,47 @@ double EffectBase::getNum2( void )
 	return mSetNum2;
 }
 
+double EffectBase::customPow( double x, double y )
+{
+	return pow( x, y );
+}
+double EffectBase::customSqrt( double x )
+{
+	return sqrt( x );
+}
+double EffectBase::customAtan( double x )
+{
+	return atan( x );
+}
+double EffectBase::customCos( double x )
+{
+	double sign = 1;
+	int i;
+
+	/*  cos( x ) = cos( -x )     */
+	if( x < 0 ) x = -x;
+
+	x /= M_PI;
+	
+	/*  cos( x ) = cos( x + 2 * PI ) */
+	x = ( x - static_cast< int >( x / 2 ) * 2 );
+	
+	/*  cos( x ) = cos( x - PI )   */
+	if( x > 1 ) x = 2 - x;
+
+	/* -cos( x ) = cos( PI - x )   */
+	if(x > 0.5 ) {
+		x = 1 - x;
+		sign = -1;
+	}
+
+	i = static_cast< int >( x * 2 * SIN_COS_TABLE_NUM );
+
+	return ( sign * mSinCosTable[ i ] );
+}
 double EffectBase::sinc( double x )
 {
-	return ( x == 0.0 )? 1.0 : ( sin( x ) / x );
+	return ( x == 0.0 )? 1.0 : ( customSin( x ) / x );
 }
 
 void EffectBase::getHanningWindow( double* w, int N )

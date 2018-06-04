@@ -3,9 +3,6 @@
 
 #include <memory.h>
 
-#define _USE_MATH_DEFINES
-#include <Math.h>
-
 namespace Sound {
 
 Equalizer::Equalizer( void )
@@ -150,8 +147,8 @@ void Equalizer::apply( Track* track )
 
 void Equalizer::setLowShelving( EQData* target )
 {
-	double Q = 1.0 / sqrt( 2.0 );
-	double fc = tan( M_PI * ( target->fc / SAMPLES_PER_SEC ) ) / ( 2.0 * M_PI );
+	double Q = 1.0 / customSqrt( 2.0 );
+	double fc = customTan( M_PI * ( target->fc / SAMPLES_PER_SEC ) ) / ( 2.0 * M_PI );
 	double g = target->g;
 	double* a = target->a;
 	double* b = target->b;
@@ -159,17 +156,17 @@ void Equalizer::setLowShelving( EQData* target )
 	a[ 0 ] = 1.0 + 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc;
 	a[ 1 ] = (8.0 * M_PI * M_PI * fc * fc - 2.0) / a[ 0 ];
 	a[ 2 ] = (1.0 - 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc) / a[ 0 ];
-	b[ 0 ] = (1.0 + sqrt(1.0 + g) * 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc * (1.0 + g)) / a[ 0 ];
+	b[ 0 ] = (1.0 + customSqrt(1.0 + g) * 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc * (1.0 + g)) / a[ 0 ];
 	b[ 1 ] = (8.0 * M_PI * M_PI * fc * fc * (1.0 + g) - 2.0) / a[ 0 ];
-	b[ 2 ] = (1.0 - sqrt(1.0 + g) * 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc * (1.0 + g)) / a[ 0 ];
+	b[ 2 ] = (1.0 - customSqrt(1.0 + g) * 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc * (1.0 + g)) / a[ 0 ];
 
 	a[ 0 ] = 1.0;
 }
 
 void Equalizer::setHighShelving( EQData* target )
 {
-	double Q = 1.0 / sqrt( 2.0 );
-	double fc = tan( M_PI * ( target->fc / SAMPLES_PER_SEC ) ) / ( 2.0 * M_PI );
+	double Q = 1.0 / customSqrt( 2.0 );
+	double fc = customTan( M_PI * ( target->fc / SAMPLES_PER_SEC ) ) / ( 2.0 * M_PI );
 	double g = target->g;
 	double* a = target->a;
 	double* b = target->b;
@@ -177,17 +174,17 @@ void Equalizer::setHighShelving( EQData* target )
 	a[ 0 ] = 1.0 + 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc;
 	a[ 1 ] = (8.0 * M_PI * M_PI * fc * fc - 2.0) / a[ 0 ];
 	a[ 2 ] = (1.0 - 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc) / a[ 0 ];
-	b[ 0 ] = ((1.0 + g) + sqrt(1.0 + g) * 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc) / a[ 0 ];
+	b[ 0 ] = ((1.0 + g) + customSqrt(1.0 + g) * 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc) / a[ 0 ];
 	b[ 1 ] = (8.0 * M_PI * M_PI * fc * fc - 2.0 * (1.0 + g)) / a[ 0 ];
-	b[ 2 ] = ((1.0 + g) - sqrt(1.0 + g) * 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc) / a[ 0 ];
+	b[ 2 ] = ((1.0 + g) - customSqrt(1.0 + g) * 2.0 * M_PI * fc / Q + 4.0 * M_PI * M_PI * fc * fc) / a[ 0 ];
 
 	a[ 0 ] = 1.0;
 }
 
 void Equalizer::setPeaking( EQData* target )
 {
-	double Q = 1.0 / sqrt( 2.0 );
-	double fc = tan( M_PI * ( target->fc / SAMPLES_PER_SEC ) ) / ( 2.0 * M_PI );
+	double Q = 1.0 / customSqrt( 2.0 );
+	double fc = customTan( M_PI * ( target->fc / SAMPLES_PER_SEC ) ) / ( 2.0 * M_PI );
 	double g = target->g;
 	double* a = target->a;
 	double* b = target->b;

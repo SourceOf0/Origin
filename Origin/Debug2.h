@@ -8,6 +8,7 @@
 namespace Image {
 	class BitmapBase;
 	class DCBitmap;
+	class LayerData;
 }
 
 namespace Sequence {
@@ -23,7 +24,7 @@ public:
 
 private:
 	Image::BitmapBase* mTempBmp[ DEBUG2_BMP_NUM ];
-	Image::DCBitmap* mBackBmp;
+	Image::LayerData* mBackBmp;
 };
 
 } //namespace Sequence

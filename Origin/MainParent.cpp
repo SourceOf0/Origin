@@ -32,7 +32,11 @@ mChild( 0 ),
 mDebugLoading( 0 ),
 mThreadState( 3 ),
 mNext( SEQ_NONE ),
-mBookCornerBmp( 0 )
+mBookCornerBmp( 0 ),
+mPrevBmp( 0 ),
+mToneIndex( 0 ),
+mFadeCount( 0 ),
+mFadeState( 0 )
 {
 	mInst = this;
 
@@ -62,6 +66,9 @@ MainParent::~MainParent( void )
 
 	delete mBookCornerBmp;
 	mBookCornerBmp = 0;
+
+	delete mPrevBmp;
+	mPrevBmp = 0;
 }
 
 DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
@@ -78,6 +85,9 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 		Image::DCBitmap* target = inst->mBookCornerBmp;
 		target->mX = Main::SceneManager::windowWidth - 64;
 		target->mY = Main::SceneManager::windowHeight - 64;
+	}
+	if( inst->mPrevBmp == 0 ) {
+		inst->mPrevBmp = new Image::DCBitmap( hdc, Main::SceneManager::windowWidth, Main::SceneManager::windowHeight );
 	}
 
 	switch( inst->mNext ) {
@@ -125,6 +135,8 @@ void MainParent::update( void )
 {
 	DWORD id;
 
+	Main::HandManager::inst()->update( mFadeState != 0 );
+
 	switch( mThreadState ) {
 		case 2:
 			mThreadState = 0;
@@ -138,6 +150,10 @@ void MainParent::update( void )
 				mRoom->setParentSeq( mNext );
 				mThreadState = 1;
 				mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd, 0, &id );
+				mFadeState = 1;
+				mFadeCount = 0;
+				mToneIndex = 0;
+				BitBlt( mPrevBmp->mHdcBmp, 0, 0, Main::SceneManager::windowWidth, Main::SceneManager::windowHeight, Main::SceneManager::inst()->mHdcBmp, 0, 0, SRCCOPY );
 			}
 			break;
 
@@ -149,8 +165,6 @@ void MainParent::update( void )
 			break;
 
 	}
-
-	Main::HandManager::inst()->update();
 }
 
 void MainParent::draw( HDC& hdc )
@@ -165,6 +179,34 @@ void MainParent::draw( HDC& hdc )
 	} else {
 		mDebugLoading->draw( hdc, this );
 	}
+
+	if( mFadeState != 0 ) {
+		if( mFadeState == 1 ) {
+			mPrevBmp->drawWindow();
+			if( ++mFadeCount % 2 == 0 ) {
+				if( mToneIndex < TONE_NONE - 1 ) {
+					++mToneIndex;
+				} else {
+					mToneIndex = TONE_NONE - 1;
+					mFadeState = 2;
+					mFadeCount = 0;
+				}
+			}
+		} else if( mFadeState == 2 ) {
+			if( ++mFadeCount % 2 == 0 ) {
+				if( mToneIndex > 0 ) {
+					--mToneIndex;
+				} else {
+					mToneIndex = 0;
+					mFadeState = 0;
+					mFadeCount = 0;
+				}
+			}
+		}
+		Image::BitmapBase::mTone[ mToneIndex ]->drawWindowAnd();
+		return;
+	}
+
 	Main::HandManager::inst()->draw();
 }
 

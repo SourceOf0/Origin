@@ -7,6 +7,8 @@
 namespace Main {
 
 HandManager* HandManager::mInst = 0;
+BOOL HandManager::isMouseDown = FALSE;
+BOOL HandManager::isClick = FALSE;
 
 HandManager* HandManager::inst( void )
 {
@@ -50,6 +52,9 @@ mAnimeCount( 0 )
 	mHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\hands.dad" ) );
 	mCheckHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\checkHand.dad" ) );
 
+	mHandBmp->mDepth = 0.2;
+	mCheckHandBmp->mDepth = 0.2;
+
 	POINT mousePos;
 	GetCursorPos( &mousePos );
 	mMouseX = mousePos.x;
@@ -65,12 +70,31 @@ HandManager::~HandManager( void )
 	mCheckHandBmp = 0;
 }
 
-void HandManager::update( void )
+void HandManager::mouseDown( void )
+{
+	isClick = TRUE;
+	isMouseDown = TRUE;
+}
+void HandManager::mouseUp( void )
+{
+	isMouseDown = FALSE;
+}
+void HandManager::endUpdate( void )
+{
+	isClick = FALSE;
+}
+
+void HandManager::update( BOOL isLoading )
 {
 	POINT mousePos;
 	GetCursorPos( &mousePos );
 	int mouseX = mousePos.x;
 	int mouseY = mousePos.y;
+
+	if( isLoading ) {
+		isMouseDown = FALSE;
+		isClick = FALSE;
+	}
 
 	if( mIsLockX ) {
 		if( mLockX == -1000 ) {
@@ -159,17 +183,64 @@ void HandManager::update( void )
 
 void HandManager::draw( void )
 {
-//	mHandBmp->drawWindow( mHandBmp->mX, mHandBmp->mY, size.startX, size.startY, size.width, size.height, isTransparent );
-//	if( mImageState != HAND_IMAGE_NORMAL && mImageState != HAND_IMAGE_PUSH ) {
-//		mHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 ), static_cast< int >( mHandBmp->mY + 0.5 ), 0, mImageState * 64, 64, 64 );
-//	} else {
-//		mHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 8 + 0.5 ), static_cast< int >( mHandBmp->mY + 16 + 0.5 ), 0, mImageState * 64, 64, 64 );
-//	}
-	if( mImageState == HAND_IMAGE_CHECK ) {
-		mCheckHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 ), static_cast< int >( mHandBmp->mY + 0.5 ), 0, 0, 96, 96 );
-	} else {
-		mHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 ), static_cast< int >( mHandBmp->mY + 0.5 ), 0, mImageState * 64, 64, 64 );
+	int fixX = 0;
+	int fixY = 0;
+
+	switch( mImageState ) {
+		case HAND_IMAGE_NORMAL:
+			if( mMouseY < 13 ) {
+				fixY = 13 - mMouseY;
+			} else if( mMouseY > SceneManager::windowHeight - 19 ) {
+				fixY = SceneManager::windowHeight - 19 - mMouseY;
+			}
+			break;
+		case HAND_IMAGE_PUSH:
+			fixX = 8;
+			fixY = 10;
+			break;
+		case HAND_IMAGE_HOLD_BEFORE:
+		case HAND_IMAGE_HOLD_AFTER:
+			break;
+		case HAND_IMAGE_CLOSE:
+			fixX = -32;
+			fixY = -28;
+			break;
+		case HAND_IMAGE_BACK:
+			if( mMouseX < 16 ) {
+				fixX = 16 - mMouseX;
+			} else if( mMouseX > SceneManager::windowWidth - 16 ) {
+				fixX = SceneManager::windowWidth - 16 - mMouseX;
+			}
+			if( mMouseY < 13 ) {
+				fixY = 13 - mMouseY;
+			} else if( mMouseY > SceneManager::windowHeight - 19 ) {
+				fixY = SceneManager::windowHeight - 19 - mMouseY;
+			}
+			break;
+		case HAND_IMAGE_RIGHT:
+			fixX = -32;
+			if( mMouseY < 13 ) {
+				fixY = 13 - mMouseY;
+			} else if( mMouseY > SceneManager::windowHeight - 19 ) {
+				fixY = SceneManager::windowHeight - 19 - mMouseY;
+			}
+			break;
+		case HAND_IMAGE_LEFT:
+			fixX = 32;
+			if( mMouseY < 13 ) {
+				fixY = 13 - mMouseY;
+			} else if( mMouseY > SceneManager::windowHeight - 19 ) {
+				fixY = SceneManager::windowHeight - 19 - mMouseY;
+			}
+			break;
+		case HAND_IMAGE_UP:
+			break;
+		case HAND_IMAGE_CHECK:
+			mCheckHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 ), static_cast< int >( mHandBmp->mY + 0.5 ), 0, 0, 96, 96 );
+			return;
+			break;
 	}
+	mHandBmp->drawWindow( static_cast< int >( mHandBmp->mX + 0.5 + fixX ), static_cast< int >( mHandBmp->mY + 0.5 + fixY ), 0, mImageState * 64, 64, 64 );
 }
 
 int HandManager::getX( void )

@@ -15,7 +15,7 @@
 
 #define EFFECT_MAX_NUM		6	// 追加できるエフェクトの最大数
 #define LOG_MAX_DATA_NUM	30	// バッファのログを取るデータの最大数
-#define LOG_MAX_INDEX_NUM	3	// バッファのログを取るインデックスの最大数
+//#define LOG_MAX_INDEX_NUM	3	// バッファのログを取るインデックスの最大数
 
 typedef enum {
 	WAVE_CURVE,

@@ -6,6 +6,7 @@
 #pragma comment(lib,"winmm")
 
 #include <windows.h>
+#include "HandManager.h"
 #include "SceneManager.h"
 #include "SoundManager.h"
 
@@ -74,12 +75,12 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 	case WM_LBUTTONDOWN:
 		if( gStateSoundThread > 0 ) return 0;
-		Main::SceneManager::inst()->mouseDown();
+		Main::HandManager::inst()->mouseDown();
 		return 0;
 
 	case WM_LBUTTONUP:
 		if( gStateSoundThread > 0 ) return 0;
-		Main::SceneManager::inst()->mouseUp();
+		Main::HandManager::inst()->mouseUp();
 		return 0;
 
 	case MM_WOM_DONE:
@@ -92,7 +93,7 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		if( gStateSoundThread > 0 ) return 0;
 		hdc = BeginPaint( hwnd, &ps );
 		Main::SceneManager::inst()->draw( hdc );
-		EndPaint(hwnd, &ps);
+		EndPaint( hwnd, &ps );
 		return 0;
 	}
 

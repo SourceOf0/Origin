@@ -14,12 +14,10 @@
 #define REST_COUNT 50
 
 #define DOT_ANIME_MAX_NUM 11
-#define FILTER_ANIME_MAX_NUM 5
 
 namespace Sequence {
 
 Book1::Book1( HDC& hdc, MainParent* parent ) : 
-mToneMaxNum( TONE_NONE + FILTER_ANIME_MAX_NUM ),
 mState( 0 ),
 mToneIndex( 0 ),
 mAnimeCount( 0 ),
@@ -39,7 +37,6 @@ mScheduleIndex( VIEW_SCHEDULE_NUM )
 		mBmp[ i ] = imageFactory->loadDC( hdc, str );
 	}
 
-	mFilterBmp = imageFactory->loadDC( hdc, "resource\\smallFilter.dad" );
 	mDotBmp = imageFactory->loadDC( hdc, "resource\\pointMask.dad" );
 
 	mMaskBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
@@ -57,9 +54,6 @@ Book1::~Book1()
 		delete mBmp[ i ];
 		mBmp[ i ] = 0;
 	}
-
-	delete mFilterBmp;
-	mFilterBmp = 0;
 
 	delete mDotBmp;
 	mDotBmp = 0;
@@ -84,8 +78,8 @@ void Book1::nextMotion( void )
 
 	mAnimeCount = 0;
 	mAnimeState = 0;
-	mToneIndex = mToneMaxNum - 1;
-//	mState = STATE_MAX - 1;
+	mToneIndex = TONE_NONE - 1;
+	mState = STATE_MAX - 1;
 	if( mScheduleIndex == VIEW_SCHEDULE_NUM ) {
 		setSchedule();
 	}
@@ -165,9 +159,8 @@ void Book1::nextMotion( void )
 			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 
-			setX -= mFilterBmp->mWidth / FILTER_ANIME_MAX_NUM;
 			for( int i = 0; i < BOOK1_MASK_NUM; ++i ) {
-				setMask( &mMask[ i ], setX, -static_cast< int >( mFilterBmp->mWidth / FILTER_ANIME_MAX_NUM ), i, MASK_NONE );
+				setMask( &mMask[ i ], 0, 0, i, MASK_NONE );
 			}
 			break;
 
@@ -250,10 +243,17 @@ void Book1::setSchedule( void )
 	}
 	for( int j = 0; j < VIEW_SCHEDULE_NUM; ++j ) {
 		isFailure = TRUE;
-		while( isFailure ) {
+		for( int i = 0; i < STATE_MAX; ++i ) {
+			if( setState[ i ] ) continue;
+			if( rand() % 3 > 0 ) continue;
+			isFailure = FALSE;
+			setState[ i ] = TRUE;
+			mSchedule[ j ] = i;
+			break;
+		}
+		if( isFailure ) {
 			for( int i = 0; i < STATE_MAX; ++i ) {
 				if( setState[ i ] ) continue;
-				if( rand() % 3 > 0 ) continue;
 				isFailure = FALSE;
 				setState[ i ] = TRUE;
 				mSchedule[ j ] = i;
@@ -280,35 +280,11 @@ void Book1::setMask( MaskState* target, int x, int y, int count, MaskID kind )
 
 void Book1::drawTone( HDC& targetHDC, int kind )
 {
-	if( kind < TONE_NONE ) {
-		Image::BitmapBase::mTone[ kind ]->drawImageAnd( targetHDC, 0, 0 );
-		return;
-	}
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
-	int blockWidth = mFilterBmp->mWidth / FILTER_ANIME_MAX_NUM;
-	kind = FILTER_ANIME_MAX_NUM - kind + TONE_NONE - 1;
-	for( int y = 0; y < windowHeight; y += blockWidth ) {
-		for( int x = 0; x < windowWidth; x += blockWidth ) {
-			mFilterBmp->drawBlockAnd( targetHDC, x, y, blockWidth, kind );
-		}
-	}
+	Image::BitmapBase::mTone[ kind ]->drawImageAnd( targetHDC, 0, 0 );
 }
 void Book1::drawToneOr( HDC& targetHDC, int kind )
 {
-	if( kind < TONE_NONE ) {
-		Image::BitmapBase::mTone[ kind ]->drawImageOr( targetHDC, 0, 0 );
-		return;
-	}
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
-	int blockWidth = mFilterBmp->mWidth / FILTER_ANIME_MAX_NUM;
-	kind = FILTER_ANIME_MAX_NUM - kind + TONE_NONE - 1;
-	for( int y = 0; y < windowHeight; y += blockWidth ) {
-		for( int x = 0; x < windowWidth; x += blockWidth ) {
-			mFilterBmp->drawBlockOr( targetHDC, x, y, blockWidth, kind );
-		}
-	}
+	Image::BitmapBase::mTone[ kind ]->drawImageOr( targetHDC, 0, 0 );
 }
 
 void Book1::drawDot( HDC& targetHDC, int x, int y, int kind )
@@ -322,7 +298,7 @@ void Book1::drawDotAnd( HDC& targetHDC, int x, int y, int kind )
 
 BOOL Book1::fadeIn( int partition )
 {
-	if( mAnimeCount == mToneMaxNum * partition - 1 ) return TRUE;
+	if( mAnimeCount == TONE_NONE * partition - 1 ) return TRUE;
 	if( ++mAnimeCount % partition == 0 ) --mToneIndex;
 	return FALSE;
 }
@@ -378,8 +354,8 @@ void Book1::update( MainParent* parent )
 	}
 
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
-	if( Main::HandManager::inst()->getX() > Main::SceneManager::windowWidth - 64 && Main::HandManager::inst()->getY() > Main::SceneManager::windowHeight - 64 ) {
-		if( Main::SceneManager::isClick ) {
+	if( Main::HandManager::inst()->getX() > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+		if( Main::HandManager::isClick ) {
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_CLOSE );

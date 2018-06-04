@@ -10,7 +10,7 @@ class Track;
 class BandPassFilter : public EffectBase
 {
 public:
-	BandPassFilter( double** setWaveLog );
+	BandPassFilter( void );
 	~BandPassFilter( void );
 
 	void reset( void );
@@ -20,6 +20,8 @@ private:
 	/* Band-Pass（帯域通過）フィルタ 　※特定の帯域を通過させる */
 	void setBPF( double fe1, double fe2, double* w );
 	void setState( void );
+
+	double mWaveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ];
 
 	double* mB;
 	double* mX;

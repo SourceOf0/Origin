@@ -1,14 +1,11 @@
 #include "Delay.h"
 #include "Track.h"
 
-#define _USE_MATH_DEFINES
-#include <Math.h>
-
 namespace Sound {
 
-Delay::Delay( double** setWaveLog )
+Delay::Delay( void )
 {
-	init( setWaveLog );
+	init( mWaveLog );
 }
 
 
@@ -38,7 +35,7 @@ void Delay::apply( Track* track )
 			int m = static_cast< int >( static_cast< double >( i ) - static_cast< double >( j ) * delayTime );
 
 			/* 過去の音データをミックスする */
-			s += pow( a, static_cast< double >( j ) ) * getPrevData( m );
+			s += customPow( a, static_cast< double >( j ) ) * getPrevData( mWaveLog, m );
 		}
 
 		waveData[ i ] = s;

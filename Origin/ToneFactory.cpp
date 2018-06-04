@@ -37,28 +37,45 @@ ToneFactory::ToneFactory( HDC& hdc )
 
 	int toneNum = TONE_NONE;
 	DCBitmap** setTone = new DCBitmap*[ toneNum ];
-	DCBitmap* filter = imageFactory->loadDC( hdc, "resource\\tone.dad" );
 	DCBitmap* newData = 0;
+	DCBitmap* filter = imageFactory->loadDC( hdc, "resource\\tone.dad" );
 
-	int blockWidth = filter->mWidth / 15;
-	for( int i = 0; i < toneNum; ++i ) {
+	int setToneIndex = 0;
+	int setToneNum = 15;
+	int blockWidth = filter->mWidth / setToneNum;
+	for( int i = 0; i < setToneNum; ++i ) {
 		newData = new DCBitmap( hdc, windowWidth, windowHeight, 0xFF );
 		if( i == 0 ) {
-			setTone[ 0 ] = newData;
+			setTone[ setToneIndex++ ] = newData;
 			continue;
 		}
 		for( unsigned int y = 0; y < windowHeight; y += blockWidth ) {
 			for( unsigned int x = 0; x < windowWidth; x += blockWidth ) {
-				filter->drawBlock( newData->mHdcBmp, x, y, blockWidth, ( i - 1 ) % 15 );
+				filter->drawBlock( newData->mHdcBmp, x, y, blockWidth, ( i - 1 ) % setToneNum );
 			}
 		}
-		setTone[ i ] = newData;
+		setTone[ setToneIndex++ ] = newData;
 	}
-
-	BitmapBase::mTone = setTone;
-
 	delete filter;
 	filter = 0;
+
+	filter = imageFactory->loadDC( hdc, "resource\\smallFilter.dad" );
+
+	setToneNum = 5;
+	blockWidth = filter->mWidth / setToneNum;
+	for( int i = setToneNum - 1; i >= 0; --i ) {
+		newData = new DCBitmap( hdc, windowWidth, windowHeight, 0xFF );
+		for( unsigned int y = 0; y < windowHeight; y += blockWidth ) {
+			for( unsigned int x = 0; x < windowWidth; x += blockWidth ) {
+				filter->drawBlock( newData->mHdcBmp, x, y, blockWidth, ( i ) % setToneNum );
+			}
+		}
+		setTone[ setToneIndex++ ] = newData;
+	}
+	delete filter;
+	filter = 0;
+
+	BitmapBase::mTone = setTone;
 }
 
 ToneFactory::~ToneFactory( void )

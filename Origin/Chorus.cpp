@@ -1,14 +1,11 @@
 #include "Chorus.h"
 #include "Track.h"
 
-#define _USE_MATH_DEFINES
-#include <Math.h>
-
 namespace Sound {
 
-Chorus::Chorus( double** setWaveLog )
+Chorus::Chorus()
 {
-	init( setWaveLog );
+	init( mWaveLog );
 }
 
 
@@ -40,11 +37,11 @@ void Chorus::apply( Track* track )
 	for( int i = 0; i < WAVE_DATA_LENGTH; ++i ) {
 		double s = waveData[ i ];
 
-		tau = d + depth * sin( 2.0 * M_PI * rate * ( time + i ) / SAMPLES_PER_SEC );
+		tau = d + depth * customSin( 2.0 * M_PI * rate * ( time + i ) / SAMPLES_PER_SEC );
 		t = static_cast< double >( i ) - tau;
 		m = static_cast< int >( t );
 		delta = t - static_cast< double >( m );
-		s += delta * getPrevData( m + 1 ) + ( 1.0 - delta ) * getPrevData( m ); 
+		s += delta * getPrevData( mWaveLog, m + 1 ) + ( 1.0 - delta ) * getPrevData( mWaveLog, m ); 
 
 		waveData[ i ] = s;
 	}

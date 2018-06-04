@@ -10,7 +10,7 @@ class Track;
 class BandEliminateFilter : public EffectBase
 {
 public:
-	BandEliminateFilter( double** setWaveLog );
+	BandEliminateFilter( void );
 	~BandEliminateFilter( void );
 
 	void reset( void );
@@ -20,6 +20,8 @@ private:
 	/* Band-Eliminatei‘Ñˆæ‘j~jƒtƒBƒ‹ƒ^ @¦“Á’è‚Ì‘Ñˆæ‚ğ‘j~‚·‚é */
 	void setBEF( double fe1, double fe2, double* w );
 	void setState( void );
+
+	double mWaveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LENGTH ];
 
 	double* mB;
 	double* mX;
