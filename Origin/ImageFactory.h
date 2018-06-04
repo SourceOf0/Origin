@@ -1,0 +1,31 @@
+#ifndef INCLUDED_MAIN_IMAGE_FACTORY_H
+#define INCLUDED_MAIN_IMAGE_FACTORY_H
+
+#include <windows.h>
+
+namespace Common {
+	class PixelBitmap;
+}
+
+namespace Main {
+
+class ImageFactory
+{
+public:
+	static ImageFactory* inst();
+	static void create( void );
+	static void destroy( void );
+
+	Common::PixelBitmap* load( const char* outfile );
+
+private:
+	ImageFactory( void );
+	ImageFactory( ImageFactory& );
+	~ImageFactory( void );
+
+	static ImageFactory* mInst;
+};
+
+} // namespace Main
+
+#endif // INCLUDED_MAIN_IMAGE_FACTORY_H
