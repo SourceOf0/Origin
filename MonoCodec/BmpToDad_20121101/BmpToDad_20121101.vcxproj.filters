@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="NumData.h" />
+    <ClInclude Include="DataBase.h" />
+    <ClInclude Include="FileManager.h" />
+    <ClInclude Include="MonoData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="NumData.cpp" />
+    <ClCompile Include="DataBase.cpp" />
+    <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MonoData.cpp" />
+  </ItemGroup>
+</Project>
