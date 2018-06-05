@@ -9,8 +9,6 @@ HDC DCBitmap::mHdcBlackBmp = 0;
 HBITMAP DCBitmap::mHBmpBlackPrev = 0;
 HDC DCBitmap::mHdcWhiteBmp = 0;
 HBITMAP DCBitmap::mHBmpWhitePrev = 0;
-HDC DCBitmap::mHdcMaskBmp = 0;
-HBITMAP DCBitmap::mHBmpMaskPrev = 0;
 
 DCBitmap::DCBitmap( HDC& hdc, PixelBitmap* target )
 {

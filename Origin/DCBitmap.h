@@ -55,8 +55,6 @@ public:
 	static HBITMAP mHBmpBlackPrev;
 	static HDC mHdcWhiteBmp;
 	static HBITMAP mHBmpWhitePrev;
-	static HDC mHdcMaskBmp;
-	static HBITMAP mHBmpMaskPrev;
 
 	HDC mHdcBmp;
 

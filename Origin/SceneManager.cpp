@@ -103,16 +103,6 @@ mWasDraw( FALSE )
 	delete pixelData;
 	pixelData = 0;
 
-	pixelData = new Image::PixelBitmap( deviceWidth, deviceHeight, 0 );
-	Image::DCBitmap::mHdcMaskBmp = CreateCompatibleDC( hdc );
-	setHBmp = CreateBitmap( deviceWidth, deviceHeight, 1, 1, pixelData->mPixelData );
-	Image::DCBitmap::mHBmpMaskPrev = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcMaskBmp, setHBmp );
-
-	BitBlt( Image::DCBitmap::mHdcMaskBmp, (deviceWidth-windowWidth)/2, (deviceHeight-windowHeight)/2, windowWidth, windowHeight, Image::DCBitmap::mHdcWhiteBmp, 0, 0, SRCCOPY );
-
-	delete pixelData;
-	pixelData = 0;
-
 	HandManager::create( hdc );
 	NoteManager::create();
 
@@ -145,10 +135,6 @@ SceneManager::~SceneManager( void )
 	hbmp = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcWhiteBmp, Image::DCBitmap::mHBmpWhitePrev );
 	DeleteObject( hbmp );
 	DeleteObject( Image::DCBitmap::mHdcWhiteBmp );
-
-	hbmp = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcMaskBmp, Image::DCBitmap::mHBmpMaskPrev );
-	DeleteObject( hbmp );
-	DeleteObject( Image::DCBitmap::mHdcMaskBmp );
 }
 
 void SceneManager::endSetWave( void )
@@ -185,7 +171,6 @@ int SceneManager::draw( HDC& hdc )
 		mWindowPixel[i] = 0;
 	}
 	mParent->draw( hdc );
-	BitBlt( mHdcBmp, 0, 0, deviceWidth, deviceHeight, Image::DCBitmap::mHdcMaskBmp, 0, 0, SRCAND );
 	BitBlt( hdc, 0, 0, deviceWidth, deviceHeight, mHdcBmp, 0, 0, SRCCOPY );
 
 	mWasDraw = TRUE;

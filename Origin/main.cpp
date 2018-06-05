@@ -123,7 +123,7 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 
 	TCHAR      szAppName[] = TEXT( "Origin" );
 	DWORD      dwExStyle   = WS_EX_LEFT;
-	DWORD      dwStyle     = WS_CAPTION | WS_SYSMENU;
+	DWORD      dwStyle     = WS_POPUP | WS_CAPTION | WS_SYSMENU;
 	HWND       hwnd;
 	MSG        msg;
 	WNDCLASSEX wc;
@@ -137,7 +137,7 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 	wc.hInstance     = hinst;
 	wc.hIcon         = (HICON)LoadImage( NULL, IDI_APPLICATION, IMAGE_ICON, 0, 0, LR_SHARED );
 	wc.hCursor       = (HCURSOR)LoadImage( NULL, IDC_ARROW, IMAGE_CURSOR, 0, 0, LR_SHARED );
-	wc.hbrBackground = (HBRUSH)GetStockObject( WHITE_BRUSH );
+	wc.hbrBackground = (HBRUSH)GetStockObject( BLACK_BRUSH );
 	wc.lpszMenuName  = NULL;
 	wc.lpszClassName = szAppName;
 	wc.hIconSm       = (HICON)LoadImage( NULL, IDI_APPLICATION, IMAGE_ICON, 0, 0, LR_SHARED );
