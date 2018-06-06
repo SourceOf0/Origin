@@ -2,6 +2,7 @@
 #define INCLUDED_MAIN_HAND_MANAGER_H
 
 #include <windows.h>
+#include "common.h"
 
 namespace Image {
 	class LayerData;

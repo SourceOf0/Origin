@@ -2,6 +2,7 @@
 #define INCLUDED_MAIN_SCENE_MANAGER_H
 
 #include <windows.h>
+#include "common.h"
 
 namespace Sequence {
 	class MainParent;
@@ -15,13 +16,15 @@ public:
 	static SceneManager* inst();
 	static void create( HWND& hwnd );
 	static void destroy( void );
-	static void setWindowSize( void );
+	static void setWindowPos( HWND& hwnd );
 
 	int update( void );
 	int draw( HDC& hdc );
 
 	void endSetWave( void );
 
+	static const int VIEW_WIDTH;
+	static const int VIEW_HEIGHT;
 	static int windowWidth;
 	static int windowHeight;
 	static int deviceWidth;

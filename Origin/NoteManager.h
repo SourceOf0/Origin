@@ -2,6 +2,7 @@
 #define INCLUDED_MAIN_NOTE_MANAGER_H
 
 #include <windows.h>
+#include "common.h"
 
 enum PageKind {
 	NOTE_ROOM_1,

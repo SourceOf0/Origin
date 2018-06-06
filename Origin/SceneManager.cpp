@@ -13,11 +13,14 @@
 
 namespace Main {
 
-SceneManager* SceneManager::mInst = 0;
+const int SceneManager::VIEW_WIDTH = 1024;
+const int SceneManager::VIEW_HEIGHT = 768;
 int SceneManager::windowWidth = 0;
 int SceneManager::windowHeight = 0;
 int SceneManager::deviceWidth = 0;
 int SceneManager::deviceHeight = 0;
+
+SceneManager* SceneManager::mInst = 0;
 BOOL SceneManager::isAddWave = FALSE;
 
 SceneManager* SceneManager::inst( void )
@@ -37,28 +40,27 @@ void SceneManager::destroy( void )
 		mInst = 0;
 	}
 }
-void SceneManager::setWindowSize( void )
+void SceneManager::setWindowPos( HWND& hwnd )
 {
-	windowWidth = 1024;
-	windowHeight = 768;
-	//deviceWidth = GetDeviceCaps( hdc, HORZRES );
-	//deviceHeight = GetDeviceCaps( hdc, VERTRES );
-	deviceWidth = 1024;
-	deviceHeight = 768;
+	MoveWindow( hwnd, (deviceWidth - windowWidth)/2, (deviceHeight - windowHeight)/2, windowWidth, windowHeight, FALSE );
 }
 
 SceneManager::SceneManager( HWND& hwnd ) :
 mFrameRate( 40 ),
 mWasDraw( FALSE )
 {
-	HDC hdc;
+	HDC hdc = GetDC( hwnd );
+
 //	long black = RGB( 100, 100, 100 );
 	long black = RGB( 10, 10, 10 );
 	long white = RGB( 255, 255, 255 );
 
 	ShowCursor( FALSE );
 
-	hdc = GetDC( hwnd );
+	windowWidth = 1024;
+	windowHeight = 768;
+	deviceWidth = GetDeviceCaps( hdc, HORZRES );
+	deviceHeight = GetDeviceCaps( hdc, VERTRES );
 
 	mBmpInfo = ( BITMAPINFO * )malloc( sizeof( BITMAPINFOHEADER ) + sizeof( RGBQUAD ) * 2 );
 	mBmpInfo->bmiHeader.biSize = sizeof( BITMAPINFOHEADER );
@@ -68,10 +70,10 @@ mWasDraw( FALSE )
 	mBmpInfo->bmiHeader.biClrImportant = 0;
 	mBmpInfo->bmiHeader.biCompression = BI_RGB;
 	mBmpInfo->bmiHeader.biSizeImage = 0;
-	mBmpInfo->bmiHeader.biXPelsPerMeter = deviceWidth;
-	mBmpInfo->bmiHeader.biYPelsPerMeter = deviceHeight;
-	mBmpInfo->bmiHeader.biWidth = deviceWidth;
-	mBmpInfo->bmiHeader.biHeight = -deviceHeight;
+	mBmpInfo->bmiHeader.biXPelsPerMeter = VIEW_WIDTH;
+	mBmpInfo->bmiHeader.biYPelsPerMeter = VIEW_HEIGHT;
+	mBmpInfo->bmiHeader.biWidth = VIEW_WIDTH;
+	mBmpInfo->bmiHeader.biHeight = -VIEW_HEIGHT;
 	CopyMemory( &mBmpInfo->bmiColors[0], &black, sizeof( RGBQUAD ) );
 	CopyMemory( &mBmpInfo->bmiColors[1], &white, sizeof( RGBQUAD ) );
 
@@ -81,7 +83,7 @@ mWasDraw( FALSE )
 
 	mParent = new Sequence::MainParent( hwnd, hdc, windowWidth, windowHeight );
 
-	for ( int i = 0; i < deviceWidth * deviceHeight / 32; ++i ) {
+	for ( int i = 0; i < VIEW_WIDTH * VIEW_HEIGHT / 32; ++i ) {
 		mWindowPixel[i] = 0;
 	}
 
@@ -167,11 +169,11 @@ int SceneManager::draw( HDC& hdc )
 	GetLocalTime( &localTime );
 	mLocalTime = localTime;
 
-	for ( int i = 0; i < deviceWidth * deviceHeight / 32; ++i ) {
+	for ( int i = 0; i < VIEW_WIDTH * VIEW_HEIGHT / 32; ++i ) {
 		mWindowPixel[i] = 0;
 	}
 	mParent->draw( hdc );
-	BitBlt( hdc, 0, 0, deviceWidth, deviceHeight, mHdcBmp, 0, 0, SRCCOPY );
+	BitBlt( hdc, 0, 0, VIEW_WIDTH, VIEW_HEIGHT, mHdcBmp, 0, 0, SRCCOPY );
 
 	mWasDraw = TRUE;
 

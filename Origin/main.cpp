@@ -6,6 +6,7 @@
 #pragma comment(lib,"winmm")
 
 #include <windows.h>
+#include "common.h"
 #include "HandManager.h"
 #include "SceneManager.h"
 #include "SoundManager.h"
@@ -114,12 +115,8 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 {
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
-	Main::SceneManager::setWindowSize();
-
-	int windowWidth  = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
-	int deviceWidth  = Main::SceneManager::deviceWidth;
-	int deviceHeight = Main::SceneManager::deviceHeight;
+	const int VIEW_WIDTH  = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	TCHAR      szAppName[] = TEXT( "Origin" );
 	DWORD      dwExStyle   = WS_EX_LEFT;
@@ -144,12 +141,13 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 	
 	if( RegisterClassEx(&wc) == 0 ) return 0;
 
-	//SetRect( &rc, (deviceWidth - windowWidth)/2, (deviceHeight - windowHeight)/2, (deviceWidth - windowWidth)/2 + windowWidth, (deviceHeight - windowHeight)/2 + windowHeight );
-	SetRect( &rc, (1920 - windowWidth)/2, (1200 - windowHeight)/2, (1920 - windowWidth)/2 + windowWidth, (1200 - windowHeight)/2 + windowHeight );
+	SetRect( &rc, 0, 0, VIEW_WIDTH, VIEW_HEIGHT );
 	AdjustWindowRectEx( &rc, dwStyle, FALSE, dwExStyle );
 
 	hwnd = CreateWindowEx( dwExStyle, szAppName, szAppName, dwStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hinst, NULL );
 	if( hwnd == NULL ) return 0;
+
+	Main::SceneManager::setWindowPos( hwnd );
 
 	/*
 	{  // フルスクリーンモード

@@ -2,18 +2,7 @@
 #define INCLUDED_SEQUENCE_MAIN_PARENT_H
 
 #include <windows.h>
-#include <stdio.h>
-
-#ifdef _DEBUG
-#   define debugPrint( str, ... ) \
-      { \
-        char c[256]; \
-        sprintf_s( c, 256, str, __VA_ARGS__ ); \
-        OutputDebugString( c ); \
-      }
-#else
-#    define debugPrint( str, ... ) // ‹óŽÀ‘•
-#endif
+#include "common.h"
 
 namespace Image {
 	class DCBitmap;

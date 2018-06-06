@@ -2,6 +2,7 @@
 #define INCLUDED_MAIN_SOUND_MANAGER_H
 
 #include <windows.h>
+#include "common.h"
 #include "SoundBase.h"
 
 namespace Sound {

@@ -2,6 +2,7 @@
 #define INCLUDED_MAIN_TONE_FACTORY_H
 
 #include <windows.h>
+#include "common.h"
 
 namespace Main {
 

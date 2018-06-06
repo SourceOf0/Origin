@@ -406,6 +406,7 @@
     <ClInclude Include="NoteManager.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="common.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

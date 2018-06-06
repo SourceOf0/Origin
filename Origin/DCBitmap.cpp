@@ -165,8 +165,8 @@ void DCBitmap::setWhite( int x, int y, unsigned int width, unsigned int height )
 void DCBitmap::copyWindow( void )
 {
 	Main::SceneManager* inst = Main::SceneManager::inst();
-	const int setX = ( inst->deviceWidth - inst->windowWidth ) / 2;
-	const int setY = ( inst->deviceHeight - inst->windowHeight ) / 2;
+	const int setX = ( inst->windowWidth - inst->VIEW_WIDTH ) / 2;
+	const int setY = ( inst->windowHeight - inst->VIEW_HEIGHT ) / 2;
 	BitBlt( mHdcBmp, 0, 0, mWidth, mHeight, Main::SceneManager::inst()->mHdcBmp, setX, setY, SRCCOPY );
 }
 void DCBitmap::drawWindow( void )
@@ -184,8 +184,8 @@ void DCBitmap::drawWindow( int x, int y, int startX, int startY, int width, int 
 void DCBitmap::drawWindow( int x, int y, int width, int height, int startX, int startY, DWORD drawOperation )
 {
 	Main::SceneManager* inst = Main::SceneManager::inst();
-	const int setX = ( inst->deviceWidth - inst->windowWidth ) / 2 + x;
-	const int setY = ( inst->deviceHeight - inst->windowHeight ) / 2 + y;
+	const int setX = ( inst->windowWidth - inst->VIEW_WIDTH ) / 2 + x;
+	const int setY = ( inst->windowHeight - inst->VIEW_HEIGHT ) / 2 + y;
 	BitBlt( inst->mHdcBmp, setX, setY, width, height, mHdcBmp, startX, startY, drawOperation );
 }
 

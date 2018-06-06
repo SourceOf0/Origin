@@ -181,6 +181,7 @@
     <ClInclude Include="LayerData.h" />
     <ClInclude Include="Lever.h" />
     <ClInclude Include="LowPassFilter.h" />
+    <ClInclude Include="common.h" />
     <ClInclude Include="MainChild.h" />
     <ClInclude Include="MainParent.h" />
     <ClInclude Include="NoiseGate.h" />
