@@ -14,8 +14,6 @@ namespace Room {
 Room1::Room1( HDC& hdc, RoomParent* parent )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
 
 	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room1.dad" ) );
 	mBackBmp1->mUseAlpha = FALSE;
@@ -35,8 +33,6 @@ Room1::~Room1()
 
 void Room1::update( RoomParent* parent )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
 	BOOL isClick = Main::HandManager::isClick;
 	Main::HandManager* handManager = Main::HandManager::inst();
 	int mouseX = handManager->getX();

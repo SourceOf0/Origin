@@ -10,6 +10,7 @@
 #include "DCBitmap.h"
 
 #include "MainParent.h"
+#include "MainChild.h"
 
 namespace Main {
 
@@ -17,8 +18,6 @@ const int SceneManager::VIEW_WIDTH = 1024;
 const int SceneManager::VIEW_HEIGHT = 768;
 int SceneManager::windowWidth = 0;
 int SceneManager::windowHeight = 0;
-int SceneManager::deviceWidth = 0;
-int SceneManager::deviceHeight = 0;
 
 SceneManager* SceneManager::mInst = 0;
 BOOL SceneManager::isAddWave = FALSE;
@@ -40,10 +39,24 @@ void SceneManager::destroy( void )
 		mInst = 0;
 	}
 }
-void SceneManager::setWindowPos( HWND& hwnd )
+void SceneManager::setWindowSize( HWND& hwnd )
 {
-	MoveWindow( hwnd, (deviceWidth - windowWidth)/2, (deviceHeight - windowHeight)/2, windowWidth, windowHeight, FALSE );
+	RECT rc;
+	GetClientRect(hwnd, &rc);
+
+	windowWidth = rc.right - rc.left;
+	windowHeight = rc.bottom - rc.top;
 }
+
+int SceneManager::getViewPosX( void )
+{
+	return (windowWidth - VIEW_WIDTH)/2;
+}
+int SceneManager::getViewPosY( void )
+{
+	return (windowHeight - VIEW_HEIGHT)/2;
+}
+
 
 SceneManager::SceneManager( HWND& hwnd ) :
 mFrameRate( 40 ),
@@ -55,12 +68,7 @@ mWasDraw( FALSE )
 	long black = RGB( 10, 10, 10 );
 	long white = RGB( 255, 255, 255 );
 
-	ShowCursor( FALSE );
-
-	windowWidth = 1024;
-	windowHeight = 768;
-	deviceWidth = GetDeviceCaps( hdc, HORZRES );
-	deviceHeight = GetDeviceCaps( hdc, VERTRES );
+	setWindowSize( hwnd );
 
 	mBmpInfo = ( BITMAPINFO * )malloc( sizeof( BITMAPINFOHEADER ) + sizeof( RGBQUAD ) * 2 );
 	mBmpInfo->bmiHeader.biSize = sizeof( BITMAPINFOHEADER );
@@ -81,7 +89,7 @@ mWasDraw( FALSE )
 	mHdcBmp = CreateCompatibleDC( hdc );
 	mHBmpOld = ( HBITMAP )SelectObject( mHdcBmp, mHBmp );
 
-	mParent = new Sequence::MainParent( hwnd, hdc, windowWidth, windowHeight );
+	mParent = new Sequence::MainParent( hwnd, hdc );
 
 	for ( int i = 0; i < VIEW_WIDTH * VIEW_HEIGHT / 32; ++i ) {
 		mWindowPixel[i] = 0;
@@ -90,16 +98,16 @@ mWasDraw( FALSE )
 	ImageFactory::create( hdc );
 
 	HBITMAP setHBmp = 0;
-	Image::PixelBitmap* pixelData = new Image::PixelBitmap( windowWidth, windowHeight );
+	Image::PixelBitmap* pixelData = new Image::PixelBitmap( VIEW_WIDTH, VIEW_HEIGHT );
 	
 	Image::DCBitmap::mHdcBlackBmp = CreateCompatibleDC( hdc );
-	setHBmp = CreateBitmap( windowWidth, windowHeight, 1, 1, pixelData->mPixelData );
+	setHBmp = CreateBitmap( VIEW_WIDTH, VIEW_HEIGHT, 1, 1, pixelData->mPixelData );
 	Image::DCBitmap::mHBmpBlackPrev = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcBlackBmp, setHBmp );
 
-	pixelData->reset( windowWidth, windowHeight, 0xFF );
+	pixelData->reset( VIEW_WIDTH, VIEW_HEIGHT, 0xFF );
 
 	Image::DCBitmap::mHdcWhiteBmp = CreateCompatibleDC( hdc );
-	setHBmp = CreateBitmap( windowWidth, windowHeight, 1, 1, pixelData->mPixelData );
+	setHBmp = CreateBitmap( VIEW_WIDTH, VIEW_HEIGHT, 1, 1, pixelData->mPixelData );
 	Image::DCBitmap::mHBmpWhitePrev = ( HBITMAP )SelectObject( Image::DCBitmap::mHdcWhiteBmp, setHBmp );
 
 	delete pixelData;
@@ -173,7 +181,7 @@ int SceneManager::draw( HDC& hdc )
 		mWindowPixel[i] = 0;
 	}
 	mParent->draw( hdc );
-	BitBlt( hdc, 0, 0, VIEW_WIDTH, VIEW_HEIGHT, mHdcBmp, 0, 0, SRCCOPY );
+	BitBlt( hdc, getViewPosX(), getViewPosY(), VIEW_WIDTH, VIEW_HEIGHT, mHdcBmp, 0, 0, SRCCOPY );
 
 	mWasDraw = TRUE;
 

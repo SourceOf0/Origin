@@ -26,8 +26,8 @@ mAnimeState( 0 ),
 mScheduleIndex( VIEW_SCHEDULE_NUM )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	srand( static_cast< unsigned >( time( NULL ) ) );
 
@@ -40,10 +40,10 @@ mScheduleIndex( VIEW_SCHEDULE_NUM )
 
 	mDotBmp = imageFactory->loadDC( hdc, "resource\\pointMask.dad" );
 
-	mMaskBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
+	mMaskBmp = new Image::DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT );
 	mMaskBmp->setBlack();
 
-	mMainBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
+	mMainBmp = new Image::DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT );
 	mMainBmp->setBlack();
 }
 
@@ -66,8 +66,8 @@ Book1::~Book1()
 
 void Book1::nextMotion( void )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	int setX = 0;
 	int setY = 0;
@@ -88,12 +88,12 @@ void Book1::nextMotion( void )
 		case 0:
 			setImage( &mImage[ 0 ], 0, 0, 0, IMAGE_01 );
 			image = IMAGE_02;
-			setImage( &mImage[ 1 ], windowWidth - mBmp[ image ]->mWidth, windowHeight - mBmp[ image ]->mHeight, 0, image );
+			setImage( &mImage[ 1 ], VIEW_WIDTH - mBmp[ image ]->mWidth, VIEW_HEIGHT - mBmp[ image ]->mHeight, 0, image );
 			setImage( &mImage[ 2 ], 0, 0, 0, IMAGE_04 );
 
 			mask = MASK_1;
-			setX = windowWidth - mBmp[ mask ]->mWidth;
-			setY = windowHeight - mBmp[ mask ]->mHeight;
+			setX = VIEW_WIDTH - mBmp[ mask ]->mWidth;
+			setY = VIEW_HEIGHT - mBmp[ mask ]->mHeight;
 			for( int i = 0; i < 4; ++i ) {
 				setMask( &mMask[ i ], ( i / 2 ) * setX, ( i % 2 ) * setY, i % 2, mask );
 			}
@@ -101,15 +101,15 @@ void Book1::nextMotion( void )
 
 		case 1:
 			image = IMAGE_03;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			break;
 
 		case 2:
 			setImage( &mImage[ 0 ], 0, 0, 0, IMAGE_05 );
 			image = IMAGE_09;
-			setImage( &mImage[ 1 ], windowWidth - mBmp[ image ]->mWidth, windowHeight - mBmp[ image ]->mHeight, 0, image );
+			setImage( &mImage[ 1 ], VIEW_WIDTH - mBmp[ image ]->mWidth, VIEW_HEIGHT - mBmp[ image ]->mHeight, 0, image );
 			
 			mask = MASK_4;
 			setX = mBmp[ mask ]->mWidth;
@@ -121,42 +121,42 @@ void Book1::nextMotion( void )
 
 		case 3:
 			image = IMAGE_07;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			image = IMAGE_10;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 1.0 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.0 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 1.0 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.0 );
 			setImage( &mImage[ 1 ], setX, setY, 0, image );
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.7 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.3 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.7 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.3 );
 			setImage( &mImage[ 2 ], setX, setY, 0, image );
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.3 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.7 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.3 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.7 );
 			setImage( &mImage[ 3 ], setX, setY, 0, image );
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.0 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 1.0 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.0 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 1.0 );
 			setImage( &mImage[ 4 ], setX, setY, 0, image );
 			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_1 );
 			break;
 
 		case 4:
 			image = IMAGE_06;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, 0, 0, image );
 			break;
 
 		case 5:
 			image = IMAGE_08;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			break;
 
 		case 6:
 			image = IMAGE_12;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 
 			for( int i = 0; i < BOOK1_MASK_NUM; ++i ) {
@@ -166,11 +166,11 @@ void Book1::nextMotion( void )
 
 		case 7:
 			image = IMAGE_13;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			mask = MASK_1;
-			setX = static_cast< int >( ( windowWidth - mBmp[ mask ]->mWidth ) * 0.3 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ mask ]->mWidth ) * 0.3 );
 			setY = - static_cast< int >( mBmp[ mask ]->mHeight * 0.9 );
 			for( int i = 0; i < 3; ++i ) {
 				setMask( &mMask[ i ], setX + i * 50, ( i + 1 ) * setY, 0, mask );
@@ -179,46 +179,46 @@ void Book1::nextMotion( void )
 
 		case 8:
 			image = IMAGE_14;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			mask = MASK_2;
-			setMask( &mMask[ 0 ], ( rand() % windowWidth ), ( rand() % windowHeight ), 0, mask );
+			setMask( &mMask[ 0 ], ( rand() % VIEW_WIDTH ), ( rand() % VIEW_HEIGHT ), 0, mask );
 			break;
 
 		case 9:
 			image = IMAGE_15;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_3 );
 			break;
 
 		case 10:
 			image = IMAGE_16;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			mask = MASK_3;
 			setX = static_cast< int >( mBmp[ mask ]->mWidth / 2 );
 			setY = static_cast< int >( mBmp[ image ]->mHeight );
 			for( int i = 0; i < 5; ++i ) {
-				setMask( &mMask[ i ], ( rand() % windowWidth ) - setX, setY + setY / 2 * ( rand() % 3 ), ( rand() % 3 ) + 2, mask );
+				setMask( &mMask[ i ], ( rand() % VIEW_WIDTH ) - setX, setY + setY / 2 * ( rand() % 3 ), ( rand() % 3 ) + 2, mask );
 			}
 			break;
 
 		case 11:
 			image = IMAGE_17;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_1 );
 			break;
 
 		case 12:
 			image = IMAGE_11;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			mState = 5;
 			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_1 );
@@ -226,8 +226,8 @@ void Book1::nextMotion( void )
 
 		case 13:
 			image = IMAGE_00;
-			setX = static_cast< int >( ( windowWidth - mBmp[ image ]->mWidth ) * 0.5 );
-			setY = static_cast< int >( ( windowHeight - mBmp[ image ]->mHeight ) * 0.5 );
+			setX = static_cast< int >( ( VIEW_WIDTH - mBmp[ image ]->mWidth ) * 0.5 );
+			setY = static_cast< int >( ( VIEW_HEIGHT - mBmp[ image ]->mHeight ) * 0.5 );
 			setImage( &mImage[ 0 ], setX, setY, 0, image );
 			mState = 5;
 			Main::NoteManager::inst()->setNextPage( NOTE_BOOK1_3 );
@@ -374,7 +374,7 @@ void Book1::update( MainParent* parent )
 	}
 
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
-	if( Main::HandManager::inst()->getX() > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+	if( Main::HandManager::inst()->getX() > Main::SceneManager::VIEW_WIDTH - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > Main::SceneManager::VIEW_HEIGHT - BOOK_CORNAR_HIT_SIZE ) {
 		if( Main::HandManager::isClick ) {
 			parent->moveTo( parent->SEQ_ROOM );
 		} else {

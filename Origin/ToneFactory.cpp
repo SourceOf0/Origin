@@ -32,8 +32,8 @@ void ToneFactory::destroy( void )
 ToneFactory::ToneFactory( HDC& hdc )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	unsigned int windowWidth = Main::SceneManager::windowWidth;
-	unsigned int windowHeight = Main::SceneManager::windowHeight;
+	const unsigned int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const unsigned int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	int toneNum = TONE_NONE;
 	DCBitmap** setTone = new DCBitmap*[ toneNum ];
@@ -44,13 +44,13 @@ ToneFactory::ToneFactory( HDC& hdc )
 	int setToneNum = 15;
 	int blockWidth = filter->mWidth / setToneNum;
 	for( int i = 0; i < setToneNum; ++i ) {
-		newData = new DCBitmap( hdc, windowWidth, windowHeight, 0xFF );
+		newData = new DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT, 0xFF );
 		if( i == 0 ) {
 			setTone[ setToneIndex++ ] = newData;
 			continue;
 		}
-		for( unsigned int y = 0; y < windowHeight; y += blockWidth ) {
-			for( unsigned int x = 0; x < windowWidth; x += blockWidth ) {
+		for( unsigned int y = 0; y < VIEW_HEIGHT; y += blockWidth ) {
+			for( unsigned int x = 0; x < VIEW_WIDTH; x += blockWidth ) {
 				filter->drawBlock( newData->mHdcBmp, x, y, blockWidth, ( i - 1 ) % setToneNum );
 			}
 		}
@@ -64,9 +64,9 @@ ToneFactory::ToneFactory( HDC& hdc )
 	setToneNum = 5;
 	blockWidth = filter->mWidth / setToneNum;
 	for( int i = setToneNum - 1; i >= 0; --i ) {
-		newData = new DCBitmap( hdc, windowWidth, windowHeight, 0xFF );
-		for( unsigned int y = 0; y < windowHeight; y += blockWidth ) {
-			for( unsigned int x = 0; x < windowWidth; x += blockWidth ) {
+		newData = new DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT, 0xFF );
+		for( unsigned int y = 0; y < VIEW_HEIGHT; y += blockWidth ) {
+			for( unsigned int x = 0; x < VIEW_WIDTH; x += blockWidth ) {
 				filter->drawBlock( newData->mHdcBmp, x, y, blockWidth, ( i ) % setToneNum );
 			}
 		}

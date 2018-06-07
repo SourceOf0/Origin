@@ -138,12 +138,12 @@ void Book4::moveBallJump( BOOL isClick, int mouseX, int mouseY )
 		mBallState.count = 0;
 	}
 
-	if( mBallState.x >= Main::SceneManager::windowWidth ) {
+	if( mBallState.x >= Main::SceneManager::VIEW_WIDTH ) {
 		mWasFall = TRUE;
 		breakBallX();
 		resetBall();
 	}
-	if( mBallState.y >= Main::SceneManager::windowHeight ) {
+	if( mBallState.y >= Main::SceneManager::VIEW_HEIGHT ) {
 		mWasFall = TRUE;
 		breakBallY();
 		resetBall();
@@ -161,7 +161,7 @@ void Book4::moveBallFall( BOOL isClick, int mouseX, int mouseY )
 		mBallState.count = 0;
 	}
 
-	if( mBallState.y >= Main::SceneManager::windowHeight ) {
+	if( mBallState.y >= Main::SceneManager::VIEW_HEIGHT ) {
 		mWasFall = TRUE;
 		breakBallY();
 		resetBall();
@@ -192,7 +192,7 @@ void Book4::moveBallShake( BOOL isClick, int mouseX, int mouseY )
 void Book4::resetBall( void )
 {
 	mBallState.x = - USE_BALL_IMAGE_SIZE;
-	mBallState.y = ( Main::SceneManager::windowHeight - USE_BALL_IMAGE_SIZE ) / 2;
+	mBallState.y = ( Main::SceneManager::VIEW_HEIGHT - USE_BALL_IMAGE_SIZE ) / 2;
 	mBallState.vy = 0;
 	mBallState.state = STATE_BALL_SETTING;
 	mBallState.count = 0;

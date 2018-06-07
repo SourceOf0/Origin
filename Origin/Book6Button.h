@@ -59,9 +59,6 @@ void Book6::drawButton( void )
 
 void Book6::updateButton( void ) 
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
-
 	int mouseX = Main::HandManager::inst()->getX();
 	int mouseY = Main::HandManager::inst()->getY();
 

@@ -30,8 +30,6 @@ mMoveTarget( 0 ),
 mIsMove( FALSE )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
 	int entCount = 0;
 	int i = -1;
 
@@ -150,7 +148,7 @@ void Book7::update( MainParent* parent )
 	}
 	if( isSameLine ) Main::NoteManager::inst()->setNextPage( NOTE_BOOK7_3 );
 
-	if( mouseX > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && mouseY > Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+	if( mouseX > Main::SceneManager::VIEW_WIDTH - BOOK_CORNAR_HIT_SIZE && mouseY > Main::SceneManager::VIEW_HEIGHT - BOOK_CORNAR_HIT_SIZE ) {
 		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );

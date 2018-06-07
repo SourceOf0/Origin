@@ -31,7 +31,7 @@ public:
 	};
 	static DWORD WINAPI LoadThread( LPVOID hWnd );
 
-	MainParent( HWND& hwnd, HDC& hdc, int windowWidth, int windowHeight);
+	MainParent( HWND& hwnd, HDC& hdc );
 	~MainParent( void );
 	void update( void );
 	void draw( HDC& hdc );

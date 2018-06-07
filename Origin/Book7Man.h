@@ -1,8 +1,7 @@
 
 void Book7::drawMan( ManState* target )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
 	int viewX = getCount( target->count );
 	int viewY = target->line * USE_OBJ_IMAGE_HEIGHT;
 	int fixX = 0;
@@ -12,16 +11,16 @@ void Book7::drawMan( ManState* target )
 			if( target->isLeft ) {
 				mManImageArr[ target->image ]->drawWindowOr( target->x, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, USE_MAN_IMAGE_HEIGHT, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
 				if( target->x < 0 ) {
-					mManImageArr[ target->image ]->drawWindowOr( target->x + windowWidth, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, USE_MAN_IMAGE_HEIGHT, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
-				} else if( target->x > windowWidth - USE_MAN_IMAGE_WIDTH ) {
-					mManImageArr[ target->image ]->drawWindowOr( target->x - windowWidth, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, USE_MAN_IMAGE_HEIGHT, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
+					mManImageArr[ target->image ]->drawWindowOr( target->x + VIEW_WIDTH, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, USE_MAN_IMAGE_HEIGHT, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
+				} else if( target->x > VIEW_WIDTH - USE_MAN_IMAGE_WIDTH ) {
+					mManImageArr[ target->image ]->drawWindowOr( target->x - VIEW_WIDTH, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, USE_MAN_IMAGE_HEIGHT, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
 				}
 			} else {
 				mManImageArr[ target->image ]->drawWindowOr( target->x, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, 0, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
 				if( target->x < 0 ) {
-					mManImageArr[ target->image ]->drawWindowOr( target->x + windowWidth, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, 0, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
-				} else if( target->x > windowWidth - USE_MAN_IMAGE_WIDTH ) {
-					mManImageArr[ target->image ]->drawWindowOr( target->x - windowWidth, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, 0, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
+					mManImageArr[ target->image ]->drawWindowOr( target->x + VIEW_WIDTH, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, 0, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
+				} else if( target->x > VIEW_WIDTH - USE_MAN_IMAGE_WIDTH ) {
+					mManImageArr[ target->image ]->drawWindowOr( target->x - VIEW_WIDTH, target->line * USE_OBJ_IMAGE_HEIGHT, viewX, 0, USE_MAN_IMAGE_WIDTH, USE_MAN_IMAGE_HEIGHT );
 				}
 			}
 			break;
@@ -98,19 +97,19 @@ void Book7::moveMan( ManState* target )
 
 void Book7::moveManWalk( ManState* target )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
 
 	if( checkWall( target ) ) return;
 
 	if( target->isLeft ) {
 		target->x -= WALK_SPEED;
 		if( target->x <= -USE_MAN_IMAGE_WIDTH ) {
-			target->x = target->x + windowWidth;
+			target->x = target->x + VIEW_WIDTH;
 		}
 	} else {
 		target->x += WALK_SPEED;
-		if( target->x >= windowWidth ) {
-			target->x = target->x - windowWidth;
+		if( target->x >= VIEW_WIDTH ) {
+			target->x = target->x - VIEW_WIDTH;
 		}
 	}
 
@@ -136,8 +135,6 @@ void Book7::moveManEnterStart( ManState* target )
 {
 	if( target->target == 0 ) return;
 	if( target->target->image != IMAGE_OBJ_ENTRANCE ) return;
-
-	int windowWidth = Main::SceneManager::windowWidth;
 
 	if( ++target->animeState < USE_OBJ_IMAGE_WIDTH_HALF ) return;
 
@@ -165,8 +162,6 @@ void Book7::moveManEnterEnd( ManState* target )
 {
 	if( target->target == 0 ) return;
 	if( target->target->image != IMAGE_OBJ_ENTRANCE ) return;
-
-	int windowWidth = Main::SceneManager::windowWidth;
 
 	if( !checkWall( target, FALSE ) ) {
 		if( ++target->animeState < USE_OBJ_IMAGE_WIDTH_HALF ) return;

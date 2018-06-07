@@ -24,8 +24,6 @@ mPlayCount( 0 ),
 mTempo( 10 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
 
 	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe.dad" ) );
 	mBackBmp1->mUseAlpha = FALSE;

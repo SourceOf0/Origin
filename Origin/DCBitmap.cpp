@@ -60,25 +60,25 @@ DCBitmap::~DCBitmap( void )
 
 void DCBitmap::setBlack( void )
 {
-	unsigned int windowWidth = Main::SceneManager::windowWidth;
-	unsigned int windowHeight = Main::SceneManager::windowHeight;
-	if( mWidth <= windowWidth ) {
-		if( mHeight <= windowHeight ) {
+	const unsigned int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const unsigned int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
+	if( mWidth <= VIEW_WIDTH ) {
+		if( mHeight <= VIEW_HEIGHT ) {
 			BitBlt( mHdcBmp, 0, 0, mWidth, mHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
 		} else {
-			for( unsigned int i = 0; i < mHeight + windowHeight; i += windowHeight ) {
-				BitBlt( mHdcBmp, 0, i, mWidth, windowHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
+			for( unsigned int i = 0; i < mHeight + VIEW_HEIGHT; i += VIEW_HEIGHT ) {
+				BitBlt( mHdcBmp, 0, i, mWidth, VIEW_HEIGHT, mHdcBlackBmp, 0, 0, SRCCOPY );
 			}
 		}
 	} else {
-		if( mHeight <= windowHeight ) {
-			for( unsigned int i = 0; i < mWidth + windowWidth; i += windowWidth ) {
-				BitBlt( mHdcBmp, i, 0, windowWidth, mHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
+		if( mHeight <= VIEW_HEIGHT ) {
+			for( unsigned int i = 0; i < mWidth + VIEW_WIDTH; i += VIEW_WIDTH ) {
+				BitBlt( mHdcBmp, i, 0, VIEW_WIDTH, mHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
 			}
 		} else {
-			for( unsigned int i = 0; i < mWidth + windowWidth; i += windowWidth ) {
-				for( unsigned int j = 0; j < mHeight + windowHeight; j += windowHeight ) {
-					BitBlt( mHdcBmp, i, j, windowWidth, windowHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
+			for( unsigned int i = 0; i < mWidth + VIEW_WIDTH; i += VIEW_WIDTH ) {
+				for( unsigned int j = 0; j < mHeight + VIEW_HEIGHT; j += VIEW_HEIGHT ) {
+					BitBlt( mHdcBmp, i, j, VIEW_WIDTH, VIEW_HEIGHT, mHdcBlackBmp, 0, 0, SRCCOPY );
 				}
 			}
 		}
@@ -86,25 +86,25 @@ void DCBitmap::setBlack( void )
 }
 void DCBitmap::setBlack( int x, int y, unsigned int width, unsigned int height )
 {
-	unsigned int windowWidth = Main::SceneManager::windowWidth;
-	unsigned int windowHeight = Main::SceneManager::windowHeight;
-	if( width <= windowWidth ) {
-		if( height <= windowHeight ) {
+	unsigned int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	unsigned int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
+	if( width <= VIEW_WIDTH ) {
+		if( height <= VIEW_HEIGHT ) {
 			BitBlt( mHdcBmp, x, y, width, height, mHdcBlackBmp, 0, 0, SRCCOPY );
 		} else {
-			for( unsigned int i = 0; i < height + windowHeight; i += windowHeight ) {
-				BitBlt( mHdcBmp, x, y + i, width, windowHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
+			for( unsigned int i = 0; i < height + VIEW_HEIGHT; i += VIEW_HEIGHT ) {
+				BitBlt( mHdcBmp, x, y + i, width, VIEW_HEIGHT, mHdcBlackBmp, 0, 0, SRCCOPY );
 			}
 		}
 	} else {
-		if( height <= windowHeight ) {
-			for( unsigned int i = 0; i < width + windowWidth; i += windowWidth ) {
-				BitBlt( mHdcBmp, x + i, y, windowWidth, mHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
+		if( height <= VIEW_HEIGHT ) {
+			for( unsigned int i = 0; i < width + VIEW_WIDTH; i += VIEW_WIDTH ) {
+				BitBlt( mHdcBmp, x + i, y, VIEW_WIDTH, mHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
 			}
 		} else {
-			for( unsigned int i = 0; i < width + windowWidth; i += windowWidth ) {
-				for( unsigned int j = 0; j < height + windowHeight; j += windowHeight ) {
-					BitBlt( mHdcBmp, x + i, y + j, windowWidth, windowHeight, mHdcBlackBmp, 0, 0, SRCCOPY );
+			for( unsigned int i = 0; i < width + VIEW_WIDTH; i += VIEW_WIDTH ) {
+				for( unsigned int j = 0; j < height + VIEW_HEIGHT; j += VIEW_HEIGHT ) {
+					BitBlt( mHdcBmp, x + i, y + j, VIEW_WIDTH, VIEW_HEIGHT, mHdcBlackBmp, 0, 0, SRCCOPY );
 				}
 			}
 		}
@@ -112,50 +112,50 @@ void DCBitmap::setBlack( int x, int y, unsigned int width, unsigned int height )
 }
 void DCBitmap::setWhite( void )
 {
-	unsigned int windowWidth = Main::SceneManager::windowWidth;
-	unsigned int windowHeight = Main::SceneManager::windowHeight;
-	if( mWidth <= windowWidth ) {
-		if( mHeight <= windowHeight ) {
+	unsigned int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	unsigned int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
+	if( mWidth <= VIEW_WIDTH ) {
+		if( mHeight <= VIEW_HEIGHT ) {
 			BitBlt( mHdcBmp, 0, 0, mWidth, mHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
 		} else {
-			for( unsigned int i = 0; i < mHeight + windowHeight; i += windowHeight ) {
-				BitBlt( mHdcBmp, 0, i, mWidth, windowHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
+			for( unsigned int i = 0; i < mHeight + VIEW_HEIGHT; i += VIEW_HEIGHT ) {
+				BitBlt( mHdcBmp, 0, i, mWidth, VIEW_HEIGHT, mHdcWhiteBmp, 0, 0, SRCCOPY );
 			}
 		}
 	} else {
-		if( mHeight <= windowHeight ) {
-			for( unsigned int i = 0; i < mWidth + windowWidth; i += windowWidth ) {
-				BitBlt( mHdcBmp, i, 0, windowWidth, mHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
+		if( mHeight <= VIEW_HEIGHT ) {
+			for( unsigned int i = 0; i < mWidth + VIEW_WIDTH; i += VIEW_WIDTH ) {
+				BitBlt( mHdcBmp, i, 0, VIEW_WIDTH, mHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
 			}
 		} else {
-			for( unsigned int i = 0; i < mWidth + windowWidth; i += windowWidth ) {
-				for( unsigned int j = 0; j < mHeight + windowHeight; j += windowHeight ) {
-					BitBlt( mHdcBmp, i, j, windowWidth, windowHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
+			for( unsigned int i = 0; i < mWidth + VIEW_WIDTH; i += VIEW_WIDTH ) {
+				for( unsigned int j = 0; j < mHeight + VIEW_HEIGHT; j += VIEW_HEIGHT ) {
+					BitBlt( mHdcBmp, i, j, VIEW_WIDTH, VIEW_HEIGHT, mHdcWhiteBmp, 0, 0, SRCCOPY );
 				}
 			}
 		}
 	}}
 void DCBitmap::setWhite( int x, int y, unsigned int width, unsigned int height )
 {
-	unsigned int windowWidth = Main::SceneManager::windowWidth;
-	unsigned int windowHeight = Main::SceneManager::windowHeight;
-	if( width <= windowWidth ) {
-		if( height <= windowHeight ) {
+	unsigned int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	unsigned int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
+	if( width <= VIEW_WIDTH ) {
+		if( height <= VIEW_HEIGHT ) {
 			BitBlt( mHdcBmp, x, y, width, height, mHdcWhiteBmp, 0, 0, SRCCOPY );
 		} else {
-			for( unsigned int i = 0; i < height + windowHeight; i += windowHeight ) {
-				BitBlt( mHdcBmp, x, y + i, width, windowHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
+			for( unsigned int i = 0; i < height + VIEW_HEIGHT; i += VIEW_HEIGHT ) {
+				BitBlt( mHdcBmp, x, y + i, width, VIEW_HEIGHT, mHdcWhiteBmp, 0, 0, SRCCOPY );
 			}
 		}
 	} else {
-		if( height <= windowHeight ) {
-			for( unsigned int i = 0; i < width + windowWidth; i += windowWidth ) {
-				BitBlt( mHdcBmp, x + i, y, windowWidth, mHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
+		if( height <= VIEW_HEIGHT ) {
+			for( unsigned int i = 0; i < width + VIEW_WIDTH; i += VIEW_WIDTH ) {
+				BitBlt( mHdcBmp, x + i, y, VIEW_WIDTH, mHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
 			}
 		} else {
-			for( unsigned int i = 0; i < width + windowWidth; i += windowWidth ) {
-				for( unsigned int j = 0; j < height + windowHeight; j += windowHeight ) {
-					BitBlt( mHdcBmp, x + i, y + j, windowWidth, windowHeight, mHdcWhiteBmp, 0, 0, SRCCOPY );
+			for( unsigned int i = 0; i < width + VIEW_WIDTH; i += VIEW_WIDTH ) {
+				for( unsigned int j = 0; j < height + VIEW_HEIGHT; j += VIEW_HEIGHT ) {
+					BitBlt( mHdcBmp, x + i, y + j, VIEW_WIDTH, VIEW_HEIGHT, mHdcWhiteBmp, 0, 0, SRCCOPY );
 				}
 			}
 		}
@@ -165,9 +165,7 @@ void DCBitmap::setWhite( int x, int y, unsigned int width, unsigned int height )
 void DCBitmap::copyWindow( void )
 {
 	Main::SceneManager* inst = Main::SceneManager::inst();
-	const int setX = ( inst->windowWidth - inst->VIEW_WIDTH ) / 2;
-	const int setY = ( inst->windowHeight - inst->VIEW_HEIGHT ) / 2;
-	BitBlt( mHdcBmp, 0, 0, mWidth, mHeight, Main::SceneManager::inst()->mHdcBmp, setX, setY, SRCCOPY );
+	BitBlt( mHdcBmp, 0, 0, mWidth, mHeight, Main::SceneManager::inst()->mHdcBmp, 0, 0, SRCCOPY );
 }
 void DCBitmap::drawWindow( void )
 {
@@ -184,9 +182,7 @@ void DCBitmap::drawWindow( int x, int y, int startX, int startY, int width, int 
 void DCBitmap::drawWindow( int x, int y, int width, int height, int startX, int startY, DWORD drawOperation )
 {
 	Main::SceneManager* inst = Main::SceneManager::inst();
-	const int setX = ( inst->windowWidth - inst->VIEW_WIDTH ) / 2 + x;
-	const int setY = ( inst->windowHeight - inst->VIEW_HEIGHT ) / 2 + y;
-	BitBlt( inst->mHdcBmp, setX, setY, width, height, mHdcBmp, startX, startY, drawOperation );
+	BitBlt( inst->mHdcBmp, x, y, width, height, mHdcBmp, startX, startY, drawOperation );
 }
 
 void DCBitmap::drawWindowAnd( void )

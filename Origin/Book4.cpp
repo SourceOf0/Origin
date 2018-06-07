@@ -25,8 +25,7 @@ mWasFall( FALSE ),
 mWasKeep( FALSE )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	int i = -1;
 
 	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\ball.dad" );
@@ -46,7 +45,7 @@ mWasKeep( FALSE )
 	resetBall();
 
 	mBoardState.x = 0;
-	mBoardState.y = ( windowHeight - USE_BOARD_IMAGE_SIZE ) / 2 + 50;
+	mBoardState.y = ( VIEW_HEIGHT - USE_BOARD_IMAGE_SIZE ) / 2 + 50;
 	mBoardState.state = 0;
 	mBoardState.count = 0;
 
@@ -100,7 +99,7 @@ Book4::~Book4()
 
 void Book4::update( MainParent* parent )
 {
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	int mouseX = Main::HandManager::inst()->getX();
 	int mouseY = Main::HandManager::inst()->getY();
 	BOOL isClick = Main::HandManager::isClick;
@@ -135,7 +134,7 @@ void Book4::update( MainParent* parent )
 				target->count = static_cast< int >( ( mSplashImage->mWidth / USE_SPLASH_IMAGE_SIZE - 1 ) * ANIME_SPEED );
 			}
 		}
-		if( target->y > windowHeight ) target->kind = -1;
+		if( target->y > VIEW_HEIGHT ) target->kind = -1;
 	}
 
 	for( int i = 0 ; i < MAX_PIECE_NUM; ++i ) {
@@ -148,10 +147,10 @@ void Book4::update( MainParent* parent )
 		if( target->count >= static_cast< int >( ( mSplashImage->mWidth / USE_SPLASH_IMAGE_SIZE ) * ANIME_SPEED ) ) {
 			target->count = 0;
 		}
-		if( target->y > windowHeight ) target->kind = -1;
+		if( target->y > VIEW_HEIGHT ) target->kind = -1;
 	}
 
-	if( mouseX > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && mouseY > windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+	if( mouseX > Main::SceneManager::VIEW_WIDTH - BOOK_CORNAR_HIT_SIZE && mouseY > VIEW_HEIGHT - BOOK_CORNAR_HIT_SIZE ) {
 		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );

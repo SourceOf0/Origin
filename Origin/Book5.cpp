@@ -21,10 +21,10 @@ namespace Sequence {
 Book5::Book5( HDC& hdc, MainParent* parent ) :
 mUseNum( 0 )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
-	mBoardBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight, 0x00 );
+	mBoardBmp = new Image::DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT, 0x00 );
 
 	for( int y = 0; y < LINE_NUM; ++y ) {
 		for( int x = 0; x < LINE_NUM; ++x ) {
@@ -44,10 +44,10 @@ mUseNum( 0 )
 	for( int indexY = 0; indexY < LINE_NUM; ++indexY ) {
 		ratio1 = LINE_RATIO;
 		for( int indexX = 0; indexX < LINE_NUM; ++indexX ) {
-			double a = ( windowHeight + LINE_START_Y ) / ( windowHeight * ratio1 );
+			double a = ( VIEW_HEIGHT + LINE_START_Y ) / ( VIEW_HEIGHT * ratio1 );
 			double b = LINE_START_X * a - LINE_START_Y;
-			double c = ( windowHeight + LINE_START_Y ) / ( -windowHeight * ratio2 );
-			double d = -( LINE_START_X + windowWidth ) * c - LINE_START_Y;
+			double c = ( VIEW_HEIGHT + LINE_START_Y ) / ( -VIEW_HEIGHT * ratio2 );
+			double d = -( LINE_START_X + VIEW_WIDTH ) * c - LINE_START_Y;
 			double x = ( d - b ) / ( a - c );
 			double y = a * x + b;
 
@@ -77,8 +77,8 @@ Book5::~Book5()
 
 void Book5::update( MainParent* parent )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 
@@ -91,14 +91,14 @@ void Book5::update( MainParent* parent )
 	SelectObject( mBoardBmp->mHdcBmp, hPen );
 	
 	double ratio = LINE_RATIO;
-	double setX = windowHeight * ratio;
+	double setX = VIEW_HEIGHT * ratio;
 	for( int i = 0; i < LINE_NUM; ++i ) {
 		MoveToEx( mBoardBmp->mHdcBmp, -LINE_START_X, -LINE_START_Y, NULL );
-		LineTo( mBoardBmp->mHdcBmp, static_cast< int >( -LINE_START_X + setX ), windowHeight );
-		MoveToEx( mBoardBmp->mHdcBmp, LINE_START_X + windowWidth, -LINE_START_Y, NULL );
-		LineTo( mBoardBmp->mHdcBmp, static_cast< int >( LINE_START_X + windowWidth - setX ), windowHeight );
+		LineTo( mBoardBmp->mHdcBmp, static_cast< int >( -LINE_START_X + setX ), VIEW_HEIGHT );
+		MoveToEx( mBoardBmp->mHdcBmp, LINE_START_X + VIEW_WIDTH, -LINE_START_Y, NULL );
+		LineTo( mBoardBmp->mHdcBmp, static_cast< int >( LINE_START_X + VIEW_WIDTH - setX ), VIEW_HEIGHT );
 		ratio += LINE_ADD_RATIO;
-		setX = windowHeight * ratio;
+		setX = VIEW_HEIGHT * ratio;
 	}
 
 	updateBoard();
@@ -163,7 +163,7 @@ void Book5::update( MainParent* parent )
 	DeleteObject( hBrushW );
 	DeleteObject( hBrushB );
 
-	if( Main::HandManager::inst()->getX() > windowWidth - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+	if( Main::HandManager::inst()->getX() > VIEW_WIDTH - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > VIEW_HEIGHT - BOOK_CORNAR_HIT_SIZE ) {
 		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
@@ -175,7 +175,7 @@ void Book5::update( MainParent* parent )
 
 void Book5::updateBoard( void )
 {
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	int mouseX = Main::HandManager::inst()->getX();
 	int mouseY = Main::HandManager::inst()->getY();
@@ -184,7 +184,7 @@ void Book5::updateBoard( void )
 	for( int y = 0; y < LINE_NUM; ++y ) {
 		for( int x = 0; x < LINE_NUM; ++x ) {
 			DotState* target = &mDotState[ y ][ x ];
-			double ratio = static_cast< double >( target->y ) / ( windowHeight + 100 );
+			double ratio = static_cast< double >( target->y ) / ( VIEW_HEIGHT + 100 );
 			int sizeX = static_cast< int >( ratio * 20 ) + 10;
 			int sizeY = static_cast< int >( sizeX * ratio ) + 5;
 			int setX1 = target->x - sizeX - 10;

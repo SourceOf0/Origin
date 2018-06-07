@@ -40,6 +40,7 @@ mMinX( -1000 ),
 mMaxX( -1000 ),
 mMinY( -1000 ),
 mMaxY( -1000 ),
+mShowCursorCount( 0 ),
 mIsLockX( FALSE ),
 mIsLockY( FALSE ),
 mState( HAND_NORMAL ),
@@ -47,14 +48,14 @@ mImageState( HAND_IMAGE_NORMAL ),
 mAnimeCount( 0 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	unsigned int windowWidth = Main::SceneManager::windowWidth;
-	unsigned int windowHeight = Main::SceneManager::windowHeight;
 
 	mHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\hands.dad" ) );
 	mCheckHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\checkHand.dad" ) );
 
 	mHandBmp->mDepth = 0.2;
 	mCheckHandBmp->mDepth = 0.2;
+
+	mShowCursorCount = ShowCursor( FALSE );
 }
 
 HandManager::~HandManager( void )
@@ -82,9 +83,24 @@ void HandManager::endUpdate( void )
 
 void HandManager::update( HWND& hwnd, BOOL isLoading )
 {
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
+	const int viewPosX = Main::SceneManager::getViewPosX();
+	const int viewPosY = Main::SceneManager::getViewPosY();
+
 	POINT mousePos = getScreenToClientPos( hwnd );
-	int mouseX = mousePos.x;
-	int mouseY = mousePos.y;
+	int mouseX = mousePos.x - viewPosX;
+	int mouseY = mousePos.y - viewPosY;
+
+	if( mouseX >= 0 && mouseX < VIEW_WIDTH && mouseY >= 0 && mouseY < VIEW_HEIGHT ) {
+		while(mShowCursorCount >= 0) {
+			mShowCursorCount = ShowCursor( FALSE );
+		}
+	} else {
+		while(mShowCursorCount < 0) {
+			mShowCursorCount = ShowCursor( TRUE );
+		}
+	}
 
 	if( isLoading ) {
 		isMouseDown = FALSE;
@@ -130,7 +146,7 @@ void HandManager::update( HWND& hwnd, BOOL isLoading )
 		isMove = TRUE;
 	}
 
-	setClientToScreenPos( hwnd, mouseX, mouseY );
+	setClientToScreenPos( hwnd, mouseX + viewPosX, mouseY + viewPosY );
 	mMouseX = mouseX;
 	mMouseY = mouseY;
 
@@ -213,31 +229,32 @@ void HandManager::draw( void )
 			fixY = -28;
 			break;
 		case HAND_IMAGE_BACK:
+			// TODO: amend
 			if( mMouseX < 16 ) {
 				fixX = 16 - mMouseX;
-			} else if( mMouseX > SceneManager::windowWidth - 16 ) {
-				fixX = SceneManager::windowWidth - 16 - mMouseX;
+			} else if( mMouseX > SceneManager::VIEW_WIDTH - 16 ) {
+				fixX = SceneManager::VIEW_WIDTH - 16 - mMouseX;
 			}
 			if( mMouseY < 13 ) {
 				fixY = 13 - mMouseY;
-			} else if( mMouseY > SceneManager::windowHeight - 19 ) {
-				fixY = SceneManager::windowHeight - 19 - mMouseY;
+			} else if( mMouseY > SceneManager::VIEW_HEIGHT - 19 ) {
+				fixY = SceneManager::VIEW_HEIGHT - 19 - mMouseY;
 			}
 			break;
 		case HAND_IMAGE_RIGHT:
 			fixX = -32;
 			if( mMouseY < 13 ) {
 				fixY = 13 - mMouseY;
-			} else if( mMouseY > SceneManager::windowHeight - 19 ) {
-				fixY = SceneManager::windowHeight - 19 - mMouseY;
+			} else if( mMouseY > SceneManager::VIEW_HEIGHT - 19 ) {
+				fixY = SceneManager::VIEW_HEIGHT - 19 - mMouseY;
 			}
 			break;
 		case HAND_IMAGE_LEFT:
 			fixX = 32;
 			if( mMouseY < 13 ) {
 				fixY = 13 - mMouseY;
-			} else if( mMouseY > SceneManager::windowHeight - 19 ) {
-				fixY = SceneManager::windowHeight - 19 - mMouseY;
+			} else if( mMouseY > SceneManager::VIEW_HEIGHT - 19 ) {
+				fixY = SceneManager::VIEW_HEIGHT - 19 - mMouseY;
 			}
 			break;
 		case HAND_IMAGE_UP:

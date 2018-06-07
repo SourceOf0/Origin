@@ -67,6 +67,11 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		InvalidateRect( hwnd, NULL, FALSE );	//背景を消去しない
 		return 0;
 
+	case WM_SIZE:
+		Main::SceneManager::setWindowSize( hwnd );
+		InvalidateRect( hwnd, NULL, TRUE );	//背景を消去する
+		return 0;
+
 	case WM_KEYDOWN:
 		if( wp == VK_ESCAPE ) {
 			PostMessage( hwnd, WM_CLOSE, 0, 0 );
@@ -120,7 +125,7 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 
 	TCHAR      szAppName[] = TEXT( "Origin" );
 	DWORD      dwExStyle   = WS_EX_LEFT;
-	DWORD      dwStyle     = WS_POPUP | WS_CAPTION | WS_SYSMENU;
+	DWORD      dwStyle     = WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;
 	HWND       hwnd;
 	MSG        msg;
 	WNDCLASSEX wc;
@@ -147,7 +152,17 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 	hwnd = CreateWindowEx( dwExStyle, szAppName, szAppName, dwStyle, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, NULL, NULL, hinst, NULL );
 	if( hwnd == NULL ) return 0;
 
-	Main::SceneManager::setWindowPos( hwnd );
+	{
+		HDC hdc = GetDC( hwnd );
+		const int deviceWidth  = GetDeviceCaps( hdc, HORZRES );
+		const int deviceHeight = GetDeviceCaps( hdc, VERTRES );
+		const int windowWidth  = rc.right - rc.left;
+		const int windowHeight = rc.bottom - rc.top;
+
+		MoveWindow( hwnd, (deviceWidth - windowWidth)/2, (deviceHeight - windowHeight)/2, windowWidth, windowHeight, FALSE );
+
+		ReleaseDC( hwnd, hdc );
+	}
 
 	/*
 	{  // フルスクリーンモード
@@ -162,7 +177,6 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 	*/
 
 	ShowWindow( hwnd, nCmdShow );
-//	ShowWindow( hwnd, SW_MAXIMIZE ); // ウインドウ最大化
 	UpdateWindow( hwnd );
 	
 	while( GetMessage( &msg, NULL, 0, 0 ) > 0 ) {

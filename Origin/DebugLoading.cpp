@@ -9,20 +9,20 @@ namespace Sequence {
 
 DebugLoading::DebugLoading( HDC& hdc, MainParent* parent )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
-	mBackBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
+	mBackBmp = new Image::DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT );
 
 	mState = 0;
 
-	mTargetX1 = static_cast< int >( windowWidth * 0.2 );
-	mTargetY1 = static_cast< int >( windowHeight * 0.2 );
+	mTargetX1 = static_cast< int >( VIEW_WIDTH * 0.2 );
+	mTargetY1 = static_cast< int >( VIEW_HEIGHT * 0.2 );
 	mX1 = mTargetX1;
 	mY1 = mTargetY1;
 
-	mTargetX2 = static_cast< int >( windowWidth * 0.8 );
-	mTargetY2 = static_cast< int >( windowHeight * 0.8 );
+	mTargetX2 = static_cast< int >( VIEW_WIDTH * 0.8 );
+	mTargetY2 = static_cast< int >( VIEW_HEIGHT * 0.8 );
 	mX2 = mTargetX2;
 	mY2 = mTargetY2;
 }
@@ -35,8 +35,8 @@ DebugLoading::~DebugLoading()
 
 void DebugLoading::update( MainParent* parent )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	
 	HPEN hPen1 = CreatePen( PS_SOLID, 1, RGB( 0, 0, 0 ) );
 	HPEN hPen2 = CreatePen( PS_SOLID, 1, RGB( 255, 255, 255 ) );

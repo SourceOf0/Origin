@@ -19,8 +19,6 @@ mTurnPageCount( 0 ),
 mTurnPageState( 0 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
 
 	mBackBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\note.dad" ) );
 	mBackBmp->mUseAlpha = FALSE;
@@ -54,8 +52,6 @@ Note::~Note()
 
 void Note::update( RoomParent* parent )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
 	BOOL isClick = Main::HandManager::isClick;
 	Main::HandManager* handManager = Main::HandManager::inst();
 	int mouseX = handManager->getX();

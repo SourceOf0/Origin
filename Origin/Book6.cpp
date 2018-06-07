@@ -41,8 +41,8 @@ Book6::Book6( HDC& hdc, MainParent* parent ) :
 mIsMove( FALSE ),
 mMaxMoveNum( 0 )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	int fieldWidth = PANEL_SIZE * ( PANEL_X_NUM * 2 - 1 ) + FIELD_LINE_SIZE * 2 + 1;
 	int fieldHeight = PANEL_SIZE * ( PANEL_Y_NUM * 2 - 1 ) + FIELD_LINE_SIZE * 2 + 1;
 
@@ -63,11 +63,11 @@ mMaxMoveNum( 0 )
 	mCarBmp = new Image::DCBitmap( hdc, PANEL_SIZE, PANEL_SIZE, 0 );
 	mCarBmp->setBlack();
 
-	mButtonBmp = new Image::DCBitmap( hdc, windowWidth - fieldWidth - PANEL_SIZE_HALF, windowHeight, 0 );
+	mButtonBmp = new Image::DCBitmap( hdc, VIEW_WIDTH - fieldWidth - PANEL_SIZE_HALF, VIEW_HEIGHT, 0 );
 	mButtonBmp->mX = PANEL_SIZE + fieldWidth;
 	mButtonBmp->setBlack();
 
-	mBackBmp = new Image::DCBitmap( hdc, fieldWidth, windowHeight, 0 );
+	mBackBmp = new Image::DCBitmap( hdc, fieldWidth, VIEW_HEIGHT, 0 );
 	mBackBmp->mX = PANEL_SIZE;
 	mBackBmp->mY = PANEL_SIZE;
 	mBackBmp->setBlack();
@@ -165,7 +165,7 @@ void Book6::update( MainParent* parent )
 {
 	Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 
-	if( Main::HandManager::inst()->getX() > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY()> Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+	if( Main::HandManager::inst()->getX() > Main::SceneManager::VIEW_WIDTH - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY()> Main::SceneManager::VIEW_HEIGHT - BOOK_CORNAR_HIT_SIZE ) {
 		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );

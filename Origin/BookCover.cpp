@@ -15,8 +15,8 @@ BookCover::BookCover( HDC& hdc, RoomParent* parent ) :
 mBookKind( 0 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	int i = -1;
 	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book1.dad" ) );
@@ -27,8 +27,8 @@ mBookKind( 0 )
 	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book6.dad" ) );
 	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book7.dad" ) );
 
-	int setX = ( windowWidth - mCoverBmp[ 0 ]->mWidth ) / 2;
-	int setY = ( windowHeight - mCoverBmp[ 0 ]->mHeight ) / 2;
+	int setX = ( VIEW_WIDTH - mCoverBmp[ 0 ]->mWidth ) / 2;
+	int setY = ( VIEW_HEIGHT - mCoverBmp[ 0 ]->mHeight ) / 2;
 	for( int j = 0; j < 7; ++j ) {
 		mCoverBmp[ j ]->mX = setX;
 		mCoverBmp[ j ]->mY = setY;
@@ -52,8 +52,8 @@ BookCover::~BookCover()
 
 void BookCover::update( RoomParent* parent )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	BOOL isClick = Main::HandManager::isClick;
 	Main::HandManager* handManager = Main::HandManager::inst();
 	int mouseX = handManager->getX();

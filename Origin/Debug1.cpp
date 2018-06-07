@@ -14,7 +14,7 @@ namespace Sequence {
 Debug1::Debug1( HDC& hdc, MainParent* parent )
 {
 	Main::SceneManager* sceneManager = Main::SceneManager::inst();
-	mBackBmp = new Image::DCBitmap( hdc, Main::SceneManager::windowWidth, Main::SceneManager::windowHeight );
+	mBackBmp = new Image::DCBitmap( hdc, Main::SceneManager::VIEW_WIDTH, Main::SceneManager::VIEW_HEIGHT );
 }
 
 Debug1::~Debug1()

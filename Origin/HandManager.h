@@ -94,6 +94,7 @@ private:
 	int mMaxX;
 	int mMinY;
 	int mMaxY;
+	int mShowCursorCount;
 	BOOL mIsLockX;
 	BOOL mIsLockY;
 

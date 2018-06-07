@@ -32,7 +32,7 @@ void Book1::motion1( void )
 			if( fadeIn( 10 ) ) mAnimeState = 1;
 			break;
 		case 1:
-			if( mMask[ 0 ].y > static_cast< int >( Main::SceneManager::windowHeight / 2 ) ) mAnimeState = 2;
+			if( mMask[ 0 ].y > static_cast< int >( Main::SceneManager::VIEW_HEIGHT / 2 ) ) mAnimeState = 2;
 			break;
 		case 2:
 			if( fadeOut( 10 ) ) mAnimeState = 3;
@@ -285,7 +285,7 @@ void Book1::motion7( void )
 			drawDot( mMaskBmp->mHdcBmp, mask->x + ( rand() % ( mBmp[ target->kind ]->mWidth + mDotBmp->mHeight ) ), mask->y, mask->count );
 			mask->y += 50;
 		}
-		if( mask->y > Main::SceneManager::windowHeight ) ++mAnimeState;
+		if( mask->y > Main::SceneManager::VIEW_HEIGHT ) ++mAnimeState;
 		if( mAnimeState == BOOK1_MASK_NUM ) {
 			mAnimeCount = TONE_NONE * 10 - 1;
 			mToneIndex = 0;
@@ -320,7 +320,7 @@ void Book1::motion8( void )
 
 	mMaskBmp->drawImageAnd( mMainBmp->mHdcBmp, 0, 0 );
 	
-	if( mMask[ 0 ].y > Main::SceneManager::windowHeight ) mAnimeState = 1;
+	if( mMask[ 0 ].y > Main::SceneManager::VIEW_HEIGHT ) mAnimeState = 1;
 }
 
 void Book1::motion9( void )
@@ -352,8 +352,8 @@ void Book1::motion9( void )
 		maskBmp->drawImageOr( mMaskBmp->mHdcBmp, mask->x, mask->y, 0, 0, mask->count, maskBmp->mHeight );
 		mask->count += 20;
 		if( mask->count >= static_cast< int >( maskBmp->mWidth ) ) {
-			mask->x = rand() % ( Main::SceneManager::windowWidth - maskBmp->mWidth );
-			mask->y = rand() % ( Main::SceneManager::windowHeight ) - maskBmp->mHeight / 2;
+			mask->x = rand() % ( Main::SceneManager::VIEW_WIDTH - maskBmp->mWidth );
+			mask->y = rand() % ( Main::SceneManager::VIEW_HEIGHT ) - maskBmp->mHeight / 2;
 			mask->count = static_cast< int >( maskBmp->mWidth );
 			++mAnimeState;
 		}
@@ -362,8 +362,8 @@ void Book1::motion9( void )
 		maskBmp->drawImageOr( mMaskBmp->mHdcBmp, mask->x + mask->count, mask->y, mask->count, 0, maskBmp->mWidth - mask->count, maskBmp->mHeight );
 		mask->count -= 20;
 		if( mask->count < 0 ) {
-			mask->x = rand() % ( Main::SceneManager::windowWidth - maskBmp->mWidth );
-			mask->y = rand() % ( Main::SceneManager::windowHeight ) - maskBmp->mHeight / 2;
+			mask->x = rand() % ( Main::SceneManager::VIEW_WIDTH - maskBmp->mWidth );
+			mask->y = rand() % ( Main::SceneManager::VIEW_HEIGHT ) - maskBmp->mHeight / 2;
 			mask->count = 0;
 			++mAnimeState;
 		}
@@ -371,8 +371,8 @@ void Book1::motion9( void )
 		if( mAnimeState == 10 ) {
 			mMaskBmp->setWhite();
 			maskBmp->drawImageInv( mMaskBmp->mHdcBmp, 0, 0 );
-			mask->x = static_cast< int >( ( Main::SceneManager::windowWidth - maskBmp->mWidth ) / 2 );
-			mask->y = static_cast< int >( Main::SceneManager::windowHeight );
+			mask->x = static_cast< int >( ( Main::SceneManager::VIEW_WIDTH - maskBmp->mWidth ) / 2 );
+			mask->y = static_cast< int >( Main::SceneManager::VIEW_HEIGHT );
 		}
 	}
 }
@@ -464,7 +464,7 @@ void Book1::motion12( void )
 		return;
 	}
 
-	int windowHeight = static_cast< int >( Main::SceneManager::windowHeight );
+	int VIEW_HEIGHT = static_cast< int >( Main::SceneManager::VIEW_HEIGHT );
 
 	ImageState* target = &mImage[ 0 ];
 	mBmp[ target->kind ]->drawImageOr( mMainBmp->mHdcBmp, target->x, target->y );
@@ -485,10 +485,10 @@ void Book1::motion12( void )
 			break;
 	}
 	int bmpWidth = mDotBmp->mHeight;
-	int width = Main::SceneManager::windowWidth + bmpWidth;
-	int height = windowHeight / 5 + bmpWidth;
+	int width = Main::SceneManager::VIEW_WIDTH + bmpWidth;
+	int height = VIEW_HEIGHT / 5 + bmpWidth;
 	if( ++mAnimeCount % 10 == 0 ) {
-		drawDot( mMaskBmp->mHdcBmp, rand() % width - bmpWidth, rand() % height - bmpWidth + windowHeight * 3 / 5, rand() % 3 );
+		drawDot( mMaskBmp->mHdcBmp, rand() % width - bmpWidth, rand() % height - bmpWidth + VIEW_HEIGHT * 3 / 5, rand() % 3 );
 	}
 	if( mAnimeCount > 100 ) {
 		mAnimeCount = TONE_NONE * 15 - 1;

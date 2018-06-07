@@ -19,8 +19,8 @@ namespace Sequence {
 Book3::Book3( HDC& hdc, MainParent* parent )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	int i = -1;
 
 	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_00.dad" );
@@ -55,7 +55,7 @@ Book3::Book3( HDC& hdc, MainParent* parent )
 	mLastNode.next = 0;
 	mLastNode.prev = &mFirstNode;
 
-	newAnimeState( ( windowWidth - USE_IMAGE_SIZE ) / 2, ( windowHeight - USE_IMAGE_SIZE ) / 2 );
+	newAnimeState( ( VIEW_WIDTH - USE_IMAGE_SIZE ) / 2, ( VIEW_HEIGHT - USE_IMAGE_SIZE ) / 2 );
 }
 
 Book3::~Book3()
@@ -150,7 +150,7 @@ void Book3::update( MainParent* parent )
 		Main::NoteManager::inst()->setNextPage( NOTE_BOOK3_3 );
 	}
 
-	if( mouseX > Main::SceneManager::windowWidth - BOOK_CORNAR_HIT_SIZE && mouseY > Main::SceneManager::windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+	if( mouseX > Main::SceneManager::VIEW_WIDTH - BOOK_CORNAR_HIT_SIZE && mouseY > Main::SceneManager::VIEW_HEIGHT - BOOK_CORNAR_HIT_SIZE ) {
 		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
@@ -171,10 +171,10 @@ void Book3::draw( HDC& hdc, MainParent* parent )
 
 void Book3::newAnimeState( int setX, int setY )
 {
-	if( setX < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setX > Main::SceneManager::windowWidth - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
+	if( setX < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setX > Main::SceneManager::VIEW_WIDTH - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
 		return;
 	}
-	if( setY < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setY > Main::SceneManager::windowHeight - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
+	if( setY < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setY > Main::SceneManager::VIEW_HEIGHT - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
 		return;
 	}
 	AnimeState* checkTarget = mFirstNode.next;
@@ -200,10 +200,10 @@ void Book3::newAnimeState( int setX, int setY )
 }
 BOOL Book3::setAnimeState( AnimeState* target, int setX, int setY )
 {
-	if( setX < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setX > Main::SceneManager::windowWidth - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
+	if( setX < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setX > Main::SceneManager::VIEW_WIDTH - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
 		return FALSE;
 	}
-	if( setY < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setY > Main::SceneManager::windowHeight - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
+	if( setY < SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF || setY > Main::SceneManager::VIEW_HEIGHT - SET_MAX_DISTANCE - USE_IMAGE_SIZE_HALF ) {
 		return FALSE;
 	}
 	AnimeState* checkTarget = mFirstNode.next;

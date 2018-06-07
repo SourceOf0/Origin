@@ -25,7 +25,7 @@ namespace Sequence {
 
 MainParent* MainParent::mInst = 0;
 
-MainParent::MainParent(	HWND& hwnd, HDC& hdc, int windowWidth, int windowHeight ) : 
+MainParent::MainParent(	HWND& hwnd, HDC& hdc ) : 
 mHWnd( hwnd ),
 mRoom( 0 ),
 mChild( 0 ),
@@ -83,11 +83,11 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 	if( inst->mBookCornerBmp == 0 ) {
 		inst->mBookCornerBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\bookCorner.dad" );
 		Image::DCBitmap* target = inst->mBookCornerBmp;
-		target->mX = Main::SceneManager::windowWidth - 64;
-		target->mY = Main::SceneManager::windowHeight - 64;
+		target->mX = Main::SceneManager::VIEW_WIDTH - 64;
+		target->mY = Main::SceneManager::VIEW_HEIGHT - 64;
 	}
 	if( inst->mPrevBmp == 0 ) {
-		inst->mPrevBmp = new Image::DCBitmap( hdc, Main::SceneManager::windowWidth, Main::SceneManager::windowHeight );
+		inst->mPrevBmp = new Image::DCBitmap( hdc, Main::SceneManager::VIEW_WIDTH, Main::SceneManager::VIEW_HEIGHT );
 	}
 
 	switch( inst->mNext ) {

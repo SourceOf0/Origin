@@ -20,8 +20,8 @@ namespace Sequence {
 Book2::Book2( HDC& hdc, MainParent* parent )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	for( int i = 0; i < POINT_TRACK_NUM; ++i ) {
 		mPointTrack[i].x = -1;
@@ -30,30 +30,30 @@ Book2::Book2( HDC& hdc, MainParent* parent )
 	}
 
 	mBackBmp1 = imageFactory->loadDC( hdc, "resource\\pic02.dad" );
-	mBackBmp1->mX = static_cast< double >( windowWidth - mBackBmp1->mWidth ) / 2;
-	mBackBmp1->mY = static_cast< double >( windowHeight - mBackBmp1->mHeight ) / 2 - 10;
+	mBackBmp1->mX = static_cast< double >( VIEW_WIDTH - mBackBmp1->mWidth ) / 2;
+	mBackBmp1->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp1->mHeight ) / 2 - 10;
 
 	mBackBmp2 = imageFactory->loadDC( hdc, "resource\\pic01.dad" );
-	mBackBmp2->mX = static_cast< double >( windowWidth - mBackBmp2->mWidth ) / 2;
-	mBackBmp2->mY = static_cast< double >( windowHeight - mBackBmp2->mHeight ) / 2 - 10;
+	mBackBmp2->mX = static_cast< double >( VIEW_WIDTH - mBackBmp2->mWidth ) / 2;
+	mBackBmp2->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp2->mHeight ) / 2 - 10;
 
 	mBackBmp3 = imageFactory->loadDC( hdc, "resource\\pic03.dad" );
-	mBackBmp3->mX = static_cast< double >( windowWidth - mBackBmp3->mWidth ) / 2;
-	mBackBmp3->mY = static_cast< double >( windowHeight - mBackBmp3->mHeight ) / 2 - 10;
+	mBackBmp3->mX = static_cast< double >( VIEW_WIDTH - mBackBmp3->mWidth ) / 2;
+	mBackBmp3->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp3->mHeight ) / 2 - 10;
 
 	mBackBmp4 = imageFactory->loadDC( hdc, "resource\\pic05.dad" );
-	mBackBmp4->mX = static_cast< double >( windowWidth - mBackBmp4->mWidth ) / 2;
-	mBackBmp4->mY = static_cast< double >( windowHeight - mBackBmp4->mHeight ) / 2 - 10;
+	mBackBmp4->mX = static_cast< double >( VIEW_WIDTH - mBackBmp4->mWidth ) / 2;
+	mBackBmp4->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp4->mHeight ) / 2 - 10;
 
 	mBackBmp5 = imageFactory->loadDC( hdc, "resource\\pic04.dad" );
-	mBackBmp5->mX = static_cast< double >( windowWidth - mBackBmp5->mWidth ) / 2;
-	mBackBmp5->mY = static_cast< double >( windowHeight - mBackBmp5->mHeight ) / 2 - 10;
+	mBackBmp5->mX = static_cast< double >( VIEW_WIDTH - mBackBmp5->mWidth ) / 2;
+	mBackBmp5->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp5->mHeight ) / 2 - 10;
 
 	mFrontBmp = imageFactory->loadDC( hdc, "resource\\frame.dad" );
-	mFrontBmp->mX = static_cast< double >( windowWidth - mFrontBmp->mWidth ) / 2;
-	mFrontBmp->mY = static_cast< double >( windowHeight - mFrontBmp->mHeight ) / 2;
+	mFrontBmp->mX = static_cast< double >( VIEW_WIDTH - mFrontBmp->mWidth ) / 2;
+	mFrontBmp->mY = static_cast< double >( VIEW_HEIGHT - mFrontBmp->mHeight ) / 2;
 
-	mMaskBmp = new Image::DCBitmap( hdc, windowWidth, windowHeight );
+	mMaskBmp = new Image::DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT );
 
 	mMaskBlockBmp = imageFactory->loadDC( hdc, "resource\\smallFilter.dad" );
 
@@ -98,16 +98,16 @@ Book2::~Book2()
 
 void Book2::update( MainParent* parent )
 {
-	int windowWidth = Main::SceneManager::windowWidth;
-	int windowHeight = Main::SceneManager::windowHeight;
+	const int VIEW_WIDTH = Main::SceneManager::VIEW_WIDTH;
+	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	
 	if( mCount < 0 ) {
 		( rand() * 1.0 / RAND_MAX > 0.05 ) ? mCount = FILTER_FRAME_COUNT : mCount = FILTER_FRAME_COUNT * 5 ;
 	}
 	--mCount;
 	int blockWidth = mMaskBlockBmp->mWidth / 5;
-	for( int y = 0; y < windowHeight; y += blockWidth ) {
-		for( int x = 0; x < windowWidth; x += blockWidth ) {
+	for( int y = 0; y < VIEW_HEIGHT; y += blockWidth ) {
+		for( int x = 0; x < VIEW_WIDTH; x += blockWidth ) {
 			mMaskBlockBmp->drawBlock( mMaskBmp->mHdcBmp, x, y, blockWidth, static_cast< int >( mCount / FILTER_FRAME_COUNT ) );
 		}
 	}
@@ -123,7 +123,7 @@ void Book2::update( MainParent* parent )
 		mOldMousePos.y = -1;
 	}
 
-	if( Main::HandManager::inst()->getX() > windowWidth - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > windowHeight - BOOK_CORNAR_HIT_SIZE ) {
+	if( Main::HandManager::inst()->getX() > VIEW_WIDTH - BOOK_CORNAR_HIT_SIZE && Main::HandManager::inst()->getY() > VIEW_HEIGHT - BOOK_CORNAR_HIT_SIZE ) {
 		if( Main::HandManager::isClick ) {
 			Main::HandManager::inst()->setState( Main::HandManager::HAND_NORMAL );
 			parent->moveTo( parent->SEQ_ROOM );
