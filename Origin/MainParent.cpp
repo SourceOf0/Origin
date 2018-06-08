@@ -30,7 +30,7 @@ mHWnd( hwnd ),
 mRoom( 0 ),
 mChild( 0 ),
 mDebugLoading( 0 ),
-mThreadState( 3 ),
+mThreadState( THREAD_INIT ),
 mNext( SEQ_NONE ),
 mBookCornerBmp( 0 ),
 mPrevBmp( 0 ),
@@ -47,8 +47,16 @@ mFadeState( 0 )
 
 MainParent::~MainParent( void )
 {
-	while( MainParent::mInst->mThreadState == 1 ) {
-		Sleep( 10 );
+	if( mThreadState == THREAD_LOAD ) {
+		DWORD result;
+		while( TRUE ) {
+			GetExitCodeThread( mHLoadThread, &result );
+			if( result != STILL_ACTIVE ) {
+				CloseHandle( mHLoadThread );
+				break;
+			}
+			Sleep( 10 );
+		}
 	}
 
 	delete mDebugLoading;
@@ -127,21 +135,36 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 	ReleaseDC( inst->mHWnd, hdc );
 
 	inst->mNext = SEQ_NONE;
-	inst->mThreadState = 2;
+	inst->mThreadState = THREAD_LOAD_END;
 
-	ExitThread( 1 );
+	ExitThread( 0 );
 }
 
 void MainParent::update( void )
 {
 	DWORD id;
+	DWORD result;
 
 	Main::HandManager::inst()->update( mHWnd, mFadeState != 0 );
 
 	switch( mThreadState ) {
-		case 2:
-			mThreadState = 0;
-		case 0:
+		
+		case THREAD_INIT:
+			mThreadState = THREAD_LOAD;
+			mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
+			/* fall through */
+		case THREAD_LOAD:
+			mDebugLoading->update( this );
+			break;
+
+		case THREAD_LOAD_END:
+			GetExitCodeThread( mHLoadThread, &result );
+			if( result != STILL_ACTIVE ) {
+				CloseHandle( mHLoadThread );
+				mThreadState = THREAD_IDLE;
+			}
+			/* fall through */
+		case THREAD_IDLE:
 			if( mChild == 0 ) {
 				mRoom->update( this );
 			} else {
@@ -149,7 +172,7 @@ void MainParent::update( void )
 			}
 			if( mNext != SEQ_NONE ) {
 				mRoom->setParentSeq( mNext );
-				mThreadState = 1;
+				mThreadState = THREAD_LOAD;
 				mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd, 0, &id );
 				mFadeState = 1;
 				mFadeCount = 0;
@@ -157,20 +180,12 @@ void MainParent::update( void )
 				mPrevBmp->copyWindow();
 			}
 			break;
-
-		case 3:
-			mThreadState = 1;
-			mHLoadThread = CreateThread( NULL, 0, LoadThread, mHWnd , 0, &id );
-		case 1:
-			mDebugLoading->update( this );
-			break;
-
 	}
 }
 
 void MainParent::draw( HDC& hdc )
 {
-	if( mThreadState == 0 ) {
+	if( mThreadState == THREAD_IDLE ) {
 		if( mChild == 0 ) {
 			mRoom->draw( hdc, this );
 		} else {
@@ -185,7 +200,7 @@ void MainParent::draw( HDC& hdc )
 		if( mFadeState == 1 ) {
 			if( mToneIndex < TONE_NONE - 1 ) {
 				if( ++mFadeCount % 2 == 0 ) ++mToneIndex;
-			} else if( mThreadState == 0 ) {
+			} else if( mThreadState == THREAD_IDLE ) {
 				mToneIndex = TONE_NONE - 1;
 				mFadeState = 2;
 				mFadeCount = 0;

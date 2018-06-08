@@ -11,26 +11,32 @@
 #include "SceneManager.h"
 #include "SoundManager.h"
 
-int gStateSoundThread = 0;
+enum ThreadStateID {
+	THREAD_INIT,
+	THREAD_IDLE,
+	THREAD_EXIT,
+
+	THREAD_NONE,
+};
+
+ThreadStateID gStateSoundThread = THREAD_INIT;
 HANDLE gHSoundThread;
 
 
 DWORD WINAPI SoundThread( LPVOID hWnd )
 {
-	while( TRUE ) {
-		if( gStateSoundThread > 0 ) break;
+	while( gStateSoundThread == THREAD_IDLE ) {
 		Main::SoundManager::inst()->makeWave();
 		Sleep( 10 );
 	}
-	gStateSoundThread = 2;
-	ExitThread( TRUE );
+	ExitThread( 0 );
 }
 
 LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 {
 	HDC hdc;
 	PAINTSTRUCT ps;
-	DWORD dwParam;
+	DWORD id;
 
 	switch( msg ) {
 	case WM_DESTROY:
@@ -38,11 +44,17 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 
 		Main::SceneManager::destroy();
 
-		if( Main::SoundManager::inst() != 0 ) {
-			while( gStateSoundThread < 2 ) {
-				Sleep( 100 );
+		if( gStateSoundThread > THREAD_INIT ) {
+			DWORD result;
+			while( TRUE ) {
+				GetExitCodeThread( gHSoundThread, &result );
+				if( result != STILL_ACTIVE ) {
+					CloseHandle( gHSoundThread );
+					Main::SoundManager::destroy();
+					break;
+				}
+				Sleep( 10 );
 			}
-			Main::SoundManager::destroy();
 		}
 
 		PostQuitMessage( 0 );
@@ -55,14 +67,15 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		Main::SceneManager::create( hwnd );
 		_CrtCheckMemory();
 
-		gHSoundThread = CreateThread( NULL, 0, SoundThread, hwnd, 0, &dwParam );
+		gStateSoundThread = THREAD_IDLE;
+		gHSoundThread = CreateThread( NULL, 0, SoundThread, hwnd, 0, &id );
 		
 //		SetTimer( hwnd, 1, 10, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
 		SetTimer( hwnd, 1, 20, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
 		return 0;
 
 	case WM_TIMER:	//Ä•`‰æ‚³‚¹‚é
-		if( gStateSoundThread > 0 ) return 0;
+		if( gStateSoundThread != THREAD_IDLE ) return 0;
 		Main::SceneManager::inst()->update();
 		InvalidateRect( hwnd, NULL, FALSE );	//”wŒi‚ðÁ‹Ž‚µ‚È‚¢
 		return 0;
@@ -79,23 +92,23 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		return 0;
 
 	case WM_LBUTTONDOWN:
-		if( gStateSoundThread > 0 ) return 0;
+		if( gStateSoundThread != THREAD_IDLE ) return 0;
 		Main::HandManager::inst()->mouseDown();
 		return 0;
 
 	case WM_LBUTTONUP:
-		if( gStateSoundThread > 0 ) return 0;
+		if( gStateSoundThread != THREAD_IDLE ) return 0;
 		Main::HandManager::inst()->mouseUp();
 		return 0;
 
 	case MM_WOM_DONE:
-		if( gStateSoundThread > 0 ) return 0;
+		if( gStateSoundThread != THREAD_IDLE ) return 0;
 		Main::SoundManager::inst()->setBuffer();
 		Main::SceneManager::inst()->endSetWave();
 		return 0;
 
 	case WM_PAINT:
-		if( gStateSoundThread > 0 ) return 0;
+		if( gStateSoundThread != THREAD_IDLE ) return 0;
 		hdc = BeginPaint( hwnd, &ps );
 		Main::SceneManager::inst()->draw( hdc );
 		EndPaint( hwnd, &ps );
@@ -109,7 +122,8 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		);
 		if(messageResult != IDOK) return 0;
 		*/
-		gStateSoundThread = 1;
+		gStateSoundThread = THREAD_EXIT;
+		DestroyWindow( hwnd );
 	}
 
 	return DefWindowProc( hwnd , msg , wp , lp );

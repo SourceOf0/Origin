@@ -27,8 +27,18 @@ public:
 		SEQ_BOOK6,
 		SEQ_BOOK7,
 	
-		SEQ_NONE
+		SEQ_NONE,
 	};
+	enum ThreadStateID {
+		THREAD_INIT,
+		THREAD_LOAD,
+		THREAD_LOAD_END,
+		THREAD_IDLE,
+		THREAD_EXIT,
+
+		THREAD_NONE,
+	};
+
 	static DWORD WINAPI LoadThread( LPVOID hWnd );
 
 	MainParent( HWND& hwnd, HDC& hdc );
@@ -45,7 +55,7 @@ private:
 
 	HWND mHWnd;
 	HANDLE mHLoadThread;
-	BYTE mThreadState;
+	ThreadStateID mThreadState;
 
 	MainChild* mChild;
 	RoomParent* mRoom;
