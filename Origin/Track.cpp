@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <memory.h>
 
 #include "Track.h"
@@ -68,6 +70,7 @@ Track::~Track( void )
 	mEQ = 0;
 }
 
+// ñ¢égóp
 void Track::reset( void )
 {
 	mWave->reset();
@@ -102,7 +105,8 @@ int Track::update( void )
 
 	memcpy( mPlayData, mWaveData, WAVE_DATA_LENGTH * sizeof( double ) );
 	
-	mPlayTime = ( static_cast< int >( mPlayTime ) + WAVE_DATA_LENGTH ) % ( SAMPLES_PER_SEC * 10 );
+	// çƒê∂éûä‘Ç10ïbï™Ç≈ä€ÇﬂçûÇﬁ
+	mPlayTime = fmod( mPlayTime + WAVE_DATA_LENGTH, SAMPLES_PER_SEC * 10 );
 
 	mIsUpdate = FALSE;
 	return 0;

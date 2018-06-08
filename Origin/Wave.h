@@ -12,8 +12,8 @@ class Wave {
 public:
 	Wave( void );
 	~Wave( void );
-	void reset( void );
 
+	void reset( void );
 	void setF( double f );
 	double getF( void );
 	void setVol( double vol );

@@ -53,8 +53,8 @@ private:
 	double mMainVolR;
 
 	HWAVEOUT mHWaveOut;
-	WAVEHDR mWaveHeader[ 2 ];
-	short mLpWave[ 2 ][ BUFFER_SIZE ];
+	WAVEHDR mWaveHeader[ BUFFER_MAX_NUM ];
+	short mLpWave[ BUFFER_MAX_NUM ][ BUFFER_SIZE ];
 };
 
 } // namespace Main
