@@ -15,18 +15,26 @@ void KeyButton::setData( int x, int y, BOOL isOn )
 	mHitX2 += 2;
 }
 
+void KeyButton::reset( void )
+{
+	if( mPartsID == PARTS_BUTTON_KEY_ON ) setPartsSize( PARTS_BUTTON_KEY_OFF );
+}
+
 BOOL KeyButton::isOn( void )
 {
 	return ( mPartsID == PARTS_BUTTON_KEY_ON );
 }
 
+void KeyButton::setOn( void )
+{
+	if( mPartsID == PARTS_BUTTON_KEY_OFF ) setPartsSize( PARTS_BUTTON_KEY_ON );
+}
 
 BOOL KeyButton::checkHit( void )
 {
 	Main::HandManager* handManager = Main::HandManager::inst();
 
 	if( !isHit( handManager->getX(), handManager->getY() ) ) {
-		if( mPartsID == PARTS_BUTTON_KEY_ON ) setPartsSize( PARTS_BUTTON_KEY_OFF );
 		return FALSE;
 	}
 	if( Main::HandManager::isMouseDown ) {
@@ -34,7 +42,6 @@ BOOL KeyButton::checkHit( void )
 		if( mPartsID == PARTS_BUTTON_KEY_OFF ) setPartsSize( PARTS_BUTTON_KEY_ON );
 	} else {
 		handManager->setState( handManager->HAND_PUSH_BEFORE );
-		if( mPartsID == PARTS_BUTTON_KEY_ON ) setPartsSize( PARTS_BUTTON_KEY_OFF );
 	}
 	return TRUE;
 }

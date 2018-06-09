@@ -1,10 +1,10 @@
-﻿2018/06/08 20:32:10 にビルドを開始しました。
+﻿2018/06/09 16:15:56 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "E:\VisualStudio\Origin\Origin\Origin.vcxproj" (build ターゲット)。
      1>InitializeBuildStatus:
          "AlwaysCreate" が指定されたため "Debug\Origin.unsuccessfulbuild" を作成しています。
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt SoundManager.cpp
-         SoundManager.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Synthesizer.cpp
+         Synthesizer.cpp
        ManifestResourceCompile:
          すべての出力が最新のものです。
        Link:
@@ -84,4 +84,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:01.17
+経過時間 00:00:00.84

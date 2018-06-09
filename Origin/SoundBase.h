@@ -5,10 +5,10 @@
 #define BITS_PER_SAMPLE		16			// 量子化ビット数
 #define SAMPLES_PER_SEC		44100		// 標本化周波数
 
-#define BUFFER_SIZE			17640		// wfe.nAvgBytesPerSec / BUFFER_PER_SEC( 10 )  0.1秒分
-#define WAVE_DATA_LENGTH	4410		// BUFFER_SIZE / 4  ( double -> char )  0.1秒分
+#define BUFFER_SIZE			8820		// wfe.nAvgBytesPerSec(176400) * 0.05秒
+#define WAVE_DATA_LENGTH	2205		// BUFFER_SIZE / 4  ( double -> char )  0.05秒分
 
-#define BUFFER_MAX_NUM		3	// リングバッファの数
+#define BUFFER_MAX_NUM		4	// リングバッファの数
 #define EFFECT_MAX_NUM		6	// 追加できるエフェクトの最大数
 #define LOG_MAX_DATA_NUM	30	// バッファのログを取るデータの最大数
 

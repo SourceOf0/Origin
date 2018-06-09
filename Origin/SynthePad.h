@@ -42,7 +42,7 @@ BOOL Synthesizer::checkHitPad( void )
 		if( i == 0 ) {
 			mTempo = static_cast< int >( ( 1 - mPadFader[ 0 ].getVal() ) * 15 + 1 );
 		} else if( i == 1 ) {
-			setNoteRatio( mPadFader[ 1 ].getVal() * ( NOTE_HEIGHT_NUM - 1 ), getSelectTrack(), mPlayTime );
+			setNoteRatio( ( 1 - mPadFader[ 1 ].getVal() ) * ( NOTE_HEIGHT_NUM - 1 ), getSelectTrack(), mPlayTime );
 		}
 		return TRUE;
 	}

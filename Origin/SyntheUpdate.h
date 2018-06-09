@@ -11,6 +11,8 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 		}
 	}
 
+	setKey();
+
 	for( int i = 0 ; i < EFFECT_SELECT_NUM; ++i ) {
 		mEffectDial[ i ].update();
 		if( !mEffectDial[ i ].isChangeSign() ) continue;
@@ -23,6 +25,23 @@ void Synthesizer::update( Sequence::RoomParent* parent )
 	updatePad( parent->mIsConnectSocket );
 }
 
+void Synthesizer::setKey( void )
+{
+	BYTE keyTbl[256];
+	if( !GetKeyboardState( keyTbl ) ) return;
+
+	static int checkChar[13] = {
+		'Z', 'S', 'X', 'D', 'C', 'V', 'G', 'B', 'H', 'N', 'J', 'M', VK_OEM_COMMA
+	};
+	int shiftNum = ( keyTbl[ VK_SHIFT ] & 0x80 )? 12 : 0;
+	
+	for( int i = 0 ; i < 13; ++i ) {
+		if( keyTbl[ checkChar[ i ] ] & 0x80 ) {
+			mKeyButton[ shiftNum + i ].setOn();
+		}
+	}
+}
+
 BOOL Synthesizer::checkHit( void )
 {
 	Main::SoundManager* soundManager = Main::SoundManager::inst();
@@ -30,17 +49,16 @@ BOOL Synthesizer::checkHit( void )
 
 	handManager->setState( handManager->HAND_NORMAL );
 
+	for( int i = 0 ; i < KEY_NUM; ++i ) {
+		mKeyButton[ i ].reset();
+	}
 	if( handManager->getX() > 550 ) {
-		BOOL isKeyHit = FALSE;
 		for( int i = 0 ; i < KEY_NUM; ++i ) {
-			if( mKeyButton[ i ].checkHit() ) isKeyHit = TRUE;
+			if( mKeyButton[ i ].checkHit() ) return TRUE;
 		}
-		if( isKeyHit ) return TRUE;
-	
 		if( checkHitPad() )	return TRUE;
 		return FALSE;
 	}
-
 
 	for( int i = 0 ; i < EFFECT_FADER_NUM; ++i ) {
 		if( !mEffectFader[ i ].checkHit() ) continue;
@@ -182,22 +200,18 @@ void Synthesizer::playTrack( Sequence::RoomParent* parent )
 			mPlayCount = 0;
 			mPlayTime = ( mPlayTime + 1 ) % NOTE_SET_MAX_NUM;
 		}
-		for( int i = 0 ; i < TRACK_NUM; ++i ) {
-//			mPlayWaveID[ i ] = ( WaveID )( mWaveDial[ i ].getSign() - PARTS_SIGN_CURVE );
-			mPlayWaveID[ i ] = getWaveID( mWaveDial[ i ].getSign() );
+	}
+	for( int i = 0 ; i < TRACK_NUM; ++i ) {
+		mPlayWaveID[ i ] = getWaveID( mWaveDial[ i ].getSign() );
+		if( isPlay ) {
 			Main::SoundManager::inst()->getTrack( i )->setF( getFixCodeHz( mNoteRatio[ i ][ mPlayTime ] ) );
-		}
-	} else {
-		for( int i = 0 ; i < TRACK_NUM; ++i ) {
-//			mPlayWaveID[ i ] = ( WaveID )( mWaveDial[ i ].getSign() - PARTS_SIGN_CURVE );
-			mPlayWaveID[ i ] = getWaveID( mWaveDial[ i ].getSign() );
+		} else {
 			Main::SoundManager::inst()->getTrack( i )->setF( 0.0 );
-			if( i != getSelectTrack() ) continue;
-			for( int j = 0 ; j < KEY_NUM; ++j ) {
-				if( !mKeyButton[ j ].isOn() ) continue;
-				Main::SoundManager::inst()->getTrack( i )->setF( getHz( j ) );
-				break;
-			}
+		}
+		if( i != getSelectTrack() ) continue;
+		for( int j = 0 ; j < KEY_NUM; ++j ) {
+			if( !mKeyButton[ j ].isOn() ) continue;
+			Main::SoundManager::inst()->getTrack( i )->setF( getHz( j ) );
 		}
 	}
 

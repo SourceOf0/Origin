@@ -170,7 +170,7 @@ int SceneManager::draw( HDC& hdc )
 	GetLocalTime( &localTime );
 	nowTime = ( localTime.wSecond == mLocalTime.wSecond )? localTime.wMilliseconds : ( 1000 + localTime.wMilliseconds );
 	while( nowTime - mLocalTime.wMilliseconds < mFrameRate ) {
-		Sleep( 5 );
+		//Sleep( 5 );
 		GetLocalTime( &localTime );
 		nowTime = ( localTime.wSecond == mLocalTime.wSecond )? localTime.wMilliseconds : ( 1000 + localTime.wMilliseconds );
 	}

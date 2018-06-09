@@ -70,7 +70,7 @@ LRESULT CALLBACK WndProc( HWND hwnd , UINT msg , WPARAM wp , LPARAM lp )
 		gStateSoundThread = THREAD_IDLE;
 		gHSoundThread = CreateThread( NULL, 0, SoundThread, hwnd, 0, &id );
 		
-//		SetTimer( hwnd, 1, 10, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
+//		SetTimer( hwnd, 1, 1, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
 		SetTimer( hwnd, 1, 20, NULL );	//–³‘Ê‚É‚‘¬‚ÉÄ•`‰æ‚³‚¹‚é
 		return 0;
 

@@ -75,6 +75,7 @@ private:
 	double getHz( double seed ); /* 0.0 <= seed <= 23.0 */
 	int getSelectTrack( void );
 
+	void setKey( void );
 	BOOL checkHit( void );
 	BOOL checkHitPad( void );
 	void updateWave( void );
