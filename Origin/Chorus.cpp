@@ -25,8 +25,8 @@ void Chorus::apply( Track* track )
 	double* waveData = track->getWaveData();
 
 	double rate = 0.1;
-	double d = SAMPLES_PER_SEC * mSetNum1 * 0.1;
-	double depth = SAMPLES_PER_SEC * mSetNum2 * 0.05;
+	double d = SAMPLES_PER_SEC * mSetNum1 * 0.1 + WAVE_DATA_LENGTH;
+	double depth = SAMPLES_PER_SEC * mSetNum2 * 0.01;
 	double t, delta, tau;
 	int m;
 
@@ -39,8 +39,7 @@ void Chorus::apply( Track* track )
 		t = static_cast< double >( i ) - tau;
 		m = static_cast< int >( t );
 		delta = t - static_cast< double >( m );
-		s += delta * getPrevData( mWaveLog, m + 1 ) + ( 1.0 - delta ) * getPrevData( mWaveLog, m ); 
-
+		s += delta * getPrevData( mWaveLog, m + 1 ) + ( 1.0 - delta ) * getPrevData( mWaveLog, m );
 		waveData[ i ] = s;
 	}
 

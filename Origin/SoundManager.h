@@ -45,7 +45,6 @@ private:
 	int mSetBufferIndex;
 	int mSetBufferNum;
 	BOOL mIsPlay;
-	BOOL mWasReset;
 
 	unsigned int mSysVol;
 	double mMainVol;

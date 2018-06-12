@@ -1,6 +1,8 @@
 #ifndef INCLUDED_SOUND_BASE_H
 #define INCLUDED_SOUND_BASE_H
 
+#include "common.h"
+
 #define CHANNEL_NUM			2			// ステレオ
 #define BITS_PER_SAMPLE		16			// 量子化ビット数
 #define SAMPLES_PER_SEC		44100		// 標本化周波数
@@ -9,8 +11,8 @@
 #define WAVE_DATA_LENGTH	2205		// BUFFER_SIZE / 4  ( double -> char )  0.05秒分
 
 #define BUFFER_MAX_NUM		4	// リングバッファの数
-#define EFFECT_MAX_NUM		6	// 追加できるエフェクトの最大数
 #define LOG_MAX_DATA_NUM	30	// バッファのログを取るデータの最大数
+#define EFFECT_MAX_NUM		6	// 追加できるエフェクトの最大数
 
 typedef enum {
 	WAVE_CURVE,

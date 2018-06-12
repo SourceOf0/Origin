@@ -202,16 +202,21 @@ void Synthesizer::playTrack( Sequence::RoomParent* parent )
 		}
 	}
 	for( int i = 0 ; i < TRACK_NUM; ++i ) {
+		BOOL wasSet = FALSE;
 		mPlayWaveID[ i ] = getWaveID( mWaveDial[ i ].getSign() );
+		if( i == getSelectTrack() ) {
+			for( int j = 0 ; j < KEY_NUM; ++j ) {
+				if( !mKeyButton[ j ].isOn() ) continue;
+				Main::SoundManager::inst()->getTrack( i )->setF( getHz( j ) );
+				wasSet = TRUE;
+				break;
+			}
+		}
+		if( wasSet ) continue;
 		if( isPlay ) {
 			Main::SoundManager::inst()->getTrack( i )->setF( getFixCodeHz( mNoteRatio[ i ][ mPlayTime ] ) );
 		} else {
 			Main::SoundManager::inst()->getTrack( i )->setF( 0.0 );
-		}
-		if( i != getSelectTrack() ) continue;
-		for( int j = 0 ; j < KEY_NUM; ++j ) {
-			if( !mKeyButton[ j ].isOn() ) continue;
-			Main::SoundManager::inst()->getTrack( i )->setF( getHz( j ) );
 		}
 	}
 

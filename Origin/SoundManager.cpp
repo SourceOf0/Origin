@@ -30,7 +30,6 @@ void SoundManager::destroy( void )
 }
 
 SoundManager::SoundManager( HWND& hwnd ) :
-mWasReset( TRUE ),
 mIsPlay( FALSE ),
 mSetBufferIndex( 0 ),
 mSetBufferNum( 0 ),
@@ -103,7 +102,6 @@ SoundManager::~SoundManager( void )
 int SoundManager::play( void )
 {
 	mIsPlay = TRUE;
-	mWasReset = FALSE;
 	return 0;
 }
 
@@ -183,11 +181,14 @@ int SoundManager::makeWave( void )
 		// 左   /* 四捨五入とオフセットの調節 */
 		mLpWave[ mSetBufferIndex ][ i * 2 + 1 ] = static_cast< short >( s + 0.5 ) - 32768;
 	}
-
 	waveOutWrite( mHWaveOut, &mWaveHeader[ mSetBufferIndex ], sizeof( WAVEHDR ) );
-
 	mSetBufferIndex = ( mSetBufferIndex + 1 ) % BUFFER_MAX_NUM;
 	++mSetBufferNum;
+
+	// 次の基本波形を用意
+	mTrack1->setData();
+	mTrack2->setData();
+	mTrack3->setData();
 
 	return 0;
 }

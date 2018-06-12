@@ -11,7 +11,8 @@ Wave::Wave( void ) :
 mA( 0.0 ),
 mF( 0.0 ),
 mTargetF( 0.0 ),
-mRatio( 0.5 )
+mRatio( 0.5 ),
+mIsChangeF( FALSE )
 {
 }
 
@@ -25,6 +26,7 @@ void Wave::reset( void )
 
 void Wave::setF( double f )
 {
+	mIsChangeF = mIsChangeF || (mTargetF != f);
 	mTargetF = f;
 }
 double Wave::getF( void )
@@ -53,6 +55,25 @@ void Wave::setData( Track* track, WaveID id )
 			break;
 		case WAVE_NONE:
 			setSilent( track );
+	}
+
+	if( !mIsChangeF ) return;
+
+	/* フェード処理 */
+	double* waveData = track->getWaveData();
+	for( int i = 0; i < WAVE_DATA_LENGTH * 0.03; i++ ) {
+		waveData[i] *= (double)i / (WAVE_DATA_LENGTH * 0.03);
+	}
+	mIsChangeF = FALSE;
+}
+void Wave::amend( Track* track )
+{
+	if( !mIsChangeF ) return;
+
+	/* フェード処理 */
+	double* waveData = track->getWaveData();
+	for( int i = 0; i < WAVE_DATA_LENGTH * 0.03; i++ ) {
+		waveData[WAVE_DATA_LENGTH - i - 1] *= (double)i / (WAVE_DATA_LENGTH * 0.03);
 	}
 }
 

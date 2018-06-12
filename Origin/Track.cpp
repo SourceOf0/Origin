@@ -95,21 +95,26 @@ void Track::reset( void )
 int Track::update( void )
 {
 	mIsUpdate = TRUE;
-
-	mWave->setData( this, mWaveID );
-
+	
+	mWave->amend( this );
+	
 	for( int i = 0; i < EFFECT_MAX_NUM; ++i ) {
 		if( mEffectList[ i ] != 0 ) mEffectList[ i ]->apply( this );
 	}
 	mEQ->apply( this );
 
-	memcpy( mPlayData, mWaveData, WAVE_DATA_LENGTH * sizeof( double ) );
-	
-	// 再生時間を10秒分で丸め込む
+	// 再生時間をバッファサイズの10秒分で丸め込む
 	mPlayTime = fmod( mPlayTime + WAVE_DATA_LENGTH, SAMPLES_PER_SEC * 10 );
+
+	memcpy( mPlayData, mWaveData, WAVE_DATA_LENGTH * sizeof( double ) );
 
 	mIsUpdate = FALSE;
 	return 0;
+}
+
+void Track::setData( void )
+{
+	mWave->setData( this, mWaveID );
 }
 
 void Track::setF( double f )

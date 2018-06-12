@@ -18,6 +18,7 @@ public:
 	double getF( void );
 	void setVol( double vol );
 	void setData( Track* track, WaveID id );
+	void amend( Track* track );
 
 private:
 	void setCurve( Track* track );
@@ -30,6 +31,7 @@ private:
 	double mRatio;
 	double mF;
 	double mTargetF;
+	bool mIsChangeF;
 };
 
 } //namespace Sound

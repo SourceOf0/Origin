@@ -20,6 +20,7 @@ public:
 	void reset( void );
 	int update( void );
 
+	void setData( void );
 	void setF( double f );
 	void setVol( double vol );
 	void setPan( double vol );

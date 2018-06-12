@@ -39,6 +39,7 @@ double EffectBase::getPrevData( double waveLog[ LOG_MAX_DATA_NUM ][ WAVE_DATA_LE
 	if( prevIndex < 0 ) {
 		dataIndex = WAVE_DATA_LENGTH + prevIndex % WAVE_DATA_LENGTH;
 		blockIndex = mLogIndex + static_cast<int>( prevIndex / WAVE_DATA_LENGTH ) - 1;
+		if( blockIndex < -LOG_MAX_DATA_NUM ) return 0;
 		if( blockIndex < 0 ) blockIndex = LOG_MAX_DATA_NUM + blockIndex;
 	} else if( prevIndex < WAVE_DATA_LENGTH ) {
  		dataIndex = prevIndex % WAVE_DATA_LENGTH;

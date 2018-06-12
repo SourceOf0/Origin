@@ -31,7 +31,7 @@ void Vibrato::apply( Track* track )
 
 	double rate = mSetNum1 * 10.0;
 	double d = SAMPLES_PER_SEC * 0.002;
-	double depth = SAMPLES_PER_SEC * mSetNum2 * 0.01 + 0.001;
+	double depth = SAMPLES_PER_SEC * mSetNum2 * 0.005 + 0.001;
 
 	memcpy( mWaveLog[ mLogIndex ], waveData, WAVE_DATA_LENGTH * sizeof( double ) );
 
