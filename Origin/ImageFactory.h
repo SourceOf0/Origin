@@ -19,9 +19,9 @@ public:
 	static void create( HDC& hdc );
 	static void destroy( void );
 
-	Image::BitmapBase* loadAnime( HDC& hdc, int animeNum, const char* fileName[], BOOL isDC );
-	Image::DCBitmap* loadDC( HDC& hdc, const char* fileName );
-	Image::BitmapBase* load( HDC& hdc, const char* fileName );
+	Image::BitmapBase* loadAnime( HDC& hdc, int animeNum, const int fileIDs[], BOOL isDC );
+	Image::DCBitmap* loadDC( HDC& hdc, const int fileID );
+	Image::BitmapBase* load( HDC& hdc, const int fileID );
 
 private:
 	ImageFactory( HDC& hdc );

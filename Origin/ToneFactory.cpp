@@ -38,7 +38,7 @@ ToneFactory::ToneFactory( HDC& hdc )
 	int toneNum = TONE_NONE;
 	DCBitmap** setTone = new DCBitmap*[ toneNum ];
 	DCBitmap* newData = 0;
-	DCBitmap* filter = imageFactory->loadDC( hdc, "resource\\tone.dad" );
+	DCBitmap* filter = imageFactory->loadDC( hdc, IDR_DAD_TONE );
 
 	int setToneIndex = 0;
 	int setToneNum = 15;
@@ -59,7 +59,7 @@ ToneFactory::ToneFactory( HDC& hdc )
 	delete filter;
 	filter = 0;
 
-	filter = imageFactory->loadDC( hdc, "resource\\smallFilter.dad" );
+	filter = imageFactory->loadDC( hdc, IDR_DAD_SMALLFILTER );
 
 	setToneNum = 5;
 	blockWidth = filter->mWidth / setToneNum;

@@ -31,14 +31,11 @@ mScheduleIndex( VIEW_SCHEDULE_NUM )
 
 	srand( static_cast< unsigned >( time( NULL ) ) );
 
-	char str[] = "resource\\book1_000.dad";
 	for( int i = 0; i < BOOK1_IMAGE_NUM; ++i ) {
-		str[ 16 ] = static_cast< char >( ( i / 10 ) + '0' );
-		str[ 17 ] = static_cast< char >( ( i % 10 ) + '0' );
-		mBmp[ i ] = imageFactory->loadDC( hdc, str );
+		mBmp[ i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK1_000 + i );
 	}
 
-	mDotBmp = imageFactory->loadDC( hdc, "resource\\pointMask.dad" );
+	mDotBmp = imageFactory->loadDC( hdc, IDR_DAD_POINTMASK );
 
 	mMaskBmp = new Image::DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT );
 	mMaskBmp->setBlack();

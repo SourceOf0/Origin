@@ -25,13 +25,13 @@ mTempo( 10 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 
-	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe.dad" ) );
+	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_SYNTHE ) );
 	mBackBmp1->mUseAlpha = FALSE;
 
-	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe_2.dad" ) );
+	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_SYNTHE_2 ) );
 	mBackBmp2->mUseAlpha = FALSE;
 
-	mPartsBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\synthe_parts.dad" ) );
+	mPartsBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_SYNTHE_PARTS ) );
 	mPartsBmp->mUseAlpha = TRUE;
 
 	mWaveBmp = new Image::DCBitmap( hdc, 355, 176 );
@@ -39,7 +39,7 @@ mTempo( 10 )
 	mWaveBmp->mY = 158;
 	mWaveBmp->setWhite();
 
-	mPadBmp = imageFactory->loadDC( hdc, "resource\\synthe_pad.dad" );
+	mPadBmp = imageFactory->loadDC( hdc, IDR_DAD_SYNTHE_PAD );
 	mPadBmp->mX = 581;
 	mPadBmp->mY = 416;
 

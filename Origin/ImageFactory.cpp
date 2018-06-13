@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 using namespace std;
 
 using namespace Image;
@@ -120,25 +121,52 @@ unsigned int ImageFactory::setTone( PixelBitmap* target, unsigned int count, uns
 }
 
 
-BitmapBase* ImageFactory::loadAnime( HDC& hdc, int animeNum, const char* fileName[], BOOL isDC )
+BitmapBase* ImageFactory::loadAnime( HDC& hdc, int animeNum, const int fileIDs[], BOOL isDC )
 {
 	AnimeData* ret = new AnimeData();
 	BitmapBase** setData = new BitmapBase*[ animeNum ];
 	unsigned int bmpWidth, bmpHeight;
 
-	ifstream fin( fileName[ 0 ], ios::in | ios::binary );
-    if( !fin ) return NULL;
+	HRSRC hResource = FindResource( NULL, MAKEINTRESOURCE(fileIDs[0]), "DAD");
+	if( !hResource ) {
+		MessageBox( NULL, TEXT( "1 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+	HGLOBAL hLoadedResource = LoadResource( NULL, hResource );
+	if( !hLoadedResource ) {
+		MessageBox( NULL, TEXT( "2 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+
+	char* pLockedResource = (char*)LockResource(hLoadedResource);
+	if( !pLockedResource ) {
+		MessageBox( NULL, TEXT( "3 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+	DWORD dwResourceSize = SizeofResource( NULL, hResource );
+	if( 0 == dwResourceSize ) {
+		MessageBox( NULL, TEXT( "4 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+
+	std::string result;
+	result.assign( pLockedResource, dwResourceSize );
+	std::istringstream fin( result, std::istringstream::binary );
+	//ifstream fin( fileName[ 0 ], ios::in | ios::binary );
+	if( !fin ) {
+		MessageBox( NULL, TEXT( "ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
 	fin.read( ( char* )&bmpWidth, sizeof( int ) );
 	fin.read( ( char* )&bmpHeight, sizeof( int ) );
-	fin.close();  //ファイルを閉じる
 
 	if( isDC ) {
 		for( int i = 0; i < animeNum; ++i ) {
-			setData[ i ] = loadDC( hdc, fileName[ i ] );
+			setData[ i ] = loadDC( hdc, fileIDs[ i ] );
 		}
 	} else {
 		for( int i = 0; i < animeNum; ++i ) {
-			setData[ i ] = load( hdc, fileName[ i ] );
+			setData[ i ] = load( hdc, fileIDs[ i ] );
 		}
 	}
 	ret->setData( setData, animeNum );
@@ -146,15 +174,40 @@ BitmapBase* ImageFactory::loadAnime( HDC& hdc, int animeNum, const char* fileNam
 	return ret;
 }
 
-DCBitmap* ImageFactory::loadDC( HDC& hdc, const char* fileName )
+DCBitmap* ImageFactory::loadDC( HDC& hdc, const int fileID )
 {
 	unsigned int setData, bmpWidth, bmpHeight, bmpSize, dataLeng, bitDataLeng;
 	unsigned char ver, useColor;
 	DCBitmap* ret;
 
-	ifstream fin( fileName, ios::in | ios::binary );
+	HRSRC hResource = FindResource( NULL, MAKEINTRESOURCE(fileID), "DAD");
+	if( !hResource ) {
+		MessageBox( NULL, TEXT( "1 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+	HGLOBAL hLoadedResource = LoadResource( NULL, hResource );
+	if( !hLoadedResource ) {
+		MessageBox( NULL, TEXT( "2 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
 
-    if( !fin ) {
+	char* pLockedResource = (char*)LockResource(hLoadedResource);
+	if( !pLockedResource ) {
+		MessageBox( NULL, TEXT( "3 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+	DWORD dwResourceSize = SizeofResource( NULL, hResource );
+	if( 0 == dwResourceSize ) {
+		MessageBox( NULL, TEXT( "4 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+
+	std::string result;
+	result.assign( pLockedResource, dwResourceSize );
+	std::istringstream fin( result, std::istringstream::binary );
+	//ifstream fin( fileName, ios::in | ios::binary );
+
+	if( !fin ) {
 		MessageBox( NULL, TEXT( "ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
 		return NULL;
 	}
@@ -221,20 +274,48 @@ DCBitmap* ImageFactory::loadDC( HDC& hdc, const char* fileName )
 		layerData = 0;
 	}
 
-	fin.close();  //ファイルを閉じる
+	//fin.close();  //ファイルを閉じる
 
 	return ret;
 }
 
-BitmapBase* ImageFactory::load( HDC& hdc, const char* fileName )
+BitmapBase* ImageFactory::load( HDC& hdc, const int fileID )
 {
 	unsigned int setData, bmpWidth, bmpHeight, dataLeng;
 	unsigned char ver, useColor;
 	BitmapBase* ret = 0;
 
-	ifstream fin( fileName, ios::in | ios::binary );
+	HRSRC hResource = FindResource( NULL, MAKEINTRESOURCE(fileID), "DAD");
+	if( !hResource ) {
+		MessageBox( NULL, TEXT( "1 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+	HGLOBAL hLoadedResource = LoadResource( NULL, hResource );
+	if( !hLoadedResource ) {
+		MessageBox( NULL, TEXT( "2 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
 
-    if( !fin ) return NULL;
+	char* pLockedResource = (char*)LockResource(hLoadedResource);
+	if( !pLockedResource ) {
+		MessageBox( NULL, TEXT( "3 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+	DWORD dwResourceSize = SizeofResource( NULL, hResource );
+	if( 0 == dwResourceSize ) {
+		MessageBox( NULL, TEXT( "4 ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
+
+	std::string result;
+	result.assign( pLockedResource, dwResourceSize );
+	std::istringstream fin( result, std::istringstream::binary );
+	//ifstream fin( fileName, ios::in | ios::binary );
+
+	if( !fin ) {
+		MessageBox( NULL, TEXT( "ファイル読み込めないんですけど。" ), TEXT( "Origin" ), MB_OK );
+		return NULL;
+	}
 
 	fin.read( ( char* )&bmpWidth, sizeof( int ) );
 	fin.read( ( char* )&bmpHeight, sizeof( int ) );
@@ -280,12 +361,6 @@ BitmapBase* ImageFactory::load( HDC& hdc, const char* fileName )
 			}
 			index += count;
 	
-/*			for( int n = 0; n < bmpHeight; ++n ) {
-				for( int k = 0; k < 16; ++k ) {
-					mLayerData[ n ]->setBlack( k, n );
-				}
-			}*/
-
 			targetColor = ( ColorID )( targetColor << 1 );
 		}
 
@@ -300,8 +375,6 @@ BitmapBase* ImageFactory::load( HDC& hdc, const char* fileName )
 		}
 		ret = layerData;
 	}
-
-	fin.close();  //ファイルを閉じる
 
 	return ret;
 }

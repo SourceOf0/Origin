@@ -407,6 +407,7 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="common.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -487,5 +488,385 @@
     <Filter Include="Sequence\Room\Room1\Synthesizer\Parts">
       <UniqueIdentifier>{2a21e063-f005-4adf-967d-8b601030e00b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{0f0c7457-b96a-4b2d-9350-8b787e200def}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Origin.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\ball.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trashCan_shadow.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\ball_fall.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\ball_jump.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\ball_left.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\ball_right.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\ball_shake.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\ball_stop.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\board.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_000.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_001.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_002.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_003.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_004.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_005.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_006.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_007.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_008.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_009.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_010.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_011.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_012.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_013.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_014.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_015.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_016.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_017.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_018.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_019.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_020.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book1_021.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_00.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_01.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_02.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_10.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_11.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_12.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_20.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_21.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_22.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_30.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_31.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_32.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_40.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_41.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book3_42.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book4.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book5.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book6.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\book7.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\bookCorner.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\checkHand.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\frame.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\hands.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\man_ladder.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\man_stay.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\man_walk.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\map_objects.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\note.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\note_pencil.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book1_1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book1_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book1_3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book2_1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book2_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book2_3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book3_1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book3_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book3_3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book4_1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book4_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book4_3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book5_1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book5_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book5_3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book6_1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book6_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book6_3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book7_1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book7_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_book7_3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_end.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_room_1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_room_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_room_3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\page_title.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\pic01.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\pic02.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\pic03.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\pic04.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\pic05.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\pic06.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\piece.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\pointMask.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room1_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room2_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room3_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room3_socket.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room4.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room4_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\room4_switch.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\smallFilter.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\splash.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\synthe.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\synthe_2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\synthe_pad.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\synthe_parts.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\test.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\tone.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trash1.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trash2.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trash3.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trash4.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trash5.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trash6.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trash7.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trash8.dad">
+      <Filter>resource</Filter>
+    </None>
+    <None Include="resource\trashCan.dad">
+      <Filter>resource</Filter>
+    </None>
   </ItemGroup>
 </Project>

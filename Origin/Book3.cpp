@@ -23,21 +23,21 @@ Book3::Book3( HDC& hdc, MainParent* parent )
 	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	int i = -1;
 
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_00.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_01.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_02.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_10.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_11.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_12.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_20.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_21.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_22.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_30.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_31.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_32.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_40.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_41.dad" );
-	mImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\book3_42.dad" );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_00 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_01 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_02 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_10 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_11 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_12 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_20 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_21 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_22 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_30 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_31 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_32 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_40 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_41 );
+	mImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BOOK3_42 );
 
 	mFirstNode.x = 0;
 	mFirstNode.y = 0;

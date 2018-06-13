@@ -28,19 +28,19 @@ mWasKeep( FALSE )
 	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 	int i = -1;
 
-	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\ball.dad" );
-	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\ball_left.dad" );
-	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\ball_right.dad" );
-	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\ball_stop.dad" );
-	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\ball_jump.dad" );
-	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\ball_fall.dad" );
-	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\ball_shake.dad" );
+	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BALL );
+	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BALL_LEFT );
+	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BALL_RIGHT );
+	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BALL_STOP );
+	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BALL_JUMP );
+	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BALL_FALL );
+	mBallImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_BALL_SHAKE );
 
-	mBoardImage = imageFactory->loadDC( hdc, "resource\\board.dad" );
+	mBoardImage = imageFactory->loadDC( hdc, IDR_DAD_BOARD );
 
-	mSplashImage = imageFactory->loadDC( hdc, "resource\\splash.dad" );
+	mSplashImage = imageFactory->loadDC( hdc, IDR_DAD_SPLASH );
 
-	mPieceImage = imageFactory->loadDC( hdc, "resource\\piece.dad" );
+	mPieceImage = imageFactory->loadDC( hdc, IDR_DAD_PIECE );
 
 	resetBall();
 

@@ -18,13 +18,13 @@ mEscapeCount( 0 )
 	int windowWidth = Main::SceneManager::windowWidth;
 	int windowHeight = Main::SceneManager::windowHeight;
 
-	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room4.dad" ) );
+	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM4 ) );
 	mBackBmp1->mUseAlpha = FALSE;
 
-	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room4_2.dad" ) );
+	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM4_2 ) );
 	mBackBmp2->mUseAlpha = FALSE;
 
-	mSwitchBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room4_switch.dad" ) );
+	mSwitchBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM4_SWITCH ) );
 	mSwitchBmp->mUseAlpha = FALSE;
 	mSwitchBmp->mX = 344;
 	mSwitchBmp->mY = 327;

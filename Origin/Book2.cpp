@@ -29,35 +29,35 @@ Book2::Book2( HDC& hdc, MainParent* parent )
 		mPointTrack[i].count = 0;
 	}
 
-	mBackBmp1 = imageFactory->loadDC( hdc, "resource\\pic02.dad" );
+	mBackBmp1 = imageFactory->loadDC( hdc, IDR_DAD_PIC02 );
 	mBackBmp1->mX = static_cast< double >( VIEW_WIDTH - mBackBmp1->mWidth ) / 2;
 	mBackBmp1->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp1->mHeight ) / 2 - 10;
 
-	mBackBmp2 = imageFactory->loadDC( hdc, "resource\\pic01.dad" );
+	mBackBmp2 = imageFactory->loadDC( hdc, IDR_DAD_PIC01 );
 	mBackBmp2->mX = static_cast< double >( VIEW_WIDTH - mBackBmp2->mWidth ) / 2;
 	mBackBmp2->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp2->mHeight ) / 2 - 10;
 
-	mBackBmp3 = imageFactory->loadDC( hdc, "resource\\pic03.dad" );
+	mBackBmp3 = imageFactory->loadDC( hdc, IDR_DAD_PIC03 );
 	mBackBmp3->mX = static_cast< double >( VIEW_WIDTH - mBackBmp3->mWidth ) / 2;
 	mBackBmp3->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp3->mHeight ) / 2 - 10;
 
-	mBackBmp4 = imageFactory->loadDC( hdc, "resource\\pic05.dad" );
+	mBackBmp4 = imageFactory->loadDC( hdc, IDR_DAD_PIC05 );
 	mBackBmp4->mX = static_cast< double >( VIEW_WIDTH - mBackBmp4->mWidth ) / 2;
 	mBackBmp4->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp4->mHeight ) / 2 - 10;
 
-	mBackBmp5 = imageFactory->loadDC( hdc, "resource\\pic04.dad" );
+	mBackBmp5 = imageFactory->loadDC( hdc, IDR_DAD_PIC04 );
 	mBackBmp5->mX = static_cast< double >( VIEW_WIDTH - mBackBmp5->mWidth ) / 2;
 	mBackBmp5->mY = static_cast< double >( VIEW_HEIGHT - mBackBmp5->mHeight ) / 2 - 10;
 
-	mFrontBmp = imageFactory->loadDC( hdc, "resource\\frame.dad" );
+	mFrontBmp = imageFactory->loadDC( hdc, IDR_DAD_FRAME );
 	mFrontBmp->mX = static_cast< double >( VIEW_WIDTH - mFrontBmp->mWidth ) / 2;
 	mFrontBmp->mY = static_cast< double >( VIEW_HEIGHT - mFrontBmp->mHeight ) / 2;
 
 	mMaskBmp = new Image::DCBitmap( hdc, VIEW_WIDTH, VIEW_HEIGHT );
 
-	mMaskBlockBmp = imageFactory->loadDC( hdc, "resource\\smallFilter.dad" );
+	mMaskBlockBmp = imageFactory->loadDC( hdc, IDR_DAD_SMALLFILTER );
 
-	mPointBmp = imageFactory->loadDC( hdc, "resource\\pointMask.dad" );
+	mPointBmp = imageFactory->loadDC( hdc, IDR_DAD_POINTMASK );
 
 	mCount = FILTER_FRAME_COUNT;
 	mChangeCount = CHANGE_COUNT_MAX;

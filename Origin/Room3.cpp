@@ -17,13 +17,13 @@ Room3::Room3( HDC& hdc, RoomParent* parent )
 	int windowWidth = Main::SceneManager::windowWidth;
 	int windowHeight = Main::SceneManager::windowHeight;
 
-	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room3.dad" ) );
+	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM3 ) );
 	mBackBmp1->mUseAlpha = FALSE;
 
-	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room3_2.dad" ) );
+	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM3_2 ) );
 	mBackBmp2->mUseAlpha = FALSE;
 	
-	mSocketBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room3_socket.dad" ) );
+	mSocketBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM3_SOCKET ) );
 	mSocketBmp->mUseAlpha = FALSE;
 	mSocketBmp->mX = 855;
 	mSocketBmp->mY = 605;

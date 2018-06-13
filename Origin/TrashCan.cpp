@@ -20,12 +20,12 @@ mPrevIndex( 0 )
 	int windowWidth = Main::SceneManager::windowWidth;
 	int windowHeight = Main::SceneManager::windowHeight;
 
-	mBackBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\trashCan.dad" ) );
+	mBackBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_TRASHCAN ) );
 	mBackBmp->mUseAlpha = FALSE;
 
-	mShadowBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\trashCan_shadow.dad" ) );
+	mShadowBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_TRASHCAN_SHADOW ) );
 
-	mTrashBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\trash1.dad" ) );
+	mTrashBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_TRASH1 ) );
 }
 
 TrashCan::~TrashCan()
@@ -76,28 +76,28 @@ void TrashCan::draw( HDC& hdc, RoomParent* parent, double depth, int fadeCount )
 		mTrashBmp = 0;
 		switch( mViewIndex ) {
 			case 1:
-				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, "resource\\trash1.dad" ) );
+				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, IDR_DAD_TRASH1 ) );
 				break;
 			case 2:
-				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, "resource\\trash2.dad" ) );
+				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, IDR_DAD_TRASH2 ) );
 				break;
 			case 3:
-				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, "resource\\trash3.dad" ) );
+				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, IDR_DAD_TRASH3 ) );
 				break;
 			case 4:
-				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, "resource\\trash4.dad" ) );
+				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, IDR_DAD_TRASH4 ) );
 				break;
 			case 5:
-				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, "resource\\trash5.dad" ) );
+				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, IDR_DAD_TRASH5 ) );
 				break;
 			case 6:
-				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, "resource\\trash6.dad" ) );
+				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, IDR_DAD_TRASH6 ) );
 				break;
 			case 7:
-				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, "resource\\trash7.dad" ) );
+				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, IDR_DAD_TRASH7 ) );
 				break;
 			case 8:
-				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, "resource\\trash8.dad" ) );
+				mTrashBmp = ( Image::LayerData* )( Main::ImageFactory::inst()->load( hdc, IDR_DAD_TRASH8 ) );
 				break;
 		}
 	}

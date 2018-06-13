@@ -49,8 +49,8 @@ mAnimeCount( 0 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 
-	mHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\hands.dad" ) );
-	mCheckHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\checkHand.dad" ) );
+	mHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_HANDS ) );
+	mCheckHandBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_CHECKHAND ) );
 
 	mHandBmp->mDepth = 0.2;
 	mCheckHandBmp->mDepth = 0.2;

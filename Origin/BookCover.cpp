@@ -19,13 +19,13 @@ mBookKind( 0 )
 	const int VIEW_HEIGHT = Main::SceneManager::VIEW_HEIGHT;
 
 	int i = -1;
-	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book1.dad" ) );
-	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book2.dad" ) );
-	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book3.dad" ) );
-	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book4.dad" ) );
-	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book5.dad" ) );
-	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book6.dad" ) );
-	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\book7.dad" ) );
+	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_BOOK1 ) );
+	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_BOOK2 ) );
+	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_BOOK3 ) );
+	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_BOOK4 ) );
+	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_BOOK5 ) );
+	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_BOOK6 ) );
+	mCoverBmp[ ++i ] = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_BOOK7 ) );
 
 	int setX = ( VIEW_WIDTH - mCoverBmp[ 0 ]->mWidth ) / 2;
 	int setY = ( VIEW_HEIGHT - mCoverBmp[ 0 ]->mHeight ) / 2;

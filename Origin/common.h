@@ -1,6 +1,7 @@
 #ifndef INCLUDED_COMMON_H
 #define INCLUDED_COMMON_H
 
+#include "resource.h"
 #include <stdio.h>
 
 #ifdef _DEBUG

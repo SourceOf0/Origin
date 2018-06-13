@@ -20,14 +20,14 @@ mTurnPageState( 0 )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 
-	mBackBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\note.dad" ) );
+	mBackBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_NOTE ) );
 	mBackBmp->mUseAlpha = FALSE;
 
-	mPencilBmp = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\note_pencil.dad" ) );
+	mPencilBmp = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_NOTE_PENCIL ) );
 	mPencilBmp->mUseAlpha = FALSE;
 	mPencilBmp->drawWindow();
 
-	mNowPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_room_1.dad" );
+	mNowPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_ROOM_1 );
 	mNextPageBmp = 0;
 
 	mTurnPageCount = mNowPageBmp->mWidth;
@@ -129,82 +129,82 @@ void Note::draw( HDC& hdc, RoomParent* parent, double depth, int fadeCount )
 	if( mNextPageBmp == 0 ) {
 		switch( Main::NoteManager::inst()->getNowPage( mViewPageIndex ) ) {
 			case NOTE_ROOM_1:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_room_1.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_ROOM_1 );
 				break;
 			case NOTE_ROOM_2:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_room_2.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_ROOM_2 );
 				break;
 			case NOTE_ROOM_3:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_room_3.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_ROOM_3 );
 				break;
 			case NOTE_BOOK1_1:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book1_1.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK1_1 );
 				break;
 			case NOTE_BOOK1_2:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book1_2.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK1_2 );
 				break;
 			case NOTE_BOOK1_3:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book1_3.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK1_3 );
 				break;
 			case NOTE_BOOK2_1:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book2_1.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK2_1 );
 				break;
 			case NOTE_BOOK2_2:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book2_2.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK2_2 );
 				break;
 			case NOTE_BOOK2_3:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book2_3.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK2_3 );
 				break;
 			case NOTE_BOOK3_1:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book3_1.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK3_1 );
 				break;
 			case NOTE_BOOK3_2:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book3_2.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK3_2 );
 				break;
 			case NOTE_BOOK3_3:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book3_3.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK3_3 );
 				break;
 			case NOTE_BOOK4_1:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book4_1.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK4_1 );
 				break;
 			case NOTE_BOOK4_2:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book4_2.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK4_2 );
 				break;
 			case NOTE_BOOK4_3:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book4_3.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK4_3 );
 				break;
 			case NOTE_BOOK5_1:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book5_1.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK5_1 );
 				break;
 			case NOTE_BOOK5_2:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book5_2.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK5_2 );
 				break;
 			case NOTE_BOOK5_3:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book5_3.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK5_3 );
 				break;
 			case NOTE_BOOK6_1:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book6_1.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK6_1 );
 				break;
 			case NOTE_BOOK6_2:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book6_2.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK6_2 );
 				break;
 			case NOTE_BOOK6_3:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book6_3.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK6_3 );
 				break;
 			case NOTE_BOOK7_1:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book7_1.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK7_1 );
 				break;
 			case NOTE_BOOK7_2:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book7_2.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK7_2 );
 				break;
 			case NOTE_BOOK7_3:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_book7_3.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_BOOK7_3 );
 				break;
 			case NOTE_END:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_end.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_END );
 				break;
 			case NOTE_TITLE:
-				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\page_title.dad" );
+				mNextPageBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_PAGE_TITLE );
 				break;
 		}
 	}

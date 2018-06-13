@@ -1,11 +1,9 @@
-﻿2018/06/04 22:37:27 にビルドを開始しました。
+﻿2018/06/13 17:03:26 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "E:\VisualStudio\Origin\Origin\Origin.vcxproj" (build ターゲット)。
-     1>PrepareForBuild:
-         ディレクトリ "E:\VisualStudio\Origin\Release\" を作成しています。
-       InitializeBuildStatus:
+     1>InitializeBuildStatus:
          "AlwaysCreate" が指定されたため "Release\Origin.unsuccessfulbuild" を作成しています。
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt AnimeData.cpp AutoPan.cpp AutoPanButton.cpp BandEliminateFilter.cpp BandPassFilter.cpp BitmapBase.cpp Book1.cpp Book2.cpp Book3.cpp Book4.cpp Book5.cpp Book6.cpp Book7.cpp BookCover.cpp Chorus.cpp Compressor.cpp DCBitmap.cpp Debug1.cpp Debug2.cpp DebugLoading.cpp Delay.cpp Dial.cpp Distortion1.cpp Distortion2.cpp Distortion3.cpp EffectBase.cpp Equalizer.cpp FaderH.cpp FaderV.cpp HandManager.cpp HighPassFilter.cpp ImageFactory.cpp KeyButton.cpp LayerData.cpp Lever.cpp LowPassFilter.cpp main.cpp MainParent.cpp NoiseGate.cpp Note.cpp NoteManager.cpp PartsBase.cpp PixelBitmap.cpp PlayButton.cpp Room1.cpp Room2.cpp Room3.cpp Room4.cpp RoomParent.cpp SceneManager.cpp Sign.cpp SoundManager.cpp Synthesizer.cpp TimeLamp.cpp ToneFactory.cpp Track.cpp TrackButton.cpp TrashCan.cpp Tremolo.cpp Vibrato.cpp ViewObj.cpp Wave.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt AnimeData.cpp AutoPan.cpp AutoPanButton.cpp BandEliminateFilter.cpp BandPassFilter.cpp BitmapBase.cpp Book1.cpp Book2.cpp Book3.cpp Book4.cpp Book5.cpp Book6.cpp Book7.cpp BookCover.cpp Chorus.cpp Compressor.cpp DCBitmap.cpp Debug1.cpp Debug2.cpp DebugLoading.cpp Delay.cpp Dial.cpp Distortion1.cpp Distortion2.cpp Distortion3.cpp EffectBase.cpp Equalizer.cpp FaderH.cpp FaderV.cpp HandManager.cpp HighPassFilter.cpp ImageFactory.cpp KeyButton.cpp LayerData.cpp Lever.cpp LowPassFilter.cpp main.cpp MainParent.cpp NoiseGate.cpp Note.cpp NoteManager.cpp PartsBase.cpp PixelBitmap.cpp PlayButton.cpp Room1.cpp Room2.cpp Room3.cpp Room4.cpp RoomParent.cpp SceneManager.cpp Sign.cpp SoundManager.cpp Synthesizer.cpp TimeLamp.cpp ToneFactory.cpp Track.cpp TrackButton.cpp TrashCan.cpp Tremolo.cpp Vibrato.cpp ViewObj.cpp Wave.cpp
          AnimeData.cpp
          AutoPan.cpp
          AutoPanButton.cpp
@@ -71,8 +69,11 @@
          コンパイル中...
          ViewObj.cpp
          Wave.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /l"0x0409" /nologo /fo"Release\Origin.res" Origin.rc 
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\VisualStudio\Origin\Release\Origin.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\Origin.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\VisualStudio\Origin\Release\Origin.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\VisualStudio\Origin\Release\Origin.lib" /MACHINE:X86 Release\AnimeData.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\VisualStudio\Origin\Release\Origin.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\Origin.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\VisualStudio\Origin\Release\Origin.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\VisualStudio\Origin\Release\Origin.lib" /MACHINE:X86 Release\Origin.res
+         Release\AnimeData.obj
          Release\AutoPan.obj
          Release\AutoPanButton.obj
          Release\BandEliminateFilter.obj
@@ -146,4 +147,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:14.17
+経過時間 00:00:13.93

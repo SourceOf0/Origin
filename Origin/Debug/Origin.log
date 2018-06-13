@@ -1,16 +1,85 @@
-﻿2018/06/12 18:28:57 にビルドを開始しました。
+﻿2018/06/13 17:05:05 にビルドを開始しました。
      1>ノード 2 上のプロジェクト "E:\VisualStudio\Origin\Origin\Origin.vcxproj" (build ターゲット)。
      1>InitializeBuildStatus:
          "AlwaysCreate" が指定されたため "Debug\Origin.unsuccessfulbuild" を作成しています。
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt SoundManager.cpp Wave.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt AnimeData.cpp AutoPan.cpp AutoPanButton.cpp BandEliminateFilter.cpp BandPassFilter.cpp BitmapBase.cpp Book1.cpp Book2.cpp Book3.cpp Book4.cpp Book5.cpp Book6.cpp Book7.cpp BookCover.cpp Chorus.cpp Compressor.cpp DCBitmap.cpp Debug1.cpp Debug2.cpp DebugLoading.cpp Delay.cpp Dial.cpp Distortion1.cpp Distortion2.cpp Distortion3.cpp EffectBase.cpp Equalizer.cpp FaderH.cpp FaderV.cpp HandManager.cpp HighPassFilter.cpp ImageFactory.cpp KeyButton.cpp LayerData.cpp Lever.cpp LowPassFilter.cpp main.cpp MainParent.cpp NoiseGate.cpp Note.cpp NoteManager.cpp PartsBase.cpp PixelBitmap.cpp PlayButton.cpp Room1.cpp Room2.cpp Room3.cpp Room4.cpp RoomParent.cpp SceneManager.cpp Sign.cpp SoundManager.cpp Synthesizer.cpp TimeLamp.cpp ToneFactory.cpp Track.cpp TrackButton.cpp TrashCan.cpp Tremolo.cpp Vibrato.cpp ViewObj.cpp Wave.cpp
          Wave.cpp
+         ViewObj.cpp
+         Vibrato.cpp
+         Tremolo.cpp
+         TrashCan.cpp
+         TrackButton.cpp
+         Track.cpp
+         ToneFactory.cpp
+         TimeLamp.cpp
+         Synthesizer.cpp
          SoundManager.cpp
+         Sign.cpp
+         SceneManager.cpp
+         RoomParent.cpp
+         Room4.cpp
+         Room3.cpp
+         Room2.cpp
+         Room1.cpp
+         PlayButton.cpp
+         PixelBitmap.cpp
          コードを生成中...
+         コンパイル中...
+         PartsBase.cpp
+         NoteManager.cpp
+         Note.cpp
+         NoiseGate.cpp
+         MainParent.cpp
+         main.cpp
+         LowPassFilter.cpp
+         Lever.cpp
+         LayerData.cpp
+         KeyButton.cpp
+         ImageFactory.cpp
+         HighPassFilter.cpp
+         HandManager.cpp
+         FaderV.cpp
+         FaderH.cpp
+         Equalizer.cpp
+         EffectBase.cpp
+         Distortion3.cpp
+         Distortion2.cpp
+         Distortion1.cpp
+         コードを生成中...
+         コンパイル中...
+         Dial.cpp
+         Delay.cpp
+         DebugLoading.cpp
+         Debug2.cpp
+         Debug1.cpp
+         DCBitmap.cpp
+         Compressor.cpp
+         Chorus.cpp
+         BookCover.cpp
+         Book7.cpp
+         Book6.cpp
+         Book5.cpp
+         Book4.cpp
+         Book3.cpp
+         Book2.cpp
+         Book1.cpp
+         BitmapBase.cpp
+         BandPassFilter.cpp
+         BandEliminateFilter.cpp
+         AutoPanButton.cpp
+         コードを生成中...
+         コンパイル中...
+         AutoPan.cpp
+         AnimeData.cpp
+         コードを生成中...
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /l"0x0409" /nologo /fo"Debug\Origin.res" Origin.rc 
        ManifestResourceCompile:
-         すべての出力が最新のものです。
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\Origin.exe.embed.manifest.res" Debug\Origin_manifest.rc 
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\VisualStudio\Origin\Debug\Origin.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Origin.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\VisualStudio\Origin\Debug\Origin.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\VisualStudio\Origin\Debug\Origin.lib" /MACHINE:X86 Debug\Origin.exe.embed.manifest.res
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\VisualStudio\Origin\Debug\Origin.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Origin.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\VisualStudio\Origin\Debug\Origin.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\VisualStudio\Origin\Debug\Origin.lib" /MACHINE:X86 Debug\Origin.res
+         Debug\Origin.exe.embed.manifest.res
          Debug\AnimeData.obj
          Debug\AutoPan.obj
          Debug\AutoPanButton.obj
@@ -75,9 +144,72 @@
          Debug\Wave.obj
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\Origin.exe.embed.manifest" /manifest Debug\Origin.exe.intermediate.manifest
-         すべての出力が最新のものです。
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\Origin.exe.embed.manifest.res" Debug\Origin_manifest.rc 
        LinkEmbedManifest:
-         すべての出力が最新のものです。
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\VisualStudio\Origin\Debug\Origin.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Origin.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\VisualStudio\Origin\Debug\Origin.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\VisualStudio\Origin\Debug\Origin.lib" /MACHINE:X86 Debug\Origin.res
+         Debug\Origin.exe.embed.manifest.res
+         Debug\AnimeData.obj
+         Debug\AutoPan.obj
+         Debug\AutoPanButton.obj
+         Debug\BandEliminateFilter.obj
+         Debug\BandPassFilter.obj
+         Debug\BitmapBase.obj
+         Debug\Book1.obj
+         Debug\Book2.obj
+         Debug\Book3.obj
+         Debug\Book4.obj
+         Debug\Book5.obj
+         Debug\Book6.obj
+         Debug\Book7.obj
+         Debug\BookCover.obj
+         Debug\Chorus.obj
+         Debug\Compressor.obj
+         Debug\DCBitmap.obj
+         Debug\Debug1.obj
+         Debug\Debug2.obj
+         Debug\DebugLoading.obj
+         Debug\Delay.obj
+         Debug\Dial.obj
+         Debug\Distortion1.obj
+         Debug\Distortion2.obj
+         Debug\Distortion3.obj
+         Debug\EffectBase.obj
+         Debug\Equalizer.obj
+         Debug\FaderH.obj
+         Debug\FaderV.obj
+         Debug\HandManager.obj
+         Debug\HighPassFilter.obj
+         Debug\ImageFactory.obj
+         Debug\KeyButton.obj
+         Debug\LayerData.obj
+         Debug\Lever.obj
+         Debug\LowPassFilter.obj
+         Debug\main.obj
+         Debug\MainParent.obj
+         Debug\NoiseGate.obj
+         Debug\Note.obj
+         Debug\NoteManager.obj
+         Debug\PartsBase.obj
+         Debug\PixelBitmap.obj
+         Debug\PlayButton.obj
+         Debug\Room1.obj
+         Debug\Room2.obj
+         Debug\Room3.obj
+         Debug\Room4.obj
+         Debug\RoomParent.obj
+         Debug\SceneManager.obj
+         Debug\Sign.obj
+         Debug\SoundManager.obj
+         Debug\Synthesizer.obj
+         Debug\TimeLamp.obj
+         Debug\ToneFactory.obj
+         Debug\Track.obj
+         Debug\TrackButton.obj
+         Debug\TrashCan.obj
+         Debug\Tremolo.obj
+         Debug\Vibrato.obj
+         Debug\ViewObj.obj
+         Debug\Wave.obj
          Origin.vcxproj -> E:\VisualStudio\Origin\Debug\Origin.exe
        FinalizeBuildStatus:
          ファイル "Debug\Origin.unsuccessfulbuild" を削除しています。
@@ -86,4 +218,4 @@
 
 ビルドに成功しました。
 
-経過時間 00:00:01.07
+経過時間 00:00:18.71

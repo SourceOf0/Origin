@@ -89,7 +89,7 @@ DWORD WINAPI MainParent::LoadThread( LPVOID hWnd )
 
 	HDC hdc = GetDC( inst->mHWnd );
 	if( inst->mBookCornerBmp == 0 ) {
-		inst->mBookCornerBmp = Main::ImageFactory::inst()->loadDC( hdc, "resource\\bookCorner.dad" );
+		inst->mBookCornerBmp = Main::ImageFactory::inst()->loadDC( hdc, IDR_DAD_BOOKCORNER );
 		Image::DCBitmap* target = inst->mBookCornerBmp;
 		target->mX = Main::SceneManager::VIEW_WIDTH - 64;
 		target->mY = Main::SceneManager::VIEW_HEIGHT - 64;

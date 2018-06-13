@@ -17,10 +17,10 @@ Room2::Room2( HDC& hdc, RoomParent* parent )
 	int windowWidth = Main::SceneManager::windowWidth;
 	int windowHeight = Main::SceneManager::windowHeight;
 
-	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room2.dad" ) );
+	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM2 ) );
 	mBackBmp1->mUseAlpha = FALSE;
 
-	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room2_2.dad" ) );
+	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM2_2 ) );
 	mBackBmp2->mUseAlpha = FALSE;
 }
 

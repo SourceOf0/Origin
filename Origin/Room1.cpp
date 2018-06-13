@@ -15,10 +15,10 @@ Room1::Room1( HDC& hdc, RoomParent* parent )
 {
 	Main::ImageFactory* imageFactory = Main::ImageFactory::inst();
 
-	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room1.dad" ) );
+	mBackBmp1 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM1 ) );
 	mBackBmp1->mUseAlpha = FALSE;
 
-	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, "resource\\room1_2.dad" ) );
+	mBackBmp2 = ( Image::LayerData* )( imageFactory->load( hdc, IDR_DAD_ROOM1_2 ) );
 	mBackBmp2->mUseAlpha = FALSE;
 }
 

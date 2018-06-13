@@ -35,11 +35,11 @@ mIsMove( FALSE )
 
 	srand( static_cast< unsigned >( time( NULL ) ) );
 
-	mManImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\man_stay.dad" );
-	mManImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\man_walk.dad" );
-	mManImageArr[ ++i ] = imageFactory->loadDC( hdc, "resource\\man_ladder.dad" );
+	mManImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_MAN_STAY );
+	mManImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_MAN_WALK );
+	mManImageArr[ ++i ] = imageFactory->loadDC( hdc, IDR_DAD_MAN_LADDER );
 
-	mObjImage = imageFactory->loadDC( hdc, "resource\\map_objects.dad" );
+	mObjImage = imageFactory->loadDC( hdc, IDR_DAD_MAP_OBJECTS );
 
 	for( int i = 0; i < ENTRANCE_PAIR_NUM; ++i ) {
 		for( int j = 0; j < 2; ++j ) {
