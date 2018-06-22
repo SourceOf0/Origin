@@ -281,6 +281,7 @@
     <None Include="resource\map_objects.dad" />
     <None Include="resource\note.dad" />
     <None Include="resource\note_pencil.dad" />
+    <None Include="resource\Origin.ico" />
     <None Include="resource\page_book1_1.dad" />
     <None Include="resource\page_book1_2.dad" />
     <None Include="resource\page_book1_3.dad" />

@@ -868,5 +868,6 @@
     <None Include="resource\trashCan.dad">
       <Filter>resource</Filter>
     </None>
+    <None Include="resource\Origin.ico" />
   </ItemGroup>
 </Project>

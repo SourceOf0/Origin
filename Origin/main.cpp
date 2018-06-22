@@ -151,12 +151,12 @@ int WINAPI WinMain(HINSTANCE hinst, HINSTANCE hinstPrev, LPSTR lpszCmdLine, int 
 	wc.cbClsExtra    = 0;
 	wc.cbWndExtra    = 0;
 	wc.hInstance     = hinst;
-	wc.hIcon         = (HICON)LoadImage( NULL, IDI_APPLICATION, IMAGE_ICON, 0, 0, LR_SHARED );
-	wc.hCursor       = (HCURSOR)LoadImage( NULL, IDC_ARROW, IMAGE_CURSOR, 0, 0, LR_SHARED );
+	wc.hIcon         = (HICON)LoadImage( hinst, MAKEINTRESOURCE(IDI_ICON), IMAGE_ICON, 0, 0, LR_SHARED );
+	wc.hCursor       = (HCURSOR)LoadImage( hinst, IDC_ARROW, IMAGE_CURSOR, 0, 0, LR_SHARED );
 	wc.hbrBackground = (HBRUSH)GetStockObject( BLACK_BRUSH );
 	wc.lpszMenuName  = NULL;
 	wc.lpszClassName = szAppName;
-	wc.hIconSm       = (HICON)LoadImage( NULL, IDI_APPLICATION, IMAGE_ICON, 0, 0, LR_SHARED );
+	wc.hIconSm       = (HICON)LoadImage( hinst, MAKEINTRESOURCE(IDI_ICON), IMAGE_ICON, 0, 0, LR_SHARED );
 	
 	if( RegisterClassEx(&wc) == 0 ) return 0;
 
